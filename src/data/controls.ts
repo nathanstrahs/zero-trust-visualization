@@ -2,9 +2,9 @@ import { Control } from '@/types';
 
 // This is a sample dataset of NIST SP 800-53 Rev 5 controls mapped to Zero Trust pillars
 // In a real application, this would be more comprehensive and likely come from an API
-export const controls: Control[] = [
+export var controls: Control[] = [
   // User Pillar
-  {
+  /*{
     id: 'IA-2',
     name: 'Identification and Authentication (Organizational Users)',
     description: 'Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users.',
@@ -328,4 +328,5 @@ export const controls: Control[] = [
     baseline: 'high',
     status: 'failing',
   }
+    */
 ];

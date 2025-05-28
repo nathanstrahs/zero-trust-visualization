@@ -11,6 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 import { getPillars, getPassingPercentageByPillar } from '@/utils/helpers';
+import { Control } from '@/types';
 
 ChartJS.register(
   CategoryScale,
@@ -21,9 +22,13 @@ ChartJS.register(
   Legend
 );
 
-const PillarComplianceChart: React.FC = () => {
+interface PillarComplianceChartProps {
+  controls: Control[];
+}
+
+const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls }) => {
   const pillars = getPillars();
-  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar));
+  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, controls));
   
   const data = {
     labels: pillars,

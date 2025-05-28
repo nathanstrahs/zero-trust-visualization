@@ -3,11 +3,16 @@ import { Box, Heading } from '@chakra-ui/react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { getControlCountByBaseline } from '@/utils/helpers';
+import { Control } from '@/types';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const BaselineDistributionChart: React.FC = () => {
-  const baselineCounts = getControlCountByBaseline();
+interface BaselineDistributionChartProps {
+  controls: Control[];
+}
+
+const BaselineDistributionChart: React.FC<BaselineDistributionChartProps> = ({ controls }) => {
+  const baselineCounts = getControlCountByBaseline(controls);
   
   const data = {
     labels: ['High', 'Moderate', 'Low', 'None'],

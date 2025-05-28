@@ -1,9 +1,15 @@
 import React from 'react';
 import { Box, Stat, StatLabel, StatNumber, StatHelpText, Flex, Progress } from '@chakra-ui/react';
 import { getPassingPercentageOverall } from '@/utils/helpers';
+import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
+import { Control } from '@/types';
 
-const ComplianceOverviewCard: React.FC = () => {
-  const overallPercentage = getPassingPercentageOverall();
+interface ComplianceOverviewCardProps {
+  controls: Control[]; // This will receive processedControls from the parent
+}
+
+const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ controls }) => {
+  const overallPercentage = getPassingPercentageOverall(controls);
   
   const getColorScheme = () => {
     if (overallPercentage >= 80) return 'green';

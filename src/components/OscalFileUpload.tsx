@@ -11,7 +11,11 @@ import { extractNistControlStatuses } from '../../oscalParser';
 import { Control } from '@/types';
 import ControlsTable from './ControlsTable';
 
-const OscalFileUpload: React.FC = () => {
+interface OscalFileUploadProps {
+  onControlsProcessed: (controls: Control[]) => void; // This will receive processedControls from the parent
+}
+
+const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }) => {
   const [controls, setControls] = useState<Control[]>([]);
   const [fileName, setFileName] = useState<string>('');
   const toast = useToast();
@@ -39,6 +43,10 @@ const OscalFileUpload: React.FC = () => {
         }));
         
         setControls(mappedControls);
+
+        if(onControlsProcessed) {
+          onControlsProcessed(mappedControls);
+        }
         
         toast({
           title: 'File processed successfully',

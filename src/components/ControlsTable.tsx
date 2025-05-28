@@ -71,7 +71,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title }) => {
                   <Text fontWeight="medium">{control.name}</Text>
                   <Text fontSize="sm" color="gray.600">{control.description}</Text>
                 </Td>
-                <Td>{control.pillar}</Td>
+                <Td>{control.pillars.join(', ')}</Td>
                 <Td>
                   <Badge colorScheme={getBaselineColor(control.baseline)}>
                     {control.baseline}

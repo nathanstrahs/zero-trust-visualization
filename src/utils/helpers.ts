@@ -2,7 +2,7 @@ import { Control, BaselineLevel, ZeroTrustPillar } from '@/types';
 //import { controls } from '@/data/controls';
 
 export const getControlsByPillar = (pillar: ZeroTrustPillar, currentControls: Control[]): Control[] => {
-  return currentControls.filter(control => control.pillar === pillar);
+  return currentControls.filter(control => control.pillars.includes(pillar));
 };
 
 export const getControlsByBaseline = (baseline: BaselineLevel, currentControls: Control[]): Control[] => {

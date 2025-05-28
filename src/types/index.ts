@@ -4,16 +4,22 @@ export type ZeroTrustPillar =
   | 'User' 
   | 'Device' 
   | 'Network/Environment' 
+  | 'Network & Environment'
   | 'Application and Workload'
+  | 'Application & Workload'
   | 'Data'
   | 'Visibility and Analytics'
-  | 'Automation and Orchestration';
+  | 'Visibility & Analytics'
+  | 'Automation and Orchestration'
+  | 'Automation & Orchestration'
+  | 'Enabler'
+  | 'other';
 
 export interface Control {
   id: string;
   name: string;
   description: string;
-  pillar: ZeroTrustPillar;
+  pillars: ZeroTrustPillar[];
   baseline: BaselineLevel;
   status: 'passing' | 'failing' | 'not-applicable';
 }

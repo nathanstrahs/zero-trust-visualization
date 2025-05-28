@@ -34,14 +34,19 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
         const controlResults = extractNistControlStatuses(jsonData);
         
         // Convert OSCAL control results to our Control type
-        const mappedControls: Control[] = controlResults.map(result => ({
-          id: result.controlId,
-          name: `NIST Control ${result.controlId}`,
-          description: result.details.join('; ') || 'No details available',
-          pillar: mapControlToPillar(result.controlId),
-          baseline: mapControlToBaseline(result.controlId),
-          status: mapStatusToControlStatus(result.status)
-        }));
+        const mappedControls: Control[] = controlResults.map(result => {
+          const pillarsResult = getPillarsForKey(result.controlId);
+          const pillars = Array.isArray(pillarsResult) ? pillarsResult : [pillarsResult];
+          
+          return {
+            id: result.controlId,
+            name: `NIST Control ${result.controlId}`,
+            description: result.details.join('; ') || 'No details available',
+            pillars: pillars as ZeroTrustPillar[],
+            baseline: mapControlToBaseline(result.controlId),
+            status: mapStatusToControlStatus(result.status)
+          };
+        });
         
         setControls(mappedControls);
 
@@ -81,18 +86,7 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
     reader.readAsText(file);
   };
 
-  // Simple mapping functions - these could be more sophisticated in a real app
-  const mapControlToPillar = (controlId: string): Control['pillar'] => {
-    // This is a simplified mapping - in a real app, you'd have a more accurate mapping
-    const firstChar = controlId.charAt(0).toLowerCase();
-    
-    if (['a', 'b'].includes(firstChar)) return 'User';
-    if (['c', 'd'].includes(firstChar)) return 'Device';
-    if (['e', 'f'].includes(firstChar)) return 'Network/Environment';
-    if (['g', 'h'].includes(firstChar)) return 'Application and Workload';
-    if (['i', 'j'].includes(firstChar)) return 'Data';
-    return 'Visibility and Analytics';
-  };
+  // Mapping functions for baseline and status
 
   const mapControlToBaseline = (controlId: string): Control['baseline'] => {
     // This is a simplified mapping - in a real app, you'd have a more accurate mapping

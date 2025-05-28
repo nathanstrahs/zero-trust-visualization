@@ -8,6 +8,7 @@ import {
   Heading
 } from '@chakra-ui/react';
 import { extractNistControlStatuses } from '../../oscalParser';
+import { getPillarsForKey } from '../../map_pillars';
 import { Control } from '@/types';
 import ControlsTable from './ControlsTable';
 

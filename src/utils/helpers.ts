@@ -46,16 +46,12 @@ export const getPillars = (): ZeroTrustPillar[] => {
   return [
     'User',
     'Device',
-    'Network/Environment',
-    'Network & Environment',
+    'Network and Environment',
     'Application and Workload',
-    'Application & Workload',
     'Data',
     'Visibility and Analytics',
-    'Visibility & Analytics',
     'Automation and Orchestration',
-    'Automation & Orchestration',
-    'Enabler'
+    'other'
   ];
 };
 

@@ -38,11 +38,26 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
           const pillarsResult = getPillarsForKey(result.controlId);
           const pillars = Array.isArray(pillarsResult) ? pillarsResult : [pillarsResult];
           
+          // Normalize pillar names
+          const normalizedPillars = pillars.map(pillar => {
+            if (pillar === 'Network/Environment' || pillar === 'Network & Environment') 
+              return 'Network and Environment';
+            if (pillar === 'Application & Workload') 
+              return 'Application and Workload';
+            if (pillar === 'Visibility & Analytics') 
+              return 'Visibility and Analytics';
+            if (pillar === 'Automation & Orchestration') 
+              return 'Automation and Orchestration';
+            if (pillar === 'Enabler')
+              return 'other';
+            return pillar;
+          });
+          
           return {
             id: result.controlId,
             name: `NIST Control ${result.controlId}`,
             description: result.details.join('; ') || 'No details available',
-            pillars: pillars as ZeroTrustPillar[],
+            pillars: normalizedPillars as ZeroTrustPillar[],
             baseline: mapControlToBaseline(result.controlId),
             status: mapStatusToControlStatus(result.status)
           };

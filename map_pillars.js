@@ -1,0 +1,473 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPillarsForKey = getPillarsForKey;
+
+/**
+ * pillarMappingsData contains the pre-processed data from the provided text.
+ * Each object has a 'key' (in the format like AC-1, AU-6(6)) and
+ * 'categories' (an array of objects, each with a 'pillar' string).
+ *
+ * This data is derived from the 'pillarMaps.txt' content. Due to the
+ * non-standard format of the input (with tags and split lines),
+ * it has been manually structured here for reliability.
+ */
+const pillarMappingsData = [
+  { key: "AC-1", categories: [{ pillar: "Enabler" }, { pillar: "Automation & Orchestration" }] },
+  { key: "AC-2", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Automation & Orchestration" }] },
+  { key: "AC-2(1)", categories: [{ pillar: "User" }] },
+  { key: "AC-2(2)", categories: [{ pillar: "User" }] },
+  { key: "AC-2(3)", categories: [{ pillar: "User" }] },
+  { key: "AC-2(4)", categories: [{ pillar: "User" }] },
+  { key: "AC-2(6)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-2(7)", categories: [{ pillar: "User" }] },
+  { key: "AC-2(8)", categories: [{ pillar: "User" }] },
+  { key: "AC-2(9)", categories: [{ pillar: "User" }] },
+  { key: "AC-2(11)", categories: [{ pillar: "User" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-2(12)", categories: [{ pillar: "Enabler" }, { pillar: "User" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-2(13)", categories: [{ pillar: "User" }] },
+  { key: "AC-3", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Network & Environment" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-3(7)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Network & Environment" }] },
+  { key: "AC-3(8)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-3(10)", categories: [{ pillar: "User" }] },
+  { key: "AC-3(11)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Data" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-3(12)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "AC-3(13)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Network & Environment" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-4", categories: [{ pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Network & Environment" }] },
+  { key: "AC-4(1)", categories: [{ pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Network & Environment" }] },
+  { key: "AC-4(2)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "AC-4(3)", categories: [{ pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Network & Environment" }, { pillar: "Automation & Orchestration" }] },
+  { key: "AC-4(6)", categories: [{ pillar: "Data" }, { pillar: "Network & Environment" }, { pillar: "Automation & Orchestration" }] },
+  { key: "AC-4(8)", categories: [{ pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Network & Environment" }, { pillar: "Automation & Orchestration" }] },
+  { key: "AC-4(10)", categories: [{ pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }] },
+  { key: "AC-4(11)", categories: [{ pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Network & Environment" }, { pillar: "Automation & Orchestration" }] },
+  { key: "AC-4(12)", categories: [{ pillar: "Data" }, { pillar: "Network & Environment" }] },
+  { key: "AC-4(17)", categories: [{ pillar: "Application & Workload" }, { pillar: "Network & Environment" }] },
+  { key: "AC-4(19)", categories: [{ pillar: "Data" }, { pillar: "Network & Environment" }, { pillar: "Automation & Orchestration" }] },
+  { key: "AC-4(21)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "AC-4(23)", categories: [{ pillar: "Data" }] },
+  { key: "AC-4(26)", categories: [{ pillar: "Data" }] },
+  { key: "AC-4(29)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "AC-5", categories: [{ pillar: "User" }] },
+  { key: "AC-6", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Automation & Orchestration" }] },
+  { key: "AC-6(5)", categories: [{ pillar: "User" }] },
+  { key: "AC-6(7)", categories: [{ pillar: "User" }] },
+  { key: "AC-6(9)", categories: [{ pillar: "User" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-6(10)", categories: [{ pillar: "User" }] },
+  { key: "AC-12", categories: [{ pillar: "User" }] },
+  { key: "AC-14", categories: [{ pillar: "User" }] },
+  { key: "AC-16", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-16(1)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-16(2)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-16(3)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-16(4)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-16(6)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-16(7)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-16(8)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-16(9)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-16(10)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-17", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-17(1)", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-17(2)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "AC-17(4)", categories: [{ pillar: "User" }] },
+  { key: "AC-17(9)", categories: [{ pillar: "User" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-19", categories: [{ pillar: "Device" }] },
+  { key: "AC-21", categories: [{ pillar: "Data" }] },
+  { key: "AC-21(1)", categories: [{ pillar: "Data" }] },
+  { key: "AC-23", categories: [{ pillar: "Data" }] },
+  { key: "AC-24", categories: [{ pillar: "User" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AC-24(1)", categories: [{ pillar: "User" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AT-1", categories: [{ pillar: "Enabler" }] },
+  { key: "AT-2", categories: [{ pillar: "Enabler" }] },
+  { key: "AT-3", categories: [{ pillar: "Enabler" }] },
+  { key: "AU-1", categories: [{ pillar: "Enabler" }] },
+  { key: "AU-2", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-3", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-3(1)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-3(3)", categories: [{ pillar: "User" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-4", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-4(1)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-5", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-6", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Data" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-6(1)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-6(3)", categories: [{ pillar: "Data" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-6(4)", categories: [{ pillar: "Device" }, { pillar: "Data" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-6(5)", categories: [{ pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-6(6)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-6(8)", categories: [{ pillar: "User" }] },
+  { key: "AU-6(9)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-7", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-7(1)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-8", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-9", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-9(4)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-10", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-10(1)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-11", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-11(1)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-12", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-12(1)", categories: [{ pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "AU-12(2)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-12(3)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "AU-14", categories: [{ pillar: "User" }] },
+  { key: "CA-1", categories: [{ pillar: "Enabler" }] },
+  { key: "CA-2", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CA-5", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CA-5(1)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CA-6", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CA-7", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CA-7(6)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CA-9", categories: [{ pillar: "Network & Environment" }] },
+  { key: "CA-9(1)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "CM-1", categories: [{ pillar: "Enabler" }] },
+  { key: "CM-2", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "CM-2(2)", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "CM-2(6)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-3", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "CM-3(1)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-3(2)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-3(3)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-3(5)", categories: [{ pillar: "Device" }] },
+  { key: "CM-4", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-4(1)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-4(2)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-6", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "CM-6(1)", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "CM-6(2)", categories: [{ pillar: "Device" }] },
+  { key: "CM-7", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-7(2)", categories: [{ pillar: "Device" }] },
+  { key: "CM-7(5)", categories: [{ pillar: "Device" }] },
+  { key: "CM-7(8)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-8", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "CM-8(2)", categories: [{ pillar: "Device" }] },
+  { key: "CM-8(3)", categories: [{ pillar: "Device" }] },
+  { key: "CM-8(6)", categories: [{ pillar: "Device" }] },
+  { key: "CM-8(9)", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "CM-9", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "CM-10", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-10(1)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "CM-11", categories: [{ pillar: "Device" }] },
+  { key: "CM-11(3)", categories: [{ pillar: "Device" }] },
+  { key: "CM-12", categories: [{ pillar: "Network & Environment" }] },
+  { key: "CM-14", categories: [{ pillar: "Device" }] },
+  { key: "CP-1", categories: [{ pillar: "Enabler" }] },
+  { key: "CP-2", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "CP-2(2)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "CP-2(5)", categories: [{ pillar: "Enabler" }] },
+  { key: "CP-2(6)", categories: [{ pillar: "Enabler" }] },
+  { key: "IA-1", categories: [{ pillar: "Enabler" }, { pillar: "User" }, { pillar: "Automation & Orchestration" }] },
+  { key: "IA-2", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "IA-2(1)", categories: [{ pillar: "User" }] },
+  { key: "IA-2(2)", categories: [{ pillar: "User" }] },
+  { key: "IA-2(5)", categories: [{ pillar: "User" }] },
+  { key: "IA-2(6)", categories: [{ pillar: "User" }] },
+  { key: "IA-2(12)", categories: [{ pillar: "User" }] },
+  { key: "IA-3", categories: [{ pillar: "Device" }] },
+  { key: "IA-3(1)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "IA-4", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "IA-4(4)", categories: [{ pillar: "User" }] },
+  { key: "IA-4(5)", categories: [{ pillar: "User" }] },
+  { key: "IA-4(6)", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "IA-4(9)", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "IA-5", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "IA-5(1)", categories: [{ pillar: "User" }] },
+  { key: "IA-5(2)", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "IA-5(5)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "IA-5(7)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "IA-5(9)", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "IA-5(10)", categories: [{ pillar: "User" }] },
+  { key: "IA-5(12)", categories: [{ pillar: "User" }] },
+  { key: "IA-5(14)", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "IA-5(17)", categories: [{ pillar: "User" }] },
+  { key: "IA-5(18)", categories: [{ pillar: "User" }] },
+  { key: "IA-6", categories: [{ pillar: "Application & Workload" }] },
+  { key: "IA-8", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "IA-8(1)", categories: [{ pillar: "User" }] },
+  { key: "IA-8(2)", categories: [{ pillar: "User" }] },
+  { key: "IA-8(4)", categories: [{ pillar: "User" }] },
+  { key: "IA-8(5)", categories: [{ pillar: "User" }] },
+  { key: "IA-9", categories: [{ pillar: "Device" }] },
+  { key: "IA-10", categories: [{ pillar: "User" }, { pillar: "Visibility & Analytics" }] },
+  { key: "IA-11", categories: [{ pillar: "User" }] },
+  { key: "IA-12", categories: [{ pillar: "User" }] },
+  { key: "IR-1", categories: [{ pillar: "Enabler" }] },
+  { key: "IR-4", categories: [{ pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "IR-4(1)", categories: [{ pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "IR-4(2)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "IR-4(4)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "IR-4(9)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "IR-4(13)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "IR-4(14)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "IR-5", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "IR-5(1)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "IR-6", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "IR-6(1)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "IR-6(2)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "IR-8", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "PL-1", categories: [{ pillar: "Enabler" }] },
+  { key: "PL-2", categories: [{ pillar: "Enabler" }] },
+  { key: "PL-4", categories: [{ pillar: "User" }] },
+  { key: "PL-7", categories: [{ pillar: "Enabler" }] },
+  { key: "PL-8", categories: [{ pillar: "Enabler" }] },
+  { key: "PL-8(1)", categories: [{ pillar: "Enabler" }] },
+  { key: "PL-9", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-1", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-2", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-3", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-6", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-7", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-9", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-12", categories: [{ pillar: "User" }] },
+  { key: "PM-13", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-14", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-15", categories: [{ pillar: "Application & Workload" }, { pillar: "Visibility & Analytics" }] },
+  { key: "PM-16", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "PM-16(1)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "PM-18", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-19", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-28", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-29", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-30", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-31", categories: [{ pillar: "Enabler" }] },
+  { key: "PM-32", categories: [{ pillar: "Enabler" }] },
+  { key: "PS-1", categories: [{ pillar: "Enabler" }] },
+  { key: "PS-2", categories: [{ pillar: "Enabler" }] },
+  { key: "PS-3", categories: [{ pillar: "Enabler" }] },
+  { key: "PS-4", categories: [{ pillar: "Enabler" }, { pillar: "User" }] },
+  { key: "PS-4(2)", categories: [{ pillar: "Enabler" }] },
+  { key: "PS-5", categories: [{ pillar: "Enabler" }, { pillar: "User" }] },
+  { key: "PT-1", categories: [{ pillar: "Enabler" }] },
+  { key: "PT-2", categories: [{ pillar: "Data" }, { pillar: "Automation & Orchestration" }] },
+  { key: "PT-2(1)", categories: [{ pillar: "Data" }, { pillar: "Automation & Orchestration" }] },
+  { key: "PT-2(2)", categories: [{ pillar: "Data" }, { pillar: "Automation & Orchestration" }] },
+  { key: "PT-3", categories: [{ pillar: "Data" }, { pillar: "Automation & Orchestration" }] },
+  { key: "PT-3(1)", categories: [{ pillar: "Data" }, { pillar: "Automation & Orchestration" }] },
+  { key: "PT-3(2)", categories: [{ pillar: "Data" }, { pillar: "Automation & Orchestration" }] },
+  { key: "RA-1", categories: [{ pillar: "Enabler" }] },
+  { key: "RA-3", categories: [{ pillar: "Enabler" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }] },
+  { key: "RA-3(1)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "RA-3(3)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "RA-3(4)", categories: [{ pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "RA-5", categories: [{ pillar: "Enabler" }, { pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "RA-5(2)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "RA-5(5)", categories: [{ pillar: "User" }, { pillar: "Application & Workload" }] },
+  { key: "RA-5(11)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "RA-7", categories: [{ pillar: "Enabler" }, { pillar: "Automation & Orchestration" }] },
+  { key: "RA-9", categories: [{ pillar: "Enabler" }, { pillar: "User" }, { pillar: "Device" }] },
+  { key: "RA-10", categories: [{ pillar: "Enabler" }] },
+  { key: "SA-1", categories: [{ pillar: "Enabler" }] },
+  { key: "SA-8", categories: [] },
+  { key: "SA-8(14)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-10", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-10(1)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-10(4)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-10(6)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-11", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-11(1)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-11(2)", categories: [{ pillar: "Enabler" }] },
+  { key: "SA-11(4)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-11(8)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-11(9)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-15", categories: [{ pillar: "Application & Workload" }, { pillar: "Automation & Orchestration" }] },
+  { key: "SA-15(1)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-15(2)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-15(7)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-16", categories: [{ pillar: "Enabler" }] },
+  { key: "SA-17", categories: [] },
+  { key: "SA-17(7)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SA-17(8)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "SC-1", categories: [{ pillar: "Enabler" }] },
+  { key: "SC-2", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-2(1)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-4", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-5(3)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SC-7", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-7(4)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-7(5)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-7(8)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SC-7(10)", categories: [{ pillar: "Data" }] },
+  { key: "SC-7(11)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SC-7(12)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-7(15)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-7(16)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SC-7(17)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SC-7(18)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-7(20)", categories: [{ pillar: "Device" }] },
+  { key: "SC-7(21)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-7(22)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-7(29)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-8", categories: [{ pillar: "Data" }, { pillar: "Network & Environment" }] },
+  { key: "SC-8(1)", categories: [{ pillar: "Data" }, { pillar: "Network & Environment" }] },
+  { key: "SC-10", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SC-12", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Data" }] },
+  { key: "SC-12(1)", categories: [{ pillar: "Device" }, { pillar: "Data" }] },
+  { key: "SC-12(2)", categories: [{ pillar: "Data" }] },
+  { key: "SC-12(3)", categories: [{ pillar: "Device" }, { pillar: "Data" }] },
+  { key: "SC-13", categories: [{ pillar: "Device" }, { pillar: "Data" }, { pillar: "Network & Environment" }] },
+  { key: "SC-16", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SC-16(1)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SC-16(2)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SC-16(3)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SC-17", categories: [{ pillar: "Device" }] },
+  { key: "SC-23", categories: [{ pillar: "User" }, { pillar: "Application & Workload" }] },
+  { key: "SC-23(5)", categories: [{ pillar: "User" }, { pillar: "Application & Workload" }] },
+  { key: "SC-25", categories: [{ pillar: "Device" }] },
+  { key: "SC-26", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SC-27", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SC-28", categories: [{ pillar: "Data" }] },
+  { key: "SC-28(1)", categories: [{ pillar: "Data" }] },
+  { key: "SC-28(3)", categories: [{ pillar: "Data" }] },
+  { key: "SC-30", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SC-39", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-39(2)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SC-44", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SC-45", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SC-45(1)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Application & Workload" }, { pillar: "Data" }, { pillar: "Automation & Orchestration" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SC-48", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SC-48(1)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SI-1", categories: [{ pillar: "Enabler" }] },
+  { key: "SI-2", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "SI-2(2)", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "SI-2(4)", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "SI-2(5)", categories: [{ pillar: "Device" }, { pillar: "Application & Workload" }] },
+  { key: "SI-3", categories: [{ pillar: "Device" }] },
+  { key: "SI-3(8)", categories: [{ pillar: "Device" }] },
+  { key: "SI-3(10)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SI-4", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SI-4(1)", categories: [{ pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SI-4(2)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SI-4(3)", categories: [{ pillar: "Device" }, { pillar: "Network & Environment" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SI-4(4)", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "SI-4(5)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SI-4(7)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "SI-4(9)", categories: [{ pillar: "User" }] },
+  { key: "SI-4(10)", categories: [{ pillar: "User" }, { pillar: "Device" }, { pillar: "Data" }, { pillar: "Network & Environment" }] },
+  { key: "SI-4(11)", categories: [{ pillar: "Device" }] },
+  { key: "SI-4(12)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SI-4(13)", categories: [{ pillar: "User" }, { pillar: "Device" }] },
+  { key: "SI-4(16)", categories: [{ pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SI-4(17)", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SI-4(18)", categories: [{ pillar: "Data" }] },
+  { key: "SI-4(19)", categories: [{ pillar: "User" }] },
+  { key: "SI-4(20)", categories: [{ pillar: "User" }] },
+  { key: "SI-4(23)", categories: [{ pillar: "Device" }] },
+  { key: "SI-4(24)", categories: [{ pillar: "Device" }, { pillar: "Visibility & Analytics" }] },
+  { key: "SI-4(25)", categories: [{ pillar: "Network & Environment" }] },
+  { key: "SI-5", categories: [{ pillar: "Visibility & Analytics" }] },
+  { key: "SI-7", categories: [{ pillar: "Device" }] },
+  { key: "SI-7(7)", categories: [{ pillar: "Automation & Orchestration" }] },
+  { key: "SI-7(8)", categories: [{ pillar: "Device" }] },
+  { key: "SI-7(17)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SI-10", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SI-10(2)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SI-10(4)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SI-10(5)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SI-10(6)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SI-11", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SI-14", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SI-15", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SI-18", categories: [] },
+  { key: "SI-18(2)", categories: [{ pillar: "Data" }] },
+  { key: "SI-20", categories: [{ pillar: "Data" }] },
+  { key: "SI-23", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SR-1", categories: [{ pillar: "Enabler" }] },
+  { key: "SR-3", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SR-4", categories: [] },
+  { key: "SR-4(3)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SR-4(4)", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SR-9", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SR-10", categories: [{ pillar: "Application & Workload" }] },
+  { key: "SR-11", categories: [{ pillar: "Application & Workload" }] }
+];
+
+/**
+ * Converts an input key from "lowercase-1.2" format to "UPPERCASE-1(2)" format.
+ * @param {string} inputKey - The key in the format "xx-1.2" or "xx-1".
+ * @returns {string|null} The converted key or null if input is invalid.
+ */
+function convertToDataKeyFormat(inputKey) {
+  if (!inputKey || typeof inputKey !== 'string') {
+    return null;
+  }
+  let dataKey = inputKey.toUpperCase();
+  // Replace .<numbers> with (<numbers>)
+  // Example: AU-6.6 -> AU-6(6), AC-2.12 -> AC-2(12)
+  dataKey = dataKey.replace(/\.(.+)$/, '($1)');
+  return dataKey;
+}
+
+/**
+ * Finds the pillars for a given input key.
+ * @param {string} inputKey - The key to search for (e.g., "ac-1", "au-6.6").
+ * @returns {string[]|string} An array of pillar strings or the string "other".
+ */
+function getPillarsForKey(inputKey) {
+  const dataKey = convertToDataKeyFormat(inputKey);
+  if (!dataKey) {
+      console.error("Invalid input key format provided to getPillarsForKey.");
+    return "other";
+  }
+
+  const mapping = pillarMappingsData.find(item => item.key === dataKey);
+
+  if (!mapping) {
+    return "other"; // Key not found in the data
+  }
+
+  if (!mapping.categories || mapping.categories.length === 0) {
+    return "other"; // Key found, but categories array is missing or empty
+  }
+
+  const pillars = mapping.categories
+    .map(cat => cat.pillar)
+    .filter(pillar => pillar && pillar.trim() !== ""); // Ensure pillar exists and is not just whitespace
+
+  if (pillars.length === 0) {
+    return "other"; // Key found, categories exist, but no valid pillar names found
+  }
+
+  return pillars; // Return an array of pillar names
+}
+
+/**
+ * Main function to handle command-line argument and output pillars.
+ * To run this program: node <filename>.js <inputKey>
+ * Example: node your_program_name.js ac-1
+ * Example: node your_program_name.js au-6.6
+ * Example: node your_program_name.js sa-8
+ * Example: node your_program_name.js foo-bar
+ */
+function main(inputKey) {
+  // process.argv contains command-line arguments.
+  // process.argv[0] is the node executable path.
+  // process.argv[1] is the path to this script.
+  // process.argv[2] will be the first actual argument (the inputKey).
+  // const inputKey = process.argv[2];
+
+  if (!inputKey) {
+    console.log("Usage: node <filename>.js <inputKey>");
+    console.log("Example: node your_program_name.js ac-1.2");
+    // Example test cases if no input is provided
+    console.log("\nRunning example test cases:");
+    const testKeys = ["ac-1", "au-6.6", "sa-8", "ac-2(11)", "nonexistent-key", "cm-8.3"];
+     testKeys.forEach(key => {
+        // For AC-2(11) which is already in data format, we directly use it or convert if needed
+        // The function expects "ac-2.11" format, so let's use that for testing consistency
+        const keyToTest = key.includes('(') ? key.toLowerCase().replace(/\((.+)\)/, '.$1') : key;
+        const result = getPillarsForKey(keyToTest);
+        if (result === "other") {
+          console.log(`Input: "${keyToTest}" -> Pillars: other`);
+        } else {
+          console.log(`Input: "${keyToTest}" -> Pillars: ${result.join(', ')}`);
+        }
+    });
+    return;
+  }
+
+  const pillars = getPillarsForKey(inputKey);
+
+  if (pillars === "other") {
+    console.log("other");
+  } else {
+    console.log(pillars.join(', '));
+  }
+}

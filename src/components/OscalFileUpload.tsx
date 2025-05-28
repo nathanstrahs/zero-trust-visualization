@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { extractNistControlStatuses } from '../../oscalParser';
 import { getPillarsForKey } from '../../map_pillars';
-import { Control } from '@/types';
+import { Control, ZeroTrustPillar } from '@/types';
 import ControlsTable from './ControlsTable';
 
 interface OscalFileUploadProps {

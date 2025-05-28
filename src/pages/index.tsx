@@ -20,12 +20,13 @@ import PillarComplianceChart from '@/components/PillarComplianceChart';
 import ComplianceOverviewCard from '@/components/ComplianceOverviewCard';
 import OscalFileUpload from '@/components/OscalFileUpload';
 import { getPillars, getBaselineLevels, getControlsByPillar, getControlsByBaseline } from '@/utils/helpers';
-import { ZeroTrustPillar, BaselineLevel } from '@/types';
+import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 
 export default function Home() {
   const [selectedPillar, setSelectedPillar] = useState<ZeroTrustPillar | null>(null);
   const [selectedBaseline, setSelectedBaseline] = useState<BaselineLevel | null>(null);
-  
+  const [processedControls, setProcessedControls] = useState<Control[]>([]);
+
   const pillars = getPillars();
   const baselineLevels = getBaselineLevels();
   
@@ -39,13 +40,20 @@ export default function Home() {
     setSelectedBaseline(value);
     setSelectedPillar(null);
   };
+
+  const handleControlsProcessed = (newControls: Control[]) => {
+    setProcessedControls(newControls);
+    // Optionally, reset filters or perform other actions when new controls are loaded
+    setSelectedPillar(null);
+    setSelectedBaseline(null);
+  };
   
   const getDisplayedControls = () => {
     if (selectedPillar) {
-      return getControlsByPillar(selectedPillar);
+      return getControlsByPillar(selectedPillar, processedControls);
     }
     if (selectedBaseline) {
-      return getControlsByBaseline(selectedBaseline);
+      return getControlsByBaseline(selectedBaseline, processedControls);
     }
     return [];
   };
@@ -74,17 +82,19 @@ export default function Home() {
         
         <TabPanels>
           <TabPanel>
+
+            <Box mb={8}>
+              <OscalFileUpload onControlsProcessed ={handleControlsProcessed} />
+            </Box>
+
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} mb={8}>
-              <ComplianceOverviewCard />
-              <BaselineDistributionChart />
+              <ComplianceOverviewCard controls={processedControls} />
+              <BaselineDistributionChart controls={processedControls} />
             </SimpleGrid>
             
-            <Box mb={8}>
-              <OscalFileUpload />
-            </Box>
             
             <Box mb={8}>
-              <PillarComplianceChart />
+              <PillarComplianceChart controls={processedControls}/>
             </Box>
             
             <Heading size="md" mb={4}>
@@ -95,7 +105,8 @@ export default function Home() {
                 <PillarCard 
                   key={pillar} 
                   pillar={pillar} 
-                  onClick={() => handlePillarClick(pillar)} 
+                  onClick={() => handlePillarClick(pillar)}
+                  controls={processedControls} 
                 />
               ))}
             </SimpleGrid>

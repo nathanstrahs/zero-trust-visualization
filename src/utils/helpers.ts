@@ -57,3 +57,39 @@ export const getPillars = (): ZeroTrustPillar[] => {
 export const getBaselineLevels = (): BaselineLevel[] => {
   return ['high', 'moderate', 'low', 'none'];
 };
+
+export const getMaxPercentagePillar = (currentControls: Control[]): number => {
+  const pillars = getPillars();
+  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, currentControls));
+
+  if (!currentControls || currentControls.length === 0) {
+    return 0;
+  }
+  let indofPillar = 0;
+  let maxInd = 0;
+  for (const pillar of pillars){
+    if( percentages[indofPillar] > percentages[maxInd]){
+      maxInd=indofPillar;
+    }
+    indofPillar=indofPillar+1;
+  }
+  return maxInd;
+};
+
+export const getMinPercentagePillar = (currentControls: Control[]): number => {
+  const pillars = getPillars();
+  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, currentControls));
+
+  if (!currentControls || currentControls.length === 0) {
+    return 0;
+  }
+  let indofPillar = 0;
+  let minInd = 0;
+  for (const pillar of pillars){
+    if( percentages[indofPillar] < percentages[minInd]){
+      minInd=indofPillar;
+    }
+    indofPillar=indofPillar+1;
+  }
+  return minInd;
+};

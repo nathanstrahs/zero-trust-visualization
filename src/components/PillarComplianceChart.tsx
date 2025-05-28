@@ -37,14 +37,14 @@ const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls 
         label: 'Compliance Percentage',
         data: percentages,
         backgroundColor: percentages.map(percentage => {
-          if (percentage >= 80) return 'green';
-          if (percentage >= 50) return 'yellow';
-          return 'red';
+          if (percentage >= 80) return 'rgba(180, 242, 121, 0.6)';
+          if (percentage >= 50) return 'rgba(255, 205, 86, 0.6)';
+          return 'rgba(255, 99, 132, 0.6)';
 	}),
         borderColor: percentages.map(percentage => {
-          if (percentage >= 80) return 'green';
-          if (percentage >= 50) return 'yellow';
-          return 'red';
+          if (percentage >= 80) return 'rgb(180, 242, 121)';
+          if (percentage >= 50) return 'rgb(255, 205, 86)';
+          return 'rgb(255, 99, 132)';
         }),
         borderWidth: 1,
       },

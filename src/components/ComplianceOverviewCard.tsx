@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Stat, StatLabel, StatNumber, StatHelpText, Flex, Progress } from '@chakra-ui/react';
-import { getPassingPercentageOverall } from '@/utils/helpers';
-import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
+import { getPassingPercentageOverall, getMaxPercentagePillar, getMinPercentagePillar, getPillars, getPassingPercentageByPillar } from '@/utils/helpers';
 import { Control } from '@/types';
 
 interface ComplianceOverviewCardProps {
@@ -10,23 +9,73 @@ interface ComplianceOverviewCardProps {
 
 const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ controls }) => {
   const overallPercentage = getPassingPercentageOverall(controls);
+  const pillars = getPillars();
+  const maxPercentagePillar = getMaxPercentagePillar(controls);
+  const maxPillar = pillars[maxPercentagePillar];
+  const maxPercentagePillarVal = getPassingPercentageByPillar(maxPillar, controls);
+  const minPercentagePillar = getMinPercentagePillar(controls);
+  const minPillar = pillars[minPercentagePillar];
+  const minPercentagePillarVal = getPassingPercentageByPillar(minPillar, controls);
+  
   
   const getColorScheme = () => {
-    if (overallPercentage >= 80) return 'green';
-    if (overallPercentage >= 50) return 'yellow';
-    return 'red';
+    if (overallPercentage >= 80) return 'rgba(180, 242, 121, 0.6)';
+    if (overallPercentage >= 50) return 'rgba(255, 205, 86, 0.6)';
+    return 'rgba(255, 99, 132, 0.6)';
   };
 
   return (
     <Box p={5} shadow="md" borderWidth="1px" borderRadius="md">
       <Stat>
-        <StatLabel fontSize="lg">Overall Compliance</StatLabel>
+        <StatLabel fontSize="25">Overall Compliance</StatLabel>
         <Flex align="center" mt={2}>
           <StatNumber>{overallPercentage.toFixed(1)}%</StatNumber>
         </Flex>
         <Box mt={2}>
           <Progress 
             value={overallPercentage} 
+            colorScheme={getColorScheme()} 
+            size="lg" 
+            borderRadius="md"
+          />
+        </Box>
+        <StatHelpText>
+          {overallPercentage >= 80 
+            ? 'Good standing' 
+            : overallPercentage >= 50 
+              ? 'Needs improvement' 
+              : 'Critical attention required'}
+        </StatHelpText>
+      </Stat>
+      <Stat>
+        <StatLabel fontSize="20">Max Compliance Pillar: {maxPillar}</StatLabel>
+        <Flex align="center" mt={2}>
+          <StatNumber>{maxPercentagePillarVal.toFixed(1)}%</StatNumber>
+        </Flex>
+        <Box mt={2}>
+          <Progress 
+            value={maxPercentagePillarVal} 
+            colorScheme={getColorScheme()} 
+            size="lg" 
+            borderRadius="md"
+          />
+        </Box>
+        <StatHelpText>
+          {overallPercentage >= 80 
+            ? 'Good standing' 
+            : overallPercentage >= 50 
+              ? 'Needs improvement' 
+              : 'Critical attention required'}
+        </StatHelpText>
+      </Stat>
+      <Stat>
+        <StatLabel fontSize="20">Min Compliance Pillar: {minPillar}</StatLabel>
+        <Flex align="center" mt={2}>
+          <StatNumber>{minPercentagePillarVal.toFixed(1)}%</StatNumber>
+        </Flex>
+        <Box mt={2}>
+          <Progress 
+            value={minPercentagePillarVal} 
             colorScheme={getColorScheme()} 
             size="lg" 
             borderRadius="md"

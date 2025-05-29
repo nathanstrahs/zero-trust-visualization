@@ -6,10 +6,6 @@ exports.getPillarsForKey = getPillarsForKey;
  * pillarMappingsData contains the pre-processed data from the provided text.
  * Each object has a 'key' (in the format like AC-1, AU-6(6)) and
  * 'categories' (an array of objects, each with a 'pillar' string).
- *
- * This data is derived from the 'pillarMaps.txt' content. Due to the
- * non-standard format of the input (with tags and split lines),
- * it has been manually structured here for reliability.
  */
 const pillarMappingsData = [
   { key: "AC-1", categories: [{ pillar: "Enabler" }, { pillar: "Automation & Orchestration" }] },
@@ -429,7 +425,7 @@ function getPillarsForKey(inputKey) {
 }
 
 /**
- * Main function to handle command-line argument and output pillars.
+ * Main function to handle command-line argument and output pillars. This function is not used in the application.
  * To run this program: node <filename>.js <inputKey>
  * Example: node your_program_name.js ac-1
  * Example: node your_program_name.js au-6.6

@@ -30,7 +30,7 @@ List the main technologies, frameworks, and libraries used in your project.
 
 ## 📋 Prerequisites
 
-See [package.json](https://github.com/nathanstrahs/visiualization/blob/main/package.json)
+See [package.json](https://github.com/nathanstrahs/zero-trust-visualization/blob/main/package-lock.json)
 
 ---
 
@@ -40,11 +40,11 @@ Provide step-by-step instructions on how to get the development environment runn
 
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/nathanstrahs/visiualization
+    git clone https://github.com/nathanstrahs/zero-trust-visualization.git
     ```
 2.  Navigate to the project directory:
     ```bash
-    cd visualization
+    cd zero-trust-visualization
     ```
 3.  Install frontend dependencies:
     ```bash
@@ -131,4 +131,4 @@ Apache 2.0
 Your contact information or project maintainer(s).
 
 * [Nathan Strahs] - [nstrahs@redhat.com]
-* Project Link: [HOME](https://github.com/nathanstrahs/visualization)
+* Project Link: [HOME](https://github.com/nathanstrahs/zero-trust-visualization)

@@ -21,10 +21,10 @@ More about OSCAL can be found [here](https://github.com/usnistgov/oscal-content/
 
 List the main technologies, frameworks, and libraries used in your project.
 
-* **Frontend:** [JavaScript]
-* **Backend:** []
-* **Data Handling:** []
-* **Visualization:** []
+* **Core Framework**: Next.js, Node.js
+* **Frontend**: HTML, CSS, Javascript, Typescript
+* **Data Fetching**: Complytime (NOT YET IMPLEMENTED)
+* **Version Control**: Git, Github
 
 ---
 

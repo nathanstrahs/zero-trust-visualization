@@ -122,7 +122,7 @@ More extensive information can be found at [NIST SP 800-53 Rev. 5](https://csrc.
 
 ## 📜 License
 
-License?
+Apache 2.0
 
 ---
 

@@ -1,17 +1,14 @@
 import React from 'react';
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Badge,
   Box,
   Text,
   Heading,
+  Table,
 } from '@chakra-ui/react';
+import { Thead, Tbody, Tr, Th, Td } from '@chakra-ui/table';
 import { Control, BaselineLevel, ZeroTrustPillar } from '@/types';
+import { color } from 'chart.js/helpers';
 
 interface ControlsTableProps {
   controls: Control[];
@@ -48,44 +45,36 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title }) => {
   };
 
   return (
-    <Box overflowX="auto">
+   <Box overflowX="auto">
       {title && <Heading size="md" mb={4}>{title}</Heading>}
       {controls.length === 0 ? (
         <Text>No controls found.</Text>
       ) : (
-        <Table variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              <Th>ID</Th>
-              <Th>Name</Th>
-              <Th>Pillar</Th>
-              <Th>Baseline</Th>
-              <Th>Status</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
+        <Table.Root size="sm" striped>
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader>ID</Table.ColumnHeader>
+              <Table.ColumnHeader>Name</Table.ColumnHeader>
+              <Table.ColumnHeader>Pillar</Table.ColumnHeader>
+              <Table.ColumnHeader>Baseline</Table.ColumnHeader>
+              <Table.ColumnHeader>Status</Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {controls.map((control) => (
-              <Tr key={control.id}>
-                <Td>{control.id}</Td>
-                <Td>
+              <Table.Row key={control.id}>
+                <Table.Cell>{control.id}</Table.Cell>
+                <Table.Cell>
                   <Text fontWeight="medium">{control.name}</Text>
                   <Text fontSize="sm" color="gray.600">{control.description}</Text>
-                </Td>
-                <Td>{control.pillars.join(', ')}</Td>
-                <Td>
-                  <Badge colorScheme={getBaselineColor(control.baseline)}>
-                    {control.baseline}
-                  </Badge>
-                </Td>
-                <Td>
-                  <Badge colorScheme={getStatusColor(control.status)}>
-                    {control.status}
-                  </Badge>
-                </Td>
-              </Tr>
+                </Table.Cell>
+                <Table.Cell>{control.pillars.join(', ')}</Table.Cell>
+                <Table.Cell><Badge colorScheme={getBaselineColor(control.baseline)}>{control.baseline}</Badge></Table.Cell>
+                <Table.Cell><Badge colorScheme={getStatusColor(control.status)}>{control.status}</Badge></Table.Cell>
+              </Table.Row>
             ))}
-          </Tbody>
-        </Table>
+          </Table.Body>
+        </Table.Root>
       )}
     </Box>
   );

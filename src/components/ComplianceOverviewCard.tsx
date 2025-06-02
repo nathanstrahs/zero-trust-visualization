@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Stat, StatLabel, StatNumber, StatHelpText, Flex, Progress } from '@chakra-ui/react';
+import { Box, Flex, Progress } from '@chakra-ui/react';
 import { getPassingPercentageOverall, getMaxPercentagePillar, getMinPercentagePillar, getPillars, getPassingPercentageByPillar } from '@/utils/helpers';
 import { Control } from '@/types';
+import { Stat, StatLabel, StatNumber, StatHelpText } from '@chakra-ui/stat';
 
 interface ComplianceOverviewCardProps {
   controls: Control[]; // This will receive processedControls from the parent
@@ -32,12 +33,14 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
           <StatNumber>{overallPercentage.toFixed(1)}%</StatNumber>
         </Flex>
         <Box mt={2}>
-          <Progress 
-            value={overallPercentage} 
-            colorScheme={getColorScheme()} 
-            size="lg" 
-            borderRadius="md"
-          />
+          <Progress.Root value={overallPercentage}>
+            <Progress.Track bgSize="lg" borderRadius="md">
+              <Progress.Range
+                colorScheme={getColorScheme()}
+                borderRadius="md"
+              />
+            </Progress.Track>
+          </Progress.Root>
         </Box>
         <StatHelpText>
           {overallPercentage >= 80 
@@ -53,12 +56,14 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
           <StatNumber>{maxPercentagePillarVal.toFixed(1)}%</StatNumber>
         </Flex>
         <Box mt={2}>
-          <Progress 
-            value={maxPercentagePillarVal} 
-            colorScheme={getColorScheme()} 
-            size="lg" 
-            borderRadius="md"
-          />
+          <Progress.Root value={maxPercentagePillarVal}>
+            <Progress.Track bgSize="lg" borderRadius="md">
+              <Progress.Range
+                colorScheme={getColorScheme()}
+                borderRadius="md"
+              />
+            </Progress.Track>
+          </Progress.Root>
         </Box>
         <StatHelpText>
           {overallPercentage >= 80 
@@ -74,12 +79,14 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
           <StatNumber>{minPercentagePillarVal.toFixed(1)}%</StatNumber>
         </Flex>
         <Box mt={2}>
-          <Progress 
-            value={minPercentagePillarVal} 
-            colorScheme={getColorScheme()} 
-            size="lg" 
-            borderRadius="md"
-          />
+          <Progress.Root value={minPercentagePillarVal}>
+            <Progress.Track bgSize="lg" borderRadius="md">
+              <Progress.Range
+                colorScheme={getColorScheme()}
+                borderRadius="md"
+              />
+            </Progress.Track>
+          </Progress.Root>
         </Box>
         <StatHelpText>
           {overallPercentage >= 80 

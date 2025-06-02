@@ -39,12 +39,14 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, onClick, controls }) =>
           {passingPercentage.toFixed(0)}% Passing
         </Badge>
       </Flex>
-      <Progress 
-        value={passingPercentage} 
-        colorScheme={getColorScheme()} 
-        size="sm" 
-        borderRadius="md"
-      />
+      <Progress.Root value={passingPercentage}>
+          <Progress.Track bgSize="sm" borderRadius="md">
+            <Progress.Range
+              colorScheme={getColorScheme()}
+              borderRadius="md"
+            />
+          </Progress.Track>
+        </Progress.Root>
     </Box>
   );
 };

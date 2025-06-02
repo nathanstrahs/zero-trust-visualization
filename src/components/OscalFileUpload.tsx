@@ -4,13 +4,15 @@ import {
   Button, 
   Text, 
   VStack, 
-  useToast,
   Heading
 } from '@chakra-ui/react';
 import { extractNistControlStatuses } from '../../oscalParser';
 import { getPillarsForKey } from '../../map_pillars';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 import ControlsTable from './ControlsTable';
+// @ts-ignore
+import { Toaster, toaster } from '@/components/ui/toaster';
+import { FormLabel } from '@chakra-ui/theme/components';
 
 interface OscalFileUploadProps {
   onControlsProcessed: (controls: Control[]) => void; // This will receive processedControls from the parent
@@ -345,7 +347,6 @@ export function getBaselineForKey(dataKey: string): BaselineLevel {
 const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }) => {
   const [controls, setControls] = useState<Control[]>([]);
   const [fileName, setFileName] = useState<string>('');
-  const toast = useToast();
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -395,32 +396,29 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
           onControlsProcessed(mappedControls);
         }
         
-        toast({
+        toaster.create({
           title: 'File processed successfully',
           description: `Found ${mappedControls.length} controls in the assessment results`,
-          status: 'success',
+          type: 'success',
           duration: 5000,
-          isClosable: true,
         });
       } catch (error) {
         console.error('Error parsing JSON file:', error);
-        toast({
+        toaster.create({
           title: 'Error processing file',
           description: 'The file could not be processed. Please ensure it is a valid OSCAL JSON document.',
-          status: 'error',
+          type: 'error',
           duration: 5000,
-          isClosable: true,
         });
       }
     };
     
     reader.onerror = () => {
-      toast({
+      toaster.create({
         title: 'Error reading file',
         description: 'There was an error reading the file.',
-        status: 'error',
+        type: 'error',
         duration: 5000,
-        isClosable: true,
       });
     };
     
@@ -442,7 +440,7 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
 
   return (
     <Box p={6} borderWidth="1px" borderRadius="lg" boxShadow="md">
-      <VStack spacing={4} align="stretch">
+      <VStack gap={4} align="stretch">
         <Heading size="md">OSCAL Assessment Results Upload</Heading>
         
         <Box>

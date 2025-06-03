@@ -1,5 +1,5 @@
 import { Control, BaselineLevel, ZeroTrustPillar } from '@/types';
-//import { controls } from '@/data/controls';
+import { createListCollection } from '@chakra-ui/react';
 
 export const getControlsByPillar = (pillar: ZeroTrustPillar, currentControls: Control[]): Control[] => {
   return currentControls.filter(control => control.pillars.includes(pillar));
@@ -51,13 +51,22 @@ export const getPillars = (): ZeroTrustPillar[] => {
     'Data',
     'Visibility and Analytics',
     'Automation and Orchestration',
-    'other'
+    'Other'
   ];
 };
 
 export const getBaselineLevels = (): BaselineLevel[] => {
   return ['high', 'moderate', 'low', 'none'];
 };
+
+export const baselineLevels_collection = createListCollection({
+  items: [
+    { label: "High", value: "high" },
+    { label: "Moderate", value: "moderate" },
+    { label: "Low", value: "low" },
+    { label: "No Baseline", value: "none" }
+  ]
+})
 
 export const getMaxPercentagePillar = (currentControls: Control[]): number => {
   const pillars = getPillars();

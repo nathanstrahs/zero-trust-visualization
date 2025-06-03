@@ -10,9 +10,7 @@ import { extractNistControlStatuses } from '../../oscalParser';
 import { getPillarsForKey } from '../../map_pillars';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 import ControlsTable from './ControlsTable';
-// @ts-ignore
-import { Toaster, toaster } from '@/components/ui/toaster';
-import { FormLabel } from '@chakra-ui/theme/components';
+import { toaster } from '@/components/ui/toaster';
 
 interface OscalFileUploadProps {
   onControlsProcessed: (controls: Control[]) => void; // This will receive processedControls from the parent
@@ -376,7 +374,7 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
             if (pillar === 'Automation & Orchestration') 
               return 'Automation and Orchestration';
             if (pillar === 'Enabler')
-              return 'other';
+              return 'Other';
             return pillar;
           });
           
@@ -451,14 +449,17 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
             style={{ display: 'none' }}
             onChange={handleFileUpload}
           />
-          <Button 
-            as="label" 
-            htmlFor="oscal-file-upload"
+          <label htmlFor="oscal-file-upload">
+            <Button 
+            as="span" 
             colorScheme="blue"
             width="full"
-          >
+            cursor="pointer"
+            >
             Select OSCAL JSON File
           </Button>
+          </label>
+          
           {fileName && (
             <Text mt={2} fontSize="sm">
               Selected file: {fileName}

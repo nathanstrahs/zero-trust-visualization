@@ -8,7 +8,7 @@ export type ZeroTrustPillar =
   | 'Data'
   | 'Visibility and Analytics'
   | 'Automation and Orchestration'
-  | 'other';
+  | 'Other';
 
 export interface Control {
   id: string;

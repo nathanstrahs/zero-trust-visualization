@@ -6,19 +6,17 @@ import {
   SimpleGrid,
   Flex,
   Text,
-  Tabs
+  Tabs,
+  NativeSelect
 } from '@chakra-ui/react';
-import { Select } from '@chakra-ui/select';
-import { TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/tabs';
 import PillarCard from '@/components/PillarCard';
 import ControlsTable from '@/components/ControlsTable';
 import BaselineDistributionChart from '@/components/BaselineDistributionChart';
 import PillarComplianceChart from '@/components/PillarComplianceChart';
 import ComplianceOverviewCard from '@/components/ComplianceOverviewCard';
 import OscalFileUpload from '@/components/OscalFileUpload';
-import { getPillars, getBaselineLevels, getControlsByPillar, getControlsByBaseline } from '@/utils/helpers';
+import { getPillars, getBaselineLevels, getControlsByPillar, getControlsByBaseline, baselineLevels_collection } from '@/utils/helpers';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
-import Link from 'next/link';
 
 export default function Home() {
   const [selectedPillar, setSelectedPillar] = useState<ZeroTrustPillar | null>(null);
@@ -72,7 +70,7 @@ export default function Home() {
         Zero Trust Framework Visualization
       </Heading>
       
-      <Tabs.Root lazyMount unmountOnExit fitted defaultValue="Dashboard">
+      <Tabs.Root lazyMount fitted defaultValue="Dashboard">
 
         <Tabs.List>
           <Tabs.Trigger value="Dashboard">Dashboard</Tabs.Trigger>
@@ -110,42 +108,48 @@ export default function Home() {
         </Tabs.Content>
           
         <Tabs.Content value="Controls">
-          <Flex direction={{ base: 'column', md: 'row' }} mb={6} gap={4}>
+          <Flex direction={{ base: 'column', md: 'row' }} mb={4} gap={3}>
             <Box flex="1">
-              <Text mb={2} fontWeight="medium">Filter by Baseline:</Text>
-              <Select 
-                placeholder="Select baseline" 
-                value={selectedBaseline || ''} 
-                onChange={handleBaselineChange}
-              >
-                {baselineLevels.map((level) => (
+              <Text mb={3} marginLeft={3} fontWeight="medium">Filter by Baseline:</Text>
+              <NativeSelect.Root size="lg" marginLeft={3}>
+                <NativeSelect.Field 
+                  placeholder='Select Baseline'
+                  value={selectedBaseline || ''}
+                  onChange={ handleBaselineChange }
+                >
+                  {baselineLevels.map((level) => (
                   <option key={level} value={level}>
                     {level.charAt(0).toUpperCase() + level.slice(1)}
                   </option>
-                ))}
-              </Select>
+                  ))}
+                </NativeSelect.Field>
+                <NativeSelect.Indicator/>
+              </NativeSelect.Root>
             </Box>
             
             <Box flex="1">
-              <Text mb={2} fontWeight="medium">Selected Pillar:</Text>
-              <Select 
-                placeholder="Select pillar" 
-                value={selectedPillar || ''} 
-                onChange={(e) => {
-                  const value = e.target.value as ZeroTrustPillar;
-                  handlePillarClick(value);
-                }}
-              >
-                {pillars.map((pillar) => (
+              <Text mb={2} marginLeft={3} fontWeight="medium">Selected Pillar:</Text>
+              <NativeSelect.Root size="lg" marginBlockStart={3} marginLeft={3}>
+                <NativeSelect.Field 
+                  placeholder='Select Pillar'
+                  value={selectedPillar || ''}
+                  onChange={(e) => {
+                    const value = e.target.value as ZeroTrustPillar;
+                    handlePillarClick(value);
+                  }}
+                >
+                  {pillars.map((pillar) => (
                   <option key={pillar} value={pillar}>
                     {pillar}
                   </option>
-                ))}
-              </Select>
+                  ))}
+                </NativeSelect.Field>
+                <NativeSelect.Indicator/>
+              </NativeSelect.Root>
             </Box>
           </Flex>
           
-          <ControlsTable 
+          <ControlsTable
             controls={getDisplayedControls()} 
             title={getTableTitle()} 
           />

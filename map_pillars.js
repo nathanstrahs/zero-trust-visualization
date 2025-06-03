@@ -400,17 +400,17 @@ function getPillarsForKey(inputKey) {
   const dataKey = convertToDataKeyFormat(inputKey);
   if (!dataKey) {
       console.error("Invalid input key format provided to getPillarsForKey.");
-    return "other";
+    return "Other";
   }
 
   const mapping = pillarMappingsData.find(item => item.key === dataKey);
 
   if (!mapping) {
-    return "other"; // Key not found in the data
+    return "Other"; // Key not found in the data
   }
 
   if (!mapping.categories || mapping.categories.length === 0) {
-    return "other"; // Key found, but categories array is missing or empty
+    return "Other"; // Key found, but categories array is missing or empty
   }
 
   const pillars = mapping.categories
@@ -418,7 +418,7 @@ function getPillarsForKey(inputKey) {
     .filter(pillar => pillar && pillar.trim() !== ""); // Ensure pillar exists and is not just whitespace
 
   if (pillars.length === 0) {
-    return "other"; // Key found, categories exist, but no valid pillar names found
+    return "Other"; // Key found, categories exist, but no valid pillar names found
   }
 
   return pillars; // Return an array of pillar names
@@ -450,8 +450,8 @@ function main(inputKey) {
         // The function expects "ac-2.11" format, so let's use that for testing consistency
         const keyToTest = key.includes('(') ? key.toLowerCase().replace(/\((.+)\)/, '.$1') : key;
         const result = getPillarsForKey(keyToTest);
-        if (result === "other") {
-          console.log(`Input: "${keyToTest}" -> Pillars: other`);
+        if (result === "Other") {
+          console.log(`Input: "${keyToTest}" -> Pillars: Other`);
         } else {
           console.log(`Input: "${keyToTest}" -> Pillars: ${result.join(', ')}`);
         }
@@ -461,8 +461,8 @@ function main(inputKey) {
 
   const pillars = getPillarsForKey(inputKey);
 
-  if (pillars === "other") {
-    console.log("other");
+  if (pillars === "Other") {
+    console.log("Other");
   } else {
     console.log(pillars.join(', '));
   }

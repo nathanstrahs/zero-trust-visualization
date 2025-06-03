@@ -6,9 +6,7 @@ import {
   Heading,
   Table,
 } from '@chakra-ui/react';
-import { Thead, Tbody, Tr, Th, Td } from '@chakra-ui/table';
-import { Control, BaselineLevel, ZeroTrustPillar } from '@/types';
-import { color } from 'chart.js/helpers';
+import { Control, BaselineLevel } from '@/types';
 
 interface ControlsTableProps {
   controls: Control[];
@@ -19,7 +17,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title }) => {
   const getStatusColor = (status: Control['status']) => {
     switch (status) {
       case 'passing':
-        return 'green';
+        return "green";
       case 'failing':
         return 'red';
       case 'not-applicable':
@@ -69,8 +67,8 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title }) => {
                   <Text fontSize="sm" color="gray.600">{control.description}</Text>
                 </Table.Cell>
                 <Table.Cell>{control.pillars.join(', ')}</Table.Cell>
-                <Table.Cell><Badge colorScheme={getBaselineColor(control.baseline)}>{control.baseline}</Badge></Table.Cell>
-                <Table.Cell><Badge colorScheme={getStatusColor(control.status)}>{control.status}</Badge></Table.Cell>
+                <Table.Cell><Badge colorPalette={getBaselineColor(control.baseline)}>{control.baseline}</Badge></Table.Cell>
+                <Table.Cell><Badge colorPalette={getStatusColor(control.status)}>{control.status}</Badge></Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

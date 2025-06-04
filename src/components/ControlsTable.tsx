@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Badge,
   Box,
   Text,
   Heading,
   Table,
+  Flex,
+  Button
 } from '@chakra-ui/react';
 import { Control, BaselineLevel } from '@/types';
 
 interface ControlsTableProps {
   controls: Control[];
   title?: string;
+  isExpandable?: boolean;
+  initialRowCount?: number;
 }
 
-const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title }) => {
+const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpandable=false, initialRowCount=5 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const getStatusColor = (status: Control['status']) => {
     switch (status) {
       case 'passing':
@@ -42,6 +47,9 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title }) => {
     }
   };
 
+  const showExpansionButton = isExpandable && controls.length > initialRowCount;
+  const displayedControls = showExpansionButton && !isExpanded ? controls.slice(0, initialRowCount) : controls;
+
   return (
    <Box overflowX="auto">
       {title && <Heading size="md" mb={4}>{title}</Heading>}
@@ -59,7 +67,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title }) => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {controls.map((control) => (
+            {displayedControls.map((control) => (
               <Table.Row key={control.id}>
                 <Table.Cell>{control.id}</Table.Cell>
                 <Table.Cell>
@@ -73,6 +81,17 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title }) => {
             ))}
           </Table.Body>
         </Table.Root>
+      )}
+      {showExpansionButton && (
+        <Flex justify="center" mt={4}>
+          <Button 
+            variant="ghost" 
+            colorScheme="blue"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? 'Show Less' : `Show More (${controls.length - initialRowCount} more)`}
+          </Button>
+        </Flex>
       )}
     </Box>
   );

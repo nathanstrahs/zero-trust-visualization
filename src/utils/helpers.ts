@@ -17,6 +17,21 @@ export const getPassingPercentageByPillar = (pillar: ZeroTrustPillar, currentCon
   return (passingControls.length / pillarControls.length) * 100;
 };
 
+export const getListofTiedPillars = (val: number, currentControls: Control[]): ZeroTrustPillar[] =>{
+  var listofPillars:ZeroTrustPillar[] = [];
+  const pillars = getPillars();
+  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, currentControls));
+  
+  let indOfPillar:number = 0;
+  for(const pillar of pillars){
+    if(percentages[indOfPillar] == val){
+      listofPillars.push(pillar);
+    }
+    indOfPillar = indOfPillar+1;
+  }
+  return listofPillars;
+}
+
 export const getPassingPercentageByBaseline = (baseline: BaselineLevel, currentControls: Control[]): number => {
   const baselineControls = getControlsByBaseline(baseline, currentControls);
   if (baselineControls.length === 0) return 0;

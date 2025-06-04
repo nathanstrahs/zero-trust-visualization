@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex, Progress, Stat } from '@chakra-ui/react';
-import { getPassingPercentageOverall, getMaxPercentagePillar, getMinPercentagePillar, getPillars, getPassingPercentageByPillar } from '@/utils/helpers';
+import { getPassingPercentageOverall, getMaxPercentagePillar, getMinPercentagePillar, getPillars, getPassingPercentageByPillar, getListofTiedPillars } from '@/utils/helpers';
 import { Control } from '@/types';
 
 interface ComplianceOverviewCardProps {
@@ -13,9 +13,11 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
   const maxPercentagePillar = getMaxPercentagePillar(controls);
   const maxPillar = pillars[maxPercentagePillar];
   const maxPercentagePillarVal = getPassingPercentageByPillar(maxPillar, controls);
+  const tiedMaxPillars = getListofTiedPillars(maxPercentagePillarVal, controls);
   const minPercentagePillar = getMinPercentagePillar(controls);
   const minPillar = pillars[minPercentagePillar];
   const minPercentagePillarVal = getPassingPercentageByPillar(minPillar, controls);
+  const tiedMinPillars = getListofTiedPillars(minPercentagePillarVal, controls);
   
   
   const getColorScheme = () => {
@@ -27,7 +29,7 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
   return (
     <Box p={5} shadow="md" borderWidth="1px" borderRadius="md">
       <Stat.Root>
-        <Stat.Label fontSize="lg">Overall Compliance</Stat.Label>
+        <Stat.Label fontSize="lg"><b>Overall Compliance</b></Stat.Label>
         <Flex align="center">
           <Stat.ValueText>{overallPercentage.toFixed(1)}%</Stat.ValueText>
         </Flex>
@@ -50,7 +52,7 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
         </Stat.HelpText>
       </Stat.Root>
       <Stat.Root>
-        <Stat.Label fontSize="lg" marginTop={2}>Max Compliance Pillar: {maxPillar}</Stat.Label>
+        <Stat.Label fontSize="sm" marginTop={2}><b>Max Compliance Pillar(s):</b> {tiedMaxPillars.join(', ')}</Stat.Label>
         <Flex align="center">
           <Stat.ValueText>{maxPercentagePillarVal.toFixed(1)}%</Stat.ValueText>
         </Flex>
@@ -73,7 +75,7 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
         </Stat.HelpText>
       </Stat.Root>
       <Stat.Root>
-        <Stat.Label fontSize="lg" marginTop={3}>Min Compliance Pillar: {minPillar}</Stat.Label>
+        <Stat.Label fontSize="sm" marginTop={3}><b>Min Compliance Pillar(s): </b>{tiedMinPillars.join(', ')}</Stat.Label>
         <Flex align="center" mt={2}>
           <Stat.ValueText>{minPercentagePillarVal.toFixed(1)}%</Stat.ValueText>
         </Flex>

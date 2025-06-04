@@ -15,7 +15,7 @@ import BaselineDistributionChart from '@/components/BaselineDistributionChart';
 import PillarComplianceChart from '@/components/PillarComplianceChart';
 import ComplianceOverviewCard from '@/components/ComplianceOverviewCard';
 import OscalFileUpload from '@/components/OscalFileUpload';
-import { getPillars, getBaselineLevels, getControlsByPillar, getControlsByBaseline, baselineLevels_collection } from '@/utils/helpers';
+import { getPillars, getBaselineLevels, getControlsByPillar, getControlsByBaseline } from '@/utils/helpers';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 
 export default function Home() {
@@ -28,13 +28,11 @@ export default function Home() {
   
   const handlePillarClick = (pillar: ZeroTrustPillar) => {
     setSelectedPillar(pillar);
-    setSelectedBaseline(null);
   };
   
   const handleBaselineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as BaselineLevel;
     setSelectedBaseline(value);
-    setSelectedPillar(null);
   };
 
   const handleControlsProcessed = (newControls: Control[]) => {
@@ -45,27 +43,36 @@ export default function Home() {
   };
   
   const getDisplayedControls = () => {
+    // If no filters are selected return nothing
+    if (!selectedPillar && !selectedBaseline) {
+      return [];
+    }
+    // Start with the full list of controls
+    let filteredControls = processedControls;
     if (selectedPillar) {
-      return getControlsByPillar(selectedPillar, processedControls);
+      filteredControls = getControlsByPillar(selectedPillar, filteredControls);
     }
     if (selectedBaseline) {
-      return getControlsByBaseline(selectedBaseline, processedControls);
+      filteredControls = getControlsByBaseline(selectedBaseline, filteredControls);
     }
-    return [];
+    return filteredControls;
   };
   
   const getTableTitle = () => {
-    if (selectedPillar) {
-      return `Controls for ${selectedPillar} Pillar`;
+    if (selectedPillar && !selectedBaseline) {
+      return `${selectedPillar} Pillar Controls`;
     }
-    if (selectedBaseline) {
+    if (!selectedPillar && selectedBaseline) {
       return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline Controls`;
     }
-    return '';
+    if (selectedPillar && selectedBaseline) {
+      return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline and ${selectedPillar} Pillar Controls`;
+    }
+    return 'Please Select Baseline/Pillar';
   };
 
   return (
-    <Container maxW="container.xl" py={8}>
+    <Container maxW="full" py={8} px={{ base: 4, md: 6 }}>
       <Heading as="h1" size="xl" mb={8} textAlign="center">
         Zero Trust Framework Visualization
       </Heading>
@@ -82,7 +89,7 @@ export default function Home() {
             <OscalFileUpload onControlsProcessed ={handleControlsProcessed} />
           </Box>
 
-          <SimpleGrid columns={{ base: 1, md: 2 }} gap={8} mb={8}>
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={2} mb={6}>
             <ComplianceOverviewCard controls={processedControls} />
             <BaselineDistributionChart controls={processedControls} />
           </SimpleGrid>
@@ -110,9 +117,11 @@ export default function Home() {
         <Tabs.Content value="Controls">
           <Flex direction={{ base: 'column', md: 'row' }} mb={4} gap={3}>
             <Box flex="1">
-              <Text mb={3} marginLeft={3} fontWeight="medium">Filter by Baseline:</Text>
-              <NativeSelect.Root size="lg" marginLeft={3}>
+              
+              <Text mb={3} mt={3} fontWeight="medium">Filter by Baseline:</Text>
+              <NativeSelect.Root size="lg" >
                 <NativeSelect.Field 
+                  textAlign='center'
                   placeholder='Select Baseline'
                   value={selectedBaseline || ''}
                   onChange={ handleBaselineChange }
@@ -128,9 +137,10 @@ export default function Home() {
             </Box>
             
             <Box flex="1">
-              <Text mb={2} marginLeft={3} fontWeight="medium">Selected Pillar:</Text>
-              <NativeSelect.Root size="lg" marginBlockStart={3} marginLeft={3}>
+              <Text mb={3} mt={3} fontWeight="medium">Filter by Pillar:</Text>
+              <NativeSelect.Root size="lg">
                 <NativeSelect.Field 
+                  textAlign='center'
                   placeholder='Select Pillar'
                   value={selectedPillar || ''}
                   onChange={(e) => {
@@ -148,11 +158,12 @@ export default function Home() {
               </NativeSelect.Root>
             </Box>
           </Flex>
-          
-          <ControlsTable
+          <Box>
+            <ControlsTable 
             controls={getDisplayedControls()} 
             title={getTableTitle()} 
-          />
+            />
+          </Box>
         </Tabs.Content>
       </Tabs.Root>
     </Container>

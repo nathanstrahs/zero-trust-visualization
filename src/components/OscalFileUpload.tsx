@@ -451,10 +451,10 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
           />
           <label htmlFor="oscal-file-upload">
             <Button 
-            as="span" 
-            colorScheme="blue"
-            width="full"
-            cursor="pointer"
+              as="span" 
+              colorPalette="blue"
+              width="full"
+              cursor="pointer"
             >
             Select OSCAL JSON File
           </Button>
@@ -471,7 +471,10 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
           <Box mt={4}>
             <ControlsTable 
               controls={controls} 
-              title="Controls from OSCAL Assessment Results" 
+              title="Controls from OSCAL Assessment Results"
+              isExpandable={true}
+              initialRowCount={5}
+
             />
           </Box>
         )}

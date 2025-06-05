@@ -12,6 +12,8 @@ import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 import ControlsTable from './ControlsTable';
 import { toaster } from '@/components/ui/toaster';
 
+const MAX_FILE_SIZE_MB = 100;
+
 interface OscalFileUploadProps {
   onControlsProcessed: (controls: Control[]) => void; // This will receive processedControls from the parent
 }
@@ -348,7 +350,16 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file || (file.size > MAX_FILE_SIZE_MB*1024*1024)) {
+      console.error('Error with file upload');
+        toaster.create({
+          title: 'Error uploading file',
+          description: `The file could not be processed. Please ensure it is a valid OSCAL JSON document smaller than ${ MAX_FILE_SIZE_MB } MB`,
+          type: 'error',
+          duration: 5000,
+        });
+      return;
+    }
 
     setFileName(file.name);
     

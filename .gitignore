@@ -1,4 +1,8 @@
 .aider*
+select_random_oscal_controls.py
+random_controls.json
+NIST_SP-800-53_rev5_catalog.json
+
 # dependencies
 node_modules
 /.pnp

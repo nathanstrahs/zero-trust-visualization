@@ -20,9 +20,9 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
   const tiedMinPillars = getListofTiedPillars(minPercentagePillarVal, controls);
   
   
-  const getColorScheme = () => {
-    if (overallPercentage >= 80) return 'green';
-    if (overallPercentage >= 50) return 'yellow';
+  const getColorScheme = (val: number) => {
+    if (val >= 80) return 'green';
+    if (val >= 50) return 'yellow';
     return 'red';
   };
 
@@ -37,7 +37,7 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
           <Progress.Root value={overallPercentage}>
             <Progress.Track bgSize="lg" borderRadius="md">
               <Progress.Range
-                colorPalette={getColorScheme()}
+                colorPalette={getColorScheme(overallPercentage)}
                 borderRadius="md"
               />
             </Progress.Track>
@@ -60,7 +60,7 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
           <Progress.Root value={maxPercentagePillarVal}>
             <Progress.Track bgSize="lg" borderRadius="md">
               <Progress.Range
-                colorPalette={getColorScheme()}
+                colorPalette={getColorScheme(maxPercentagePillarVal)}
                 borderRadius="md"
               />
             </Progress.Track>
@@ -83,7 +83,7 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
           <Progress.Root value={minPercentagePillarVal}>
             <Progress.Track bgSize="lg" borderRadius="md">
               <Progress.Range
-                colorPalette={getColorScheme()}
+                colorPalette={getColorScheme(minPercentagePillarVal)}
                 borderRadius="md"
               />
             </Progress.Track>

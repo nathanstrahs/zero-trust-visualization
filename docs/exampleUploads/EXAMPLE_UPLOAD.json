@@ -1,0 +1,2546 @@
+{
+ "assessment-results": {
+  "import-ap": {
+   "href": "file://complytime/assessment-plan.json"
+  },
+  "metadata": {
+   "last-modified": "2025-05-30T12:08:15.952079148Z",
+   "oscal-version": "1.1.2",
+   "title": "REPLACE_ME",
+   "version": "0.1.0"
+  },
+  "results": [
+   {
+    "description": "Assessment Results Automatically Genererated from PVP Results",
+    "findings": [
+     {
+      "description": "",
+      "related-observations": [
+       {
+        "observation-uuid": "fdce2930-1b71-4ab6-8318-d3490047204b"
+       },
+       {
+        "observation-uuid": "d45c0f3c-5edd-412d-b787-e5b070cfc915"
+       },
+       {
+        "observation-uuid": "53aa2047-7161-433b-82a8-eadfccf1617a"
+       },
+       {
+        "observation-uuid": "21ceab17-da00-4d32-883a-cd6dc50b6be1"
+       }
+      ],
+      "target": {
+       "status": {
+        "state": "not-satisfied"
+       },
+       "target-id": "r61_smt",
+       "type": "statement-id"
+      },
+      "title": "",
+      "uuid": "844f0f8d-0d4d-441b-ac55-6c3cd33e4c0d"
+     },
+     {
+      "description": "",
+      "related-observations": [
+       {
+        "observation-uuid": "ff3c936c-ccb7-4396-883c-7d2747400efb"
+       },
+       {
+        "observation-uuid": "2efced95-110b-4fac-b6f5-d933425d500e"
+       }
+      ],
+      "target": {
+       "status": {
+        "state": "not-satisfied"
+       },
+       "target-id": "r59_smt",
+       "type": "statement-id"
+      },
+      "title": "",
+      "uuid": "5cb9af80-1561-432a-9285-fdb67d00ebb5"
+     },
+     {
+      "description": "",
+      "related-observations": [
+       {
+        "observation-uuid": "997d1935-2a5a-4022-a202-e370cd27f4ce"
+       },
+       {
+        "observation-uuid": "2cff97e6-6a55-4392-b541-1ed3ad96dc2a"
+       },
+       {
+        "observation-uuid": "a984ca96-0753-448e-b1c0-4d540c97c021"
+       },
+       {
+        "observation-uuid": "d2611dbf-7683-4c06-9f86-72d5df6e81e5"
+       },
+       {
+        "observation-uuid": "5d9ddaa5-b935-4bc3-9d84-1f4f311235cd"
+       },
+       {
+        "observation-uuid": "074b1096-5549-4a58-9703-71c533d2d218"
+       },
+       {
+        "observation-uuid": "0962395f-0fcc-4c57-b915-bb60498eb369"
+       },
+       {
+        "observation-uuid": "2cb14298-6f11-4ea7-84b8-534f35099628"
+       },
+       {
+        "observation-uuid": "6b2fd737-6950-473b-8e03-ce1257a85272"
+       },
+       {
+        "observation-uuid": "8c908f9a-cc4a-4fa3-8d62-e4feb6fe4693"
+       },
+       {
+        "observation-uuid": "894f0ed0-eaac-4609-af06-3697b5a6105f"
+       },
+       {
+        "observation-uuid": "ae0fd9b6-c103-4662-880b-bc27f594ffde"
+       },
+       {
+        "observation-uuid": "e1b693f2-ef8f-4953-b95f-9a132d69031d"
+       }
+      ],
+      "target": {
+       "status": {
+        "state": "not-satisfied"
+       },
+       "target-id": "r31_smt",
+       "type": "statement-id"
+      },
+      "title": "",
+      "uuid": "1f9449de-a367-406a-a683-8ae16b47e309"
+     },
+     {
+      "description": "",
+      "related-observations": [
+       {
+        "observation-uuid": "0813b553-24a8-4957-a6db-b18f53102826"
+       },
+       {
+        "observation-uuid": "6b2fd737-6950-473b-8e03-ce1257a85272"
+       },
+       {
+        "observation-uuid": "d8954e08-5538-45f2-9a5a-4949a0c35910"
+       },
+       {
+        "observation-uuid": "ea32098f-7aec-49cd-8051-38151e12e88c"
+       }
+      ],
+      "target": {
+       "status": {
+        "state": "not-satisfied"
+       },
+       "target-id": "r68_smt",
+       "type": "statement-id"
+      },
+      "title": "",
+      "uuid": "d0f94d62-3606-4c20-b3a6-6810540e6a1e"
+     },
+     {
+      "description": "",
+      "related-observations": [
+       {
+        "observation-uuid": "c3fa5e41-31ca-4084-8db2-32e5d1c0807f"
+       }
+      ],
+      "target": {
+       "status": {
+        "state": "not-satisfied"
+       },
+       "target-id": "r62_smt",
+       "type": "statement-id"
+      },
+      "title": "",
+      "uuid": "62103af6-9fad-4c00-a899-f4d1eefe0572"
+     }
+    ],
+    "observations": [
+     {
+      "collected": "2025-05-30T12:08:15.929522593Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_dnf-automatic_installed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_dnf-automatic_installed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.929522779 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "36d7b6d8-0a53-4d68-9317-b3e15b2f6752",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_dnf-automatic_installed",
+      "uuid": "fdce2930-1b71-4ab6-8318-d3490047204b"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.929556013Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "dnf-automatic_apply_updates"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_dnf-automatic_apply_updates"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.929556111 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "01fa1d34-7084-4313-9493-91e8a24afbae",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_dnf-automatic_apply_updates",
+      "uuid": "d45c0f3c-5edd-412d-b787-e5b070cfc915"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.929569505Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "dnf-automatic_security_updates_only"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_dnf-automatic_security_updates_only"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.9295696 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "18feadaa-5d0d-49c4-817c-4db947ae04b1",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_dnf-automatic_security_updates_only",
+      "uuid": "53aa2047-7161-433b-82a8-eadfccf1617a"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.929589571Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "ensure_gpgcheck_globally_activated"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.92958967 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "65c16c03-5e72-4306-be22-19c7b6605dbc",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated",
+      "uuid": "ccc37cea-9211-49dc-bf0b-e6e19e5a89fb"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.929604933Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "ensure_gpgcheck_local_packages"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_local_packages"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.92960502 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "0cd71563-ab67-46ac-869b-948c4e4a82f1",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_local_packages",
+      "uuid": "ff3c936c-ccb7-4396-883c-7d2747400efb"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.929625644Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "ensure_gpgcheck_never_disabled"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.929625738 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "26d9c176-860c-479b-bd01-1d273c59d94e",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled",
+      "uuid": "2efced95-110b-4fac-b6f5-d933425d500e"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.929642566Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "ensure_redhat_gpgkey_installed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_ensure_redhat_gpgkey_installed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.929642655 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "e23240e5-1f21-4954-841f-a07895d2c074",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_ensure_redhat_gpgkey_installed",
+      "uuid": "2c0a2573-1b46-4040-8015-6fcd25e74883"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.929661841Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "timer_dnf-automatic_enabled"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_timer_dnf-automatic_enabled"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.929661937 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "4893c547-3172-4bc6-aab8-7e3fb00737bc",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_timer_dnf-automatic_enabled",
+      "uuid": "21ceab17-da00-4d32-883a-cd6dc50b6be1"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.929674748Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "enable_authselect"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_enable_authselect"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.929674843 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "47f48808-4020-4d9c-aa0c-41bbcf147916",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_enable_authselect",
+      "uuid": "997d1935-2a5a-4022-a202-e370cd27f4ce"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930087172Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_unix_remember"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930087338 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "882d07fb-aa16-4747-9f7d-91531dfb8115",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_remember",
+      "uuid": "2cff97e6-6a55-4392-b541-1ed3ad96dc2a"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930117448Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_passwords_pam_faillock_deny"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930117547 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "6583ff9a-7b15-41de-be02-6d8c43a1d851",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny",
+      "uuid": "a984ca96-0753-448e-b1c0-4d540c97c021"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930138399Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_passwords_pam_faillock_deny_root"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny_root"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930138496 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "23d3be60-90a6-4e82-8a34-9b78503ec6fa",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_deny_root",
+      "uuid": "d2611dbf-7683-4c06-9f86-72d5df6e81e5"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930174891Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_passwords_pam_faillock_interval"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_interval"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930174976 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "e27a80e0-775f-44b8-892f-91c6630636f8",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_interval",
+      "uuid": "5d9ddaa5-b935-4bc3-9d84-1f4f311235cd"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930205822Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_passwords_pam_faillock_unlock_time"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930205912 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "9a68c0ff-6531-424e-a1b3-7bf5d14906cb",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_passwords_pam_faillock_unlock_time",
+      "uuid": "074b1096-5549-4a58-9703-71c533d2d218"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930227676Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_dcredit"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930227771 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "a39cb1d7-78ce-4680-8bfb-7d7f51b4cc71",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_dcredit",
+      "uuid": "0962395f-0fcc-4c57-b915-bb60498eb369"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930296411Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_lcredit"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_lcredit"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930296536 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "6edf73c3-bb87-4ad2-b209-d50c2c0c0333",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_lcredit",
+      "uuid": "2cb14298-6f11-4ea7-84b8-534f35099628"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930346512Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_minclass"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930346594 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "5da5f01c-6b16-4754-8307-ec4e81d35f2e",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_minclass",
+      "uuid": "0813b553-24a8-4957-a6db-b18f53102826"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930367234Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_minlen"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930367326 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "57d11019-feb0-49c5-a0ef-13d2768a508b",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_minlen",
+      "uuid": "6b2fd737-6950-473b-8e03-ce1257a85272"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.93039294Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_ocredit"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_ocredit"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.93039306 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "ecb83c5b-e5a6-4084-b41c-078e9b7ded3a",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_ocredit",
+      "uuid": "8c908f9a-cc4a-4fa3-8d62-e4feb6fe4693"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930450289Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_retry"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_retry"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930450391 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "ef9ba286-d685-4b26-8d6b-f6527b4d37d3",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_retry",
+      "uuid": "7111e784-4fa4-4464-a134-2cd7969d2578"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930471166Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_ucredit"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.93047126 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "60940499-477c-4b56-81b7-0c0f020c86b3",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_ucredit",
+      "uuid": "894f0ed0-eaac-4609-af06-3697b5a6105f"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.93053893Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "set_password_hashing_algorithm_systemauth"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930539032 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "50c19341-b8be-4d46-b3a9-13a7991ff25f",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_set_password_hashing_algorithm_systemauth",
+      "uuid": "824f76de-b3bc-48e4-a781-167687c38e37"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.930988904Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_minlen_login_defs"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.930988993 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "5408f765-36a0-473f-b795-c7230bf4a6c2",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs",
+      "uuid": "ae0fd9b6-c103-4662-880b-bc27f594ffde"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.93101184Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_set_max_life_root"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_root"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.931011942 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "ac2f8616-0e94-4b6e-b4fc-5bf2cdd32968",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_set_max_life_root",
+      "uuid": "e1b693f2-ef8f-4953-b95f-9a132d69031d"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.931113694Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_unix_rounds_password_auth"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_rounds_password_auth"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.931113803 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "ef17b39e-1330-48f8-abd0-1f59fd82543f",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_rounds_password_auth",
+      "uuid": "d8954e08-5538-45f2-9a5a-4949a0c35910"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.931127609Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "accounts_password_pam_unix_rounds_system_auth"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_rounds_system_auth"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.931127707 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "1f614849-35cd-4b33-82db-0295be5fb294",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_accounts_password_pam_unix_rounds_system_auth",
+      "uuid": "ea32098f-7aec-49cd-8051-38151e12e88c"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.934449318Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "dir_perms_world_writable_root_owned"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_dir_perms_world_writable_root_owned"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.934449499 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "3eb35b5d-c9de-468c-9d93-18afc94eb794",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_dir_perms_world_writable_root_owned",
+      "uuid": "ad33464d-fb21-4794-9c1f-16296fa11f90"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.934468893Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "dir_perms_world_writable_sticky_bits"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.934468984 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "812cbe37-4bde-4985-ba58-3606ecccbc34",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_dir_perms_world_writable_sticky_bits",
+      "uuid": "9df327f2-4745-47de-b256-e5308f88410a"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.934583613Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "file_permissions_unauthorized_sgid"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_sgid"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.934583719 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "9d34a248-c192-4aee-ba1d-03fb86b8da6b",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_sgid",
+      "uuid": "4419de85-e3a4-4f1c-b822-0899410551bb"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.934598891Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "file_permissions_unauthorized_suid"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_suid"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.934598986 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "d607a69d-a180-46b2-aada-981fa249aecd",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_suid",
+      "uuid": "103c674b-bc59-4e76-ad85-fd2cb131533b"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.934614237Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "file_permissions_unauthorized_world_writable"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_world_writable"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.934614334 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "15ce806b-d8a8-4f00-b574-d662b0fb0565",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_file_permissions_unauthorized_world_writable",
+      "uuid": "ee447787-131c-479b-8d67-4aec9f975f54"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.934636989Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "file_permissions_ungroupowned"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_file_permissions_ungroupowned"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.93463708 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "4d15cc96-84c9-43f7-a261-49c3bbafcf6d",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_file_permissions_ungroupowned",
+      "uuid": "0c1ff1ff-f003-4791-9cc1-e6e15801eb67"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.9346603Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "no_files_unowned_by_user"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_no_files_unowned_by_user"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.934660408 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "5838618a-07e7-430b-b11a-f4abf78d6ca9",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_no_files_unowned_by_user",
+      "uuid": "8c212efc-fd05-4ddd-bae6-e4d349a017ff"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.939562294Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_dhcp_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_dhcp_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.939562464 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "31d39e32-2712-4b0c-9567-48656ffb1512",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_dhcp_removed",
+      "uuid": "4a92ce94-7bc3-459b-880a-5fa7aca4d412"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.939906214Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_sendmail_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_sendmail_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.939906321 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "1b9101a7-78d8-4b3f-ae73-660bda9b787f",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_sendmail_removed",
+      "uuid": "dbec970e-9611-45b2-a32b-05cd8d08c257"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940298822Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_xinetd_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_xinetd_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.940298936 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "f0d235ca-f8b6-4547-9f54-579d7c5d56eb",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_xinetd_removed",
+      "uuid": "3261fef8-c532-4e19-9f20-b547f3f9fe19"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940330297Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_ypbind_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_ypbind_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.940330391 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "62170280-0184-46f3-b4c6-41601bb8bda6",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_ypbind_removed",
+      "uuid": "6c36b7aa-bfde-4587-8d47-7b21bc407d18"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940356231Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_ypserv_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_ypserv_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.940356343 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "cf748f9a-6c8c-48e9-b3a2-4df862e545bd",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_ypserv_removed",
+      "uuid": "f4ec9ae2-f5c1-4e12-813c-a85316516d0e"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940389276Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_rsh-server_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_rsh-server_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.940389377 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "296c526c-fdb2-45fe-a6ff-d1ee01ce771a",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_rsh-server_removed",
+      "uuid": "e5b7faff-88f9-487f-9df3-764b4ac74929"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.94040134Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_rsh_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_rsh_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.94040144 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "2f564b88-4846-4f60-9e51-a5c335f2ebf7",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_rsh_removed",
+      "uuid": "662fb8f0-e3ee-4c73-aee2-0622b598ab9e"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940462503Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_talk-server_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_talk-server_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.94046258 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "4d4d00fb-95e1-4919-b6b3-9ab39e888cfe",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_talk-server_removed",
+      "uuid": "6c843993-7fe2-4a27-8a51-575a065cc137"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940473383Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_talk_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_talk_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.940473476 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "c30afa5e-50ef-44bc-9c05-ee22079178c5",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_talk_removed",
+      "uuid": "02a29063-82d8-41ef-9674-3297eecf3e28"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940497366Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_telnet-server_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_telnet-server_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.940497462 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "f41668c5-55d9-4374-9dc1-71107ace5a6b",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_telnet-server_removed",
+      "uuid": "8a50c0b0-f2a3-4566-994d-a08d77b38b18"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940510242Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_telnet_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_telnet_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "fail"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.940510333 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "125a2a04-1420-4d0a-8e46-1082138d584e",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_telnet_removed",
+      "uuid": "c3fa5e41-31ca-4084-8db2-32e5d1c0807f"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940549091Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_tftp-server_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_tftp-server_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.940549189 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "1ddd598f-bf62-4d1c-b8c5-13ef4d746b85",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_tftp-server_removed",
+      "uuid": "f015c91e-30ba-433c-b3bb-f1184cf62b26"
+     },
+     {
+      "collected": "2025-05-30T12:08:15.940559072Z",
+      "description": "",
+      "methods": [
+       "AUTOMATED"
+      ],
+      "props": [
+       {
+        "name": "assessment-rule-id",
+        "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+        "value": "package_tftp_removed"
+       }
+      ],
+      "relevant-evidence": [
+       {
+        "description": "ARF_FILE",
+        "href": "file://complytime/openscap/results/arf.xml"
+       }
+      ],
+      "subjects": [
+       {
+        "props": [
+         {
+          "name": "resource-id",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "xccdf_org.ssgproject.content_rule_package_tftp_removed"
+         },
+         {
+          "name": "result",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "pass"
+         },
+         {
+          "name": "evaluated-on",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "2025-05-30 12:08:15.940559173 +0000 UTC"
+         },
+         {
+          "name": "reason",
+          "ns": "https://oscal-compass.github.io/compliance-trestle/schemas/oscal",
+          "value": "my reason"
+         }
+        ],
+        "subject-uuid": "49573079-11fb-416d-a33f-22c7f5daaa5c",
+        "title": "My Comp",
+        "type": "component"
+       }
+      ],
+      "title": "xccdf_org.ssgproject.content_rule_package_tftp_removed",
+      "uuid": "53143882-20b0-48db-aeac-203370983f49"
+     }
+    ],
+    "reviewed-controls": {
+     "control-selections": [
+      {
+       "include-controls": [
+        {
+         "control-id": "r56"
+        },
+        {
+         "control-id": "r59"
+        },
+        {
+         "control-id": "r61"
+        },
+        {
+         "control-id": "r62"
+        },
+        {
+         "control-id": "r68"
+        },
+        {
+         "control-id": "r31"
+        },
+        {
+         "control-id": "r53"
+        },
+        {
+         "control-id": "r54"
+        }
+       ]
+      }
+     ]
+    },
+    "start": "2025-05-30T12:08:15.954828396Z",
+    "title": "Automated Assessment Result",
+    "uuid": "c4161c6a-b7ad-4a15-8a69-f12ddd6ea923"
+   }
+  ],
+  "uuid": "a101b293-536e-4ffc-b69e-82e36ab18b03"
+ }
+}

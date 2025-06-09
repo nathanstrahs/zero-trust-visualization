@@ -1,0 +1,87 @@
+{
+ "assessment-results": {
+  "results": [
+   {
+    "findings": [
+     {
+      "target": {
+       "status": {
+        "state": ""
+       },
+       "target-id": ""
+      },
+      "uuid": ""
+     },
+     {
+      "target": {
+       "status": {
+        "state": ""
+       },
+       "target-id": ""
+      },
+      "uuid": ""
+     },
+     {
+      "target": {
+       "status": {
+        "state": ""
+       },
+       "target-id": ""
+      },
+      "uuid": ""
+     },
+     {
+      "target": {
+       "status": {
+        "state": ""
+       },
+       "target-id": ""
+      },
+      "uuid": ""
+     },
+     {
+      "target": {
+       "status": {
+        "state": ""
+       },
+       "target-id": ""
+      },
+      "uuid": ""
+     }
+    ],
+    "reviewed-controls": {
+     "control-selections": [
+      {
+       "include-controls": [
+        {
+         "control-id": ""
+        },
+        {
+         "control-id": ""
+        },
+        {
+         "control-id": ""
+        },
+        {
+         "control-id": ""
+        },
+        {
+         "control-id": ""
+        },
+        {
+         "control-id": ""
+        },
+        {
+         "control-id": ""
+        },
+        {
+         "control-id": ""
+        }
+       ]
+      }
+     ]
+    }
+   }
+  ]
+ }
+}

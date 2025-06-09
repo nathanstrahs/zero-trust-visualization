@@ -6,8 +6,8 @@ import {
   VStack, 
   Heading
 } from '@chakra-ui/react';
-import { extractNistControlStatuses } from '../../oscalParser';
-import { getPillarsForKey } from '../../map_pillars';
+import { extractNistControlStatuses } from '../utils/oscalParser';
+import { getPillarsForKey } from '../utils/map_pillars';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 import ControlsTable from './ControlsTable';
 import { toaster } from '@/components/ui/toaster';
@@ -404,13 +404,21 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
         if(onControlsProcessed) {
           onControlsProcessed(mappedControls);
         }
-        
-        toaster.create({
-          title: 'File processed successfully',
-          description: `Found ${mappedControls.length} controls in the assessment results`,
-          type: 'success',
-          duration: 5000,
-        });
+        if (mappedControls.length == 0){
+          toaster.create({
+            title: 'Error finding controls',
+            description: `Found 0 controls in uploaded file`,
+            type: 'error',
+            duration: 5000,
+          });
+        } else { 
+          toaster.create({
+            title: 'File processed successfully',
+            description: `Found ${mappedControls.length} controls in the assessment results`,
+            type: 'success',
+            duration: 5000,
+          });
+        }
       } catch (error) {
         console.error('Error parsing JSON file:', error);
         toaster.create({

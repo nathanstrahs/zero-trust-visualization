@@ -15,6 +15,7 @@ import BaselineDistributionChart from '@/components/BaselineDistributionChart';
 import PillarComplianceChart from '@/components/PillarComplianceChart';
 import ComplianceOverviewCard from '@/components/ComplianceOverviewCard';
 import OscalFileUpload from '@/components/OscalFileUpload';
+import BaselineComplianceChart from '@/components/BaselineComplianceChart';
 import { getPillars, getBaselineLevels, getControlsByPillar, getControlsByBaseline } from '@/utils/helpers';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 
@@ -95,8 +96,12 @@ export default function Home() {
           </SimpleGrid>
           
           
-          <Box mb={8}>
+          <Box mb={4}>
             <PillarComplianceChart controls={processedControls}/>
+          </Box>
+
+          <Box mb={4}>
+            <BaselineComplianceChart controls={processedControls}/>
           </Box>
           
           <Heading size="md" mb={4}>

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPillarsForKey = getPillarsForKey;
+//exports.getPillarsForKey = getPillarsForKey;
+//exports.convertFromDataKeyFormat = convertFromDataKeyFormat;
 
 /**
  * pillarMappingsData contains the pre-processed data from the provided text.
@@ -380,7 +381,7 @@ const pillarMappingsData = [
  * @param {string} inputKey - The key in the format "xx-1.2" or "xx-1".
  * @returns {string|null} The converted key or null if input is invalid.
  */
-function convertToDataKeyFormat(inputKey) {
+export function convertToDataKeyFormat(inputKey) {
   if (!inputKey || typeof inputKey !== 'string') {
     return null;
   }
@@ -392,11 +393,32 @@ function convertToDataKeyFormat(inputKey) {
 }
 
 /**
+ * Converts a key from "UPPERCASE-1(12)" format to "lowercase-1.12" format.
+ * This is the opposite of the convertToDataKeyFormat function.
+ * @param {string} inputKey - The key in the format "XX-1(12)" or a similar pattern.
+ * @returns {string|null} The converted key or null if the input is invalid.
+ */
+export function convertFromDataKeyFormat(inputKey) {
+  if (!inputKey || typeof inputKey !== 'string') {
+    return null;
+  }
+
+  let dataKey = inputKey.toLowerCase();
+
+  // Replace (<numbers>) with .<numbers> at the end of the string
+  // Example: ac-2(12) -> ac-2.12, au-6(6) -> au-6.6
+  dataKey = dataKey.replace(/\((.+)\)$/, '.$1');
+
+  return dataKey;
+}
+
+
+/**
  * Finds the pillars for a given input key.
  * @param {string} inputKey - The key to search for (e.g., "ac-1", "au-6.6").
  * @returns {string[]|string} An array of pillar strings or the string "other".
  */
-function getPillarsForKey(inputKey) {
+export function getPillarsForKey(inputKey) {
   const dataKey = convertToDataKeyFormat(inputKey);
   if (!dataKey) {
       console.error("Invalid input key format provided to getPillarsForKey.");

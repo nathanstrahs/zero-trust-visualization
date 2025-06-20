@@ -7,7 +7,7 @@ import {
   Heading
 } from '@chakra-ui/react';
 import { extractNistControlStatuses } from '../utils/oscalParser';
-import { getPillarsForKey } from '../utils/map_pillars';
+import { getPillarsForKey, convertFromDataKeyFormat } from '../utils/map_pillars';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 import ControlsTable from './ControlsTable';
 import { toaster } from '@/components/ui/toaster';
@@ -329,14 +329,17 @@ export function getBaselineForKey(dataKey: string): BaselineLevel {
   if (!dataKey) {
     return 'none';
   }
-
-  if (highBaselineSet.has(dataKey)) {
+  var dataKeyLowercase = convertFromDataKeyFormat(dataKey);
+  if(!dataKeyLowercase)  {
+    return 'none';
+  }
+  if (highBaselineSet.has(dataKeyLowercase)) {
     return 'high';
   }
-  if (moderateBaselineSet.has(dataKey)) {
+  if (moderateBaselineSet.has(dataKeyLowercase)) {
     return 'moderate';
   }
-  if (lowBaselineSet.has(dataKey)) {
+  if (lowBaselineSet.has(dataKeyLowercase)) {
     return 'low';
   }
   // If the key is not found in any of the categorized lists, it's 'No Baseline'.

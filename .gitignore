@@ -2,6 +2,9 @@
 select_random_oscal_controls.py
 random_controls.json
 NIST_SP-800-53_rev5_catalog.json
+/src/utils/go_extractor/assessment-results.json
+*.xml.bzip2.out
+
 
 # dependencies
 node_modules

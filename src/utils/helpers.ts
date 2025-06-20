@@ -10,7 +10,8 @@ export const getControlsByBaseline = (baseline: BaselineLevel, currentControls: 
 };
 
 export const getPassingPercentageByPillar = (pillar: ZeroTrustPillar, currentControls: Control[]): number => {
-  const pillarControls = getControlsByPillar(pillar, currentControls);
+  const applicableControls = currentControls.filter(control => control.status !== 'not-applicable');
+  const pillarControls = getControlsByPillar(pillar, applicableControls);
   if (pillarControls.length === 0) return 0;
   
   const passingControls = pillarControls.filter(control => control.status === 'passing');
@@ -33,7 +34,8 @@ export const getListofTiedPillars = (val: number, currentControls: Control[]): Z
 }
 
 export const getPassingPercentageByBaseline = (baseline: BaselineLevel, currentControls: Control[]): number => {
-  const baselineControls = getControlsByBaseline(baseline, currentControls);
+  const applicableControls = currentControls.filter(control => control.status !== 'not-applicable');
+  const baselineControls = getControlsByBaseline(baseline, applicableControls);
   if (baselineControls.length === 0) return 0;
   
   const passingControls = baselineControls.filter(control => control.status === 'passing');

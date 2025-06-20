@@ -6,7 +6,8 @@ import {
   Heading,
   Table,
   Flex,
-  Button
+  Button,
+  Checkbox
 } from '@chakra-ui/react';
 import { Control, BaselineLevel } from '@/types';
 
@@ -19,6 +20,7 @@ interface ControlsTableProps {
 
 const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpandable=false, initialRowCount=5 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showNonApplicable, setShowNonApplicable] = useState(true);
   const getStatusColor = (status: Control['status']) => {
     switch (status) {
       case 'passing':
@@ -26,7 +28,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
       case 'failing':
         return 'red';
       case 'not-applicable':
-        return 'gray';
+        return 'blue';
       default:
         return 'gray';
     }
@@ -47,16 +49,32 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
     }
   };
 
-  const showExpansionButton = isExpandable && controls.length > initialRowCount;
-  const displayedControls = showExpansionButton && !isExpanded ? controls.slice(0, initialRowCount) : controls;
+  const filteredControls = showNonApplicable ? controls: controls.filter(control => control.status !== 'not-applicable');
+
+  const showExpansionButton = isExpandable && filteredControls.length > initialRowCount;
+  const displayedControls = showExpansionButton && !isExpanded ? filteredControls.slice(0, initialRowCount) : filteredControls;
 
   return (
    <Box overflowX="auto">
-      {title && <Heading size="md" mb={4}>{title}</Heading>}
-      {controls.length === 0 ? (
+    <Flex justify="space-between" align="center" mb={4}>
+        {title && <Heading size="md">{title}</Heading>}
+        <Checkbox.Root
+          checked={showNonApplicable}
+          onCheckedChange={(e) => setShowNonApplicable(!!e.checked)}
+          colorPalette="blue"
+          size='sm'
+        >
+          <Checkbox.HiddenInput />
+          <Checkbox.Control>
+            <Checkbox.Indicator />
+          </Checkbox.Control>
+          <Checkbox.Label>Show Non-Applicable</Checkbox.Label> 
+        </Checkbox.Root>
+      </Flex>
+      {filteredControls.length === 0 ? (
         <Text>No controls found.</Text>
       ) : (
-        <Table.Root size="sm" striped>
+        <Table.Root size="sm" interactive>
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeader>ID</Table.ColumnHeader>
@@ -89,7 +107,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
             colorScheme="blue"
             onClick={() => setIsExpanded(!isExpanded)}
           >
-            {isExpanded ? 'Show Less' : `Show More (${controls.length - initialRowCount} more)`}
+            {isExpanded ? 'Show Less' : `Show More (${filteredControls.length - initialRowCount} more)`}
           </Button>
         </Flex>
       )}

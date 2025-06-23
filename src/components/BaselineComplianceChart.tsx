@@ -11,8 +11,8 @@ import {
   Legend,
   Ticks,
 } from 'chart.js';
-import { getBaselineLevels, getPassingPercentageByBaseline } from '@/utils/helpers';
-import { Control } from '@/types';
+import { getBaselineLevels, getPassingPercentageByBaseline, getControlsByBaseline } from '@/utils/helpers';
+import { Control, BaselineLevel } from '@/types';
 
 // Register the necessary components for a Bar chart with Chart.js
 Chart.register(
@@ -28,6 +28,18 @@ Chart.register(
 interface BaselineComplianceChartProps {
   controls: Control[];
 }
+
+// returns [#passing controls per baseline, #applicable controls baseline]
+const getBaselineStats = (baseline: BaselineLevel, controls: Control[]) => {
+  const relevantControls = controls.filter( control => control.status !== 'not-applicable');
+  const baselineControls = getControlsByBaseline(baseline, relevantControls);
+  if (baselineControls.length === 0){
+    return [0, 0];
+  }
+  const passingControls = baselineControls.filter( control => control.status === 'passing');
+  return [passingControls.length, baselineControls.length]
+};
+
 
 const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ controls }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
@@ -88,7 +100,11 @@ const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ contr
         tooltip: {
           callbacks: {
             label: function(context: any) {
-              return `Passing: ${context.raw.toFixed(1)}%`;
+              const baseline = baselines[context.dataIndex];
+              const [passingCount, totalCount] = getBaselineStats(baseline, controls);
+              const percentage = context.raw as number;
+              
+              return `Passing: ${percentage.toFixed(1)}% (${passingCount}/${totalCount})`;
             }
           }
         }

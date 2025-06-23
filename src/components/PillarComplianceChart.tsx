@@ -10,8 +10,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { getPillars, getPassingPercentageByPillar } from '@/utils/helpers';
-import { Control } from '@/types';
+import { getPillars, getPassingPercentageByPillar, getControlsByPillar } from '@/utils/helpers';
+import { Control, ZeroTrustPillar } from '@/types';
 
 // Register the necessary components for a Bar chart with Chart.js
 Chart.register(
@@ -27,6 +27,16 @@ Chart.register(
 interface PillarComplianceChartProps {
   controls: Control[];
 }
+
+const getPillarStats = (pillar: ZeroTrustPillar, controls: Control[]) => {
+  const relevantControls = controls.filter( control => control.status !== 'not-applicable');
+  const pillarControls = getControlsByPillar(pillar, relevantControls);
+  if (pillarControls.length === 0){
+    return [0, 0];
+  }
+  const passingControls = pillarControls.filter( control => control.status === 'passing');
+  return [passingControls.length, pillarControls.length]
+};
 
 const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
@@ -84,7 +94,11 @@ const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls 
         tooltip: {
           callbacks: {
             label: function(context: any) {
-              return `Passing: ${context.raw.toFixed(1)}%`;
+              const pillar = pillars[context.dataIndex];
+              const [passingCount, totalCount] = getPillarStats(pillar, controls);
+              const percentage = context.raw as number;
+              
+              return `Passing: ${percentage.toFixed(1)}% (${passingCount}/${totalCount})`;
             }
           }
         }

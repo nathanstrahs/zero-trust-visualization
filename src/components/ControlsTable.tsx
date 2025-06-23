@@ -7,7 +7,8 @@ import {
   Table,
   Flex,
   Button,
-  Checkbox
+  Checkbox,
+  Center
 } from '@chakra-ui/react';
 import { Control, BaselineLevel } from '@/types';
 
@@ -82,6 +83,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
               <Table.ColumnHeader>Pillar</Table.ColumnHeader>
               <Table.ColumnHeader>Baseline</Table.ColumnHeader>
               <Table.ColumnHeader>Status</Table.ColumnHeader>
+              <Table.ColumnHeader>Observations Passing</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -95,6 +97,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
                 <Table.Cell>{control.pillars.join(', ')}</Table.Cell>
                 <Table.Cell><Badge colorPalette={getBaselineColor(control.baseline)}>{control.baseline}</Badge></Table.Cell>
                 <Table.Cell><Badge colorPalette={getStatusColor(control.status)}>{control.status}</Badge></Table.Cell>
+                <Table.Cell><Text textAlign="center" marginLeft={-10}>{control.passingObs}/{control.totalObs}</Text></Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

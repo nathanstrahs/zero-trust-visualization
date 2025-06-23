@@ -398,7 +398,9 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
             description: result.details.join('; ') || 'No details available',
             pillars: normalizedPillars as ZeroTrustPillar[],
             baseline: mapControlToBaseline(result.controlId),
-            status: mapStatusToControlStatus(result.status)
+            status: mapStatusToControlStatus(result.status),
+            totalObs: result.totalObs,
+            passingObs: result.passingObs
           };
         });
         

@@ -129,6 +129,42 @@ function validateOscalDocumentStructure(oscalDoc) {
                 if (finding.hasOwnProperty("description")) {
                     checkProperty(finding, "description", "string", findingPath);
                 }
+                if (finding.hasOwnProperty("related-observations")){
+                    checkProperty(finding, "related-observations", "array", findingPath);
+                }
+            });
+        }
+        if (result.hasOwnProperty("observations")) {
+            const observations = checkProperty(result, "observations", "array", resultPath);
+
+            observations.forEach((observation, observationIndex) => {
+                const observationPath = `${resultPath}.observations[${observationIndex}]`;
+                if (typeof observation !== 'object' || observation === null) {
+                    throw new Error(`Item at ${observationPath} is not an object.`);
+                }
+
+                //checks to confirm observation can be searched by uuid later
+                checkProperty(observation, "uuid", "string", observationPath);
+
+                const subjects = checkProperty(observation, "subjects", "array", `${observationPath}`);
+
+                subjects.forEach((subject, subjectIndex) => {
+                    const subjectPath = `${observationPath}.subjects[${subjectIndex}]`
+                    const props = checkProperty(subject, "props", "object", `${subjectPath}`);
+
+                    props.forEach((prop, propIndex) => {
+                        const propPath = `${observationPath}.subjects[0].props[${propIndex}]`;
+                        if(typeof prop !== "object"){
+                            throw new Error(`Item at ${propPath} is not an object.`)
+                        }
+                        //checks whether the observation has an object that could contain pass/fail result of observation
+                        checkProperty(prop, "name", "string", propPath);
+                        checkProperty(prop, "value", "string", propPath);
+
+                    });
+                });
+
+                
             });
         }
     });

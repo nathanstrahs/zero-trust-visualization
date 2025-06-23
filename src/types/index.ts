@@ -17,4 +17,6 @@ export interface Control {
   pillars: ZeroTrustPillar[];
   baseline: BaselineLevel;
   status: 'passing' | 'failing' | 'not-applicable';
+  passingObs: number;
+  totalObs: number;
 }

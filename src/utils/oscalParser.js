@@ -189,7 +189,16 @@ function extractNistControlStatuses(oscalDoc) {
     var assessmentResults = oscalDoc["assessment-results"];
     var allRelevantControlIds = new Set();
 
-    // 1. Identify all potentially tested controls
+    const observationsMap = new Map();
+    assessmentResults.results.forEach(result => {
+        result.observations?.forEach(obs => {
+            if (obs.uuid){
+                observationsMap.set(obs.uuid, obs);
+            }
+        });
+    });
+
+    // Identify all potentially tested controls
     //      a. From "reviewed-controls" in each result
     assessmentResults.results.forEach(function (result) {
         var _a, _b;
@@ -220,15 +229,21 @@ function extractNistControlStatuses(oscalDoc) {
         console.warn("No reviewed controls or findings with parsable control IDs found in the document.");
         return [];
     }
-    // 2. Initialize control statuses
+    //Initialize control statuses
 
     // DEFAULT TO 'PASS'. THIS ASSUMES A CONTROL IS 'PASS' IF REVIEWED AND NO 'NOT-SATISFIED'
     // OR 'OTHER' STATE FINDINGS ARE PRESENT. 'FAIL' TAKES HIGHEST PRECEDENCE, THEN 'OTHER', THEN 'PASS'
     var controlStatusMap = new Map();
     allRelevantControlIds.forEach(function (id) {
-        controlStatusMap.set(id, { status: 'pass', details: [] });
+        controlStatusMap.set(id, { 
+            status: 'pass', 
+            details: [],
+            passingObs: 0,
+            totalObs: 0,
+            proccessedObsUuids: new Set() 
+        });
     });
-    // 3. Process findings to update statuses
+    // Process findings to update statuses
     assessmentResults.results.forEach(function (result) {
         var _a;
         (_a = result.findings) === null || _a === void 0 ? void 0 : _a.forEach(function (finding) {
@@ -238,6 +253,8 @@ function extractNistControlStatuses(oscalDoc) {
                 var controlIdFromFinding = controlIdMatch[1];
                 if (controlStatusMap.has(controlIdFromFinding)) {
                     var currentEntry = controlStatusMap.get(controlIdFromFinding);
+
+
                     if(finding.target.status.state){
                         var findingState = finding.target.status.state.toLowerCase();
                         var findingDetail = "Finding UUID: ".concat(finding.uuid);
@@ -258,6 +275,41 @@ function extractNistControlStatuses(oscalDoc) {
                             }
                         }
                     }
+
+                    finding["related-observations"]?.forEach(relObs => {
+                        const obsUuid = relObs["observation-uuid"];
+
+                        if (obsUuid && !currentEntry.proccessedObsUuids.has(obsUuid)){
+                            currentEntry.proccessedObsUuids.add(obsUuid);
+                            // retrieve the observation from the map created earlier
+                            const observation = observationsMap.get(obsUuid);
+                            if (observation) {
+
+                                //used for counting only applicable results, and only passing results
+                                let isPass = false;
+                                let isApplicable = true;
+
+                                observation.subjects?.forEach(subject => {
+                                    subject.props?.forEach(prop => {
+                                        if (prop.name === "result" && prop.value.toLowerCase() === "pass"){
+                                            isPass = true;
+                                        }
+                                        if (prop.name === "result" && (prop.value.toLowerCase() === "notapplicable" || prop.value.toLowerCase() === "notselected")){
+                                            isApplicable = false;
+                                        }
+                                    });
+                                });
+
+                                if (isApplicable) {
+                                    currentEntry.totalObs++;
+                                }
+
+                                if(isPass) {
+                                    currentEntry.passingObs++;
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -269,6 +321,8 @@ function extractNistControlStatuses(oscalDoc) {
             controlId: key,
             status: value.status,
             details: value.details,
+            passingObs: value.passingObs,
+            totalObs: value.totalObs
         });
     });
     return finalResults;

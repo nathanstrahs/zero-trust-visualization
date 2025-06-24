@@ -15,6 +15,7 @@ import BaselineDistributionChart from '@/components/BaselineDistributionChart';
 import PillarComplianceChart from '@/components/PillarComplianceChart';
 import ComplianceOverviewCard from '@/components/ComplianceOverviewCard';
 import OscalFileUpload from '@/components/OscalFileUpload';
+import OscalDiffUploader from '@/components/OscalDiffUpload';
 import BaselineComplianceChart from '@/components/BaselineComplianceChart';
 import { getPillars, getBaselineLevels, getControlsByPillar, getControlsByBaseline } from '@/utils/helpers';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
@@ -83,6 +84,7 @@ export default function Home() {
         <Tabs.List>
           <Tabs.Trigger value="Dashboard">Dashboard</Tabs.Trigger>
           <Tabs.Trigger value="Controls">Controls</Tabs.Trigger>
+          <Tabs.Trigger value="Diff">Diff</Tabs.Trigger>
         </Tabs.List>
         
         <Tabs.Content value="Dashboard">
@@ -169,6 +171,11 @@ export default function Home() {
             title={getTableTitle()} 
             />
           </Box>
+        </Tabs.Content>
+        <Tabs.Content value="Diff">
+          
+            <OscalDiffUploader />
+
         </Tabs.Content>
       </Tabs.Root>
     </Container>

@@ -295,7 +295,7 @@ const OscalDiffUploader = () => {
     }, [controlsLeft, controlsRight]);
 
     return (
-    <Box p={6} bg="gray.50" minH="100vh">
+    <Box p={6} minH="100vh">
       <Box maxW="7xl" mx="auto">
         <Box textAlign="center" mb={8}>
           <Heading as="h1" size="xl" fontWeight="bold" color="gray.800">

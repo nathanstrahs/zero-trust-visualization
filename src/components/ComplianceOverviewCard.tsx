@@ -67,9 +67,9 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
           </Progress.Root>
         </Box>
         <Stat.HelpText>
-          {overallPercentage >= 80 
+          {maxPercentagePillarVal >= 80 
             ? 'Good standing' 
-            : overallPercentage >= 50 
+            : maxPercentagePillarVal >= 50 
               ? 'Needs improvement' 
               : 'Critical attention required'}
         </Stat.HelpText>
@@ -90,9 +90,9 @@ const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ control
           </Progress.Root>
         </Box>
         <Stat.HelpText>
-          {overallPercentage >= 80 
+          {minPercentagePillarVal >= 80 
             ? 'Good standing' 
-            : overallPercentage >= 50 
+            : minPercentagePillarVal >= 50 
               ? 'Needs improvement' 
               : 'Critical attention required'}
         </Stat.HelpText>

@@ -7,23 +7,17 @@ import {
   Heading
 } from '@chakra-ui/react';
 import { extractNistControlStatuses } from '../utils/oscalParser';
-import { getPillarsForKey, convertFromDataKeyFormat } from '../utils/map_pillars';
-import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
+import { getPillarsForKey } from '../utils/map_pillars';
+import { Control, ZeroTrustPillar } from '@/types';
 import ControlsTable from './ControlsTable';
 import { toaster } from '@/components/ui/toaster';
 import { getBaselineForKey } from '@/utils/BaselineLookup';
 
-const MAX_FILE_SIZE_MB = 100;
+export const MAX_FILE_SIZE_MB = 100;
 
 interface OscalFileUploadProps {
   onControlsProcessed: (controls: Control[]) => void; // This will receive processedControls from the parent
 }
-interface BaselineCategorizedControls {
-  High: string[];     // Array of control IDs (e.g., "ac-1", "au-6.6")
-  Moderate: string[]; // Array of control IDs
-  Low: string[];      // Array of control IDs
-}
-
 
 const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }) => {
   const [controls, setControls] = useState<Control[]>([]);
@@ -128,7 +122,6 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
   // Mapping functions for baseline and status
 
   const mapControlToBaseline = (controlId: string): Control['baseline'] => {
-    // This is a simplified mapping - in a real app, you'd have a more accurate mapping
     return getBaselineForKey(controlId);
   };
 

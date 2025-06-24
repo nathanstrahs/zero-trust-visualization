@@ -7,7 +7,10 @@ import {
   Flex,
   Text,
   Tabs,
-  NativeSelect
+  NativeSelect,
+  Icon,
+  InputGroup,
+  Input
 } from '@chakra-ui/react';
 import PillarCard from '@/components/PillarCard';
 import ControlsTable from '@/components/ControlsTable';
@@ -23,6 +26,7 @@ import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 export default function Home() {
   const [selectedPillar, setSelectedPillar] = useState<ZeroTrustPillar | null>(null);
   const [selectedBaseline, setSelectedBaseline] = useState<BaselineLevel | null>(null);
+  const [selectedControlId, setSelectedControlId] = useState<string>('');
   const [processedControls, setProcessedControls] = useState<Control[]>([]);
 
   const pillars = getPillars();
@@ -42,11 +46,12 @@ export default function Home() {
     // Optionally, reset filters or perform other actions when new controls are loaded
     setSelectedPillar(null);
     setSelectedBaseline(null);
+    setSelectedControlId('');
   };
   
   const getDisplayedControls = () => {
     // If no filters are selected return nothing
-    if (!selectedPillar && !selectedBaseline) {
+    if (!selectedPillar && !selectedBaseline && !selectedControlId) {
       return [];
     }
     // Start with the full list of controls
@@ -57,20 +62,37 @@ export default function Home() {
     if (selectedBaseline) {
       filteredControls = getControlsByBaseline(selectedBaseline, filteredControls);
     }
+    if (selectedControlId) {
+      filteredControls = filteredControls.filter(control => 
+        control.id.toLowerCase().includes(selectedControlId.toLowerCase())
+      );
+    }
     return filteredControls;
   };
   
   const getTableTitle = () => {
-    if (selectedPillar && !selectedBaseline) {
+    if (selectedPillar && !selectedBaseline && !selectedControlId) {
       return `${selectedPillar} Pillar Controls`;
     }
-    if (!selectedPillar && selectedBaseline) {
+    if (!selectedPillar && selectedBaseline && !selectedControlId) {
       return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline Controls`;
     }
-    if (selectedPillar && selectedBaseline) {
+    if (!selectedPillar && !selectedBaseline && selectedControlId) {
+      return `Controls matching "${selectedControlId}"`;
+    }
+    if (selectedPillar && selectedBaseline && !selectedControlId) {
       return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline and ${selectedPillar} Pillar Controls`;
     }
-    return 'Please Select Baseline/Pillar';
+    if (selectedPillar && !selectedBaseline && selectedControlId) {
+      return `${selectedPillar} Pillar Controls matching "${selectedControlId}"`;
+    }
+    if (!selectedPillar && selectedBaseline && selectedControlId) {
+      return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline Controls matching "${selectedControlId}"`;
+    }
+    if (selectedPillar && selectedBaseline && selectedControlId) {
+      return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline and ${selectedPillar} Pillar Controls matching "${selectedControlId}"`;
+    }
+    return 'Please Select Baseline/Pillar or Search Control ID';
   };
 
   return (
@@ -163,6 +185,16 @@ export default function Home() {
                 </NativeSelect.Field>
                 <NativeSelect.Indicator/>
               </NativeSelect.Root>
+            </Box>
+            <Box flex="1">
+              <Text mb={3} mt={3} fontWeight="medium">Search by Control ID:</Text>
+              <Input
+                size="lg"
+                textAlign='center'
+                placeholder="Enter Control ID to search"
+                value={selectedControlId}
+                onChange={(e) => setSelectedControlId(e.target.value)}
+              />
             </Box>
           </Flex>
           <Box>

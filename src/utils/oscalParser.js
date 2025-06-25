@@ -285,28 +285,18 @@ function extractNistControlStatuses(oscalDoc) {
                             const observation = observationsMap.get(obsUuid);
                             if (observation) {
 
-                                //used for counting only applicable results, and only passing results
-                                let isPass = false;
-                                let isApplicable = true;
-
                                 observation.subjects?.forEach(subject => {
                                     subject.props?.forEach(prop => {
+                                        // if the observation passes, update the pass count
                                         if (prop.name === "result" && prop.value.toLowerCase() === "pass"){
-                                            isPass = true;
+                                            currentEntry.passingObs++;
                                         }
-                                        if (prop.name === "result" && (prop.value.toLowerCase() === "notapplicable" || prop.value.toLowerCase() === "notselected")){
-                                            isApplicable = false;
+                                        // if observation is pass, fail, or notaddressed, update the total observation count
+                                        if (prop.name === "result" && (prop.value.toLowerCase() === "pass" || prop.value.toLowerCase() === "fail")){
+                                            currentEntry.totalObs++;
                                         }
                                     });
                                 });
-
-                                if (isApplicable) {
-                                    currentEntry.totalObs++;
-                                }
-
-                                if(isPass) {
-                                    currentEntry.passingObs++;
-                                }
                             }
                         }
                     });

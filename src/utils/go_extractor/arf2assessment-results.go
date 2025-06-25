@@ -33,8 +33,9 @@ type RuleResultInfo struct {
 const (
 	oscalNamespace           = "https://oscal-compass.github.io/compliance-trestle/schemas/oscal"
 	StatusStateSatisfied     = "satisfied"
+	StatusStateNotSelected   = "notselected"
 	StatusStateNotSatisfied  = "not-satisfied"
-	StatusStateNotApplicable = "not-applicable"
+	StatusStateNotApplicable = "notapplicable"
 	StatusStateNotAddressed  = "not-addressed"
 )
 
@@ -45,7 +46,7 @@ func main() {
 	}
 
 	arfFilePath := os.Args[1]
-	outputFileName := "assessment-results.json"
+	outputFileName := "assessment-results-changed.json"
 
 	file, err := os.Open(filepath.Clean(arfFilePath))
 	if err != nil {
@@ -264,6 +265,8 @@ func generateOscalAssessmentResults(ruleDefs map[string]RuleInfo, ruleRes map[st
 
 	// Second pass: Create Findings and link to Observations
 	findingsByNISTControl := make(map[string]oscaltypes.Finding)
+	// Track all status values for each NIST control to determine final state
+	controlStatusTracker := make(map[string][]string)
 
 	for ruleID, ruleDef := range ruleDefs {
 		resultInfo, hasResult := ruleRes[ruleID]
@@ -279,9 +282,12 @@ func generateOscalAssessmentResults(ruleDefs map[string]RuleInfo, ruleRes map[st
 		decisionState := mapStatusToOscalDecision(resultInfo.Status)
 
 		for _, nistControlID := range ruleDef.NISTControls {
+			// Track all statuses for this control
+			controlStatusTracker[nistControlID] = append(controlStatusTracker[nistControlID], decisionState)
+
 			finding, exists := findingsByNISTControl[nistControlID]
 			if !exists {
-				// Initialize a new finding for this NIST control
+				// Initialize a new finding for this NIST control with default state
 				finding = oscaltypes.Finding{
 					UUID:        uuid.New().String(),
 					Title:       fmt.Sprintf("Finding for Control %s", nistControlID),
@@ -290,7 +296,7 @@ func generateOscalAssessmentResults(ruleDefs map[string]RuleInfo, ruleRes map[st
 						TargetId: nistControlID,
 						Type:     "statement-id",
 						Status: oscaltypes.ObjectiveStatus{
-							State: decisionState,
+							State: StatusStateNotAddressed, // Default state, will be updated below
 						},
 					},
 					RelatedObservations: &[]oscaltypes.RelatedObservation{},
@@ -300,15 +306,47 @@ func generateOscalAssessmentResults(ruleDefs map[string]RuleInfo, ruleRes map[st
 			// Aggregate related observations for this NIST control
 			*finding.RelatedObservations = append(*finding.RelatedObservations, relatedObsUUIDs...)
 
-			// Update the overall finding status to the "worst" state found (non-compliant wins)
-			if decisionState == StatusStateNotSatisfied {
-				finding.Target.Status.State = StatusStateNotSatisfied
-			} else if decisionState == StatusStateNotApplicable && finding.Target.Status.State != StatusStateNotSatisfied {
-				finding.Target.Status.State = StatusStateNotApplicable
-			}
-
 			findingsByNISTControl[nistControlID] = finding
 		}
+	}
+
+	// Final pass: Determine the correct status for each NIST control based on aggregated results
+	for nistControlID, statuses := range controlStatusTracker {
+		finding := findingsByNISTControl[nistControlID]
+
+		hasFailure := false
+		hasSatisfied := false
+		hasNotApplicable := false
+		hasNotSelected := false
+
+		for _, status := range statuses {
+			switch status {
+			case StatusStateNotSatisfied:
+				hasFailure = true
+			case StatusStateSatisfied:
+				hasSatisfied = true
+			case StatusStateNotApplicable:
+				hasNotApplicable = true
+			case StatusStateNotSelected:
+				hasNotSelected = true
+			}
+		}
+
+		// Determine final state based on aggregated results
+		var finalState string
+		if hasFailure {
+			// If any observation fails or is not tested, the control fails
+			finalState = StatusStateNotSatisfied
+		} else if (!hasSatisfied) && (hasNotApplicable || hasNotSelected) {
+			// If all observations are not Applicable or not selected, then control is not-applicable
+			finalState = StatusStateNotApplicable
+		} else {
+			// for any other reason, the state should be satisfied
+			finalState = StatusStateSatisfied
+		}
+
+		finding.Target.Status.State = finalState
+		findingsByNISTControl[nistControlID] = finding
 	}
 
 	// Add all unique findings to the main result
@@ -332,6 +370,8 @@ func mapStatusToOscalDecision(status string) string {
 		return StatusStateNotSatisfied // Treat errors/notchecked as failures for compliance
 	case "notapplicable":
 		return StatusStateNotApplicable
+	case "notselected":
+		return StatusStateNotSelected
 	default:
 		return StatusStateNotAddressed // Default for unknown statuses, including not selected
 	}

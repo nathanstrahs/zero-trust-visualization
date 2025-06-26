@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { getPillars, getPassingPercentageByPillar, getControlsByPillar } from '@/utils/helpers';
 import { Control, ZeroTrustPillar } from '@/types';
+import { useApplicable } from '@/contexts/ExpansionContext';
 
 // Register the necessary components for a Bar chart with Chart.js
 Chart.register(
@@ -28,8 +29,8 @@ interface PillarComplianceChartProps {
   controls: Control[];
 }
 
-const getPillarStats = (pillar: ZeroTrustPillar, controls: Control[]) => {
-  const relevantControls = controls.filter( control => control.status !== 'not-applicable');
+const getPillarStats = (pillar: ZeroTrustPillar, controls: Control[], applicable: boolean) => {
+  const relevantControls = !applicable?controls.filter( control => control.status !== 'not-applicable'):controls;
   const pillarControls = getControlsByPillar(pillar, relevantControls);
   if (pillarControls.length === 0){
     return [0, 0];
@@ -39,6 +40,7 @@ const getPillarStats = (pillar: ZeroTrustPillar, controls: Control[]) => {
 };
 
 const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls }) => {
+  const { showIsApplicable, toggleApplicable } = useApplicable();
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null); // Ref to hold the chart instance
 
@@ -46,7 +48,7 @@ const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls 
     if (!chartRef.current) return;
 
     const pillars = getPillars();
-    const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, controls));
+    const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, controls, showIsApplicable));
     
     const data = {
       labels: pillars,
@@ -95,7 +97,7 @@ const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls 
           callbacks: {
             label: function(context: any) {
               const pillar = pillars[context.dataIndex];
-              const [passingCount, totalCount] = getPillarStats(pillar, controls);
+              const [passingCount, totalCount] = getPillarStats(pillar, controls, showIsApplicable);
               const percentage = context.raw as number;
               
               return `Passing: ${percentage.toFixed(1)}% (${passingCount}/${totalCount})`;
@@ -126,7 +128,7 @@ const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls 
         chartInstanceRef.current.destroy();
       }
     };
-  }, [controls]); // Re-run the effect if the controls data changes
+  }, [controls, showIsApplicable]); // Re-run the effect if the controls data or expansion state changes
 
   return (
     <Box p={4}>

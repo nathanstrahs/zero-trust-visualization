@@ -11,6 +11,7 @@ import {
   Center
 } from '@chakra-ui/react';
 import { Control, BaselineLevel } from '@/types';
+import { useApplicable } from '@/contexts/ExpansionContext';
 
 interface ControlsTableProps {
   controls: Control[];
@@ -20,8 +21,10 @@ interface ControlsTableProps {
 }
 
 const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpandable=false, initialRowCount=5 }) => {
+  const { showIsApplicable, toggleApplicable } = useApplicable();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showNonApplicable, setShowNonApplicable] = useState(true);
+  
+  console.log(`ControlsTable: isExpanded=${isExpanded}, title=${title}`);
   const getStatusColor = (status: Control['status']) => {
     switch (status) {
       case 'passing':
@@ -50,7 +53,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
     }
   };
 
-  const filteredControls = showNonApplicable ? controls: controls.filter(control => control.status !== 'not-applicable');
+  const filteredControls = showIsApplicable ? controls: controls.filter(control => control.status !== 'not-applicable');
 
   const showExpansionButton = isExpandable && filteredControls.length > initialRowCount;
   const displayedControls = showExpansionButton && !isExpanded ? filteredControls.slice(0, initialRowCount) : filteredControls;
@@ -60,8 +63,8 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
     <Flex justify="space-between" align="center" mb={4}>
         {title && <Heading size="md">{title}</Heading>}
         <Checkbox.Root
-          checked={showNonApplicable}
-          onCheckedChange={(e) => setShowNonApplicable(!!e.checked)}
+          checked={showIsApplicable}
+          onCheckedChange={toggleApplicable}
           colorPalette="blue"
           size='sm'
         >
@@ -108,7 +111,10 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
           <Button 
             variant="ghost" 
             colorScheme="blue"
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={() => {
+              console.log('ControlsTable button clicked! Current isExpanded:', isExpanded);
+              setIsExpanded(!isExpanded);
+            }}
           >
             {isExpanded ? 'Show Less' : `Show More (${filteredControls.length - initialRowCount} more)`}
           </Button>

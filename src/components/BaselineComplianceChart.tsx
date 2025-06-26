@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import { getBaselineLevels, getPassingPercentageByBaseline, getControlsByBaseline } from '@/utils/helpers';
 import { Control, BaselineLevel } from '@/types';
+import { useApplicable } from '@/contexts/ExpansionContext';
 
 // Register the necessary components for a Bar chart with Chart.js
 Chart.register(
@@ -30,8 +31,8 @@ interface BaselineComplianceChartProps {
 }
 
 // returns [#passing controls per baseline, #applicable controls baseline]
-const getBaselineStats = (baseline: BaselineLevel, controls: Control[]) => {
-  const relevantControls = controls.filter( control => control.status !== 'not-applicable');
+const getBaselineStats = (baseline: BaselineLevel, controls: Control[], applicable: boolean) => {
+  const relevantControls = !applicable?controls.filter( control => control.status !== 'not-applicable'):controls;
   const baselineControls = getControlsByBaseline(baseline, relevantControls);
   if (baselineControls.length === 0){
     return [0, 0];
@@ -44,12 +45,13 @@ const getBaselineStats = (baseline: BaselineLevel, controls: Control[]) => {
 const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ controls }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null); // Ref to hold the chart instance
+  const { showIsApplicable } = useApplicable();
 
   useEffect(() => {
     if (!chartRef.current) return;
 
     const baselines = getBaselineLevels();
-    const percentages = baselines.map(baseline => getPassingPercentageByBaseline(baseline, controls));
+    const percentages = baselines.map(baseline => getPassingPercentageByBaseline(baseline, controls, showIsApplicable));
     
     const data = {
       labels: baselines.map(baseline => baseline.charAt(0).toUpperCase() + baseline.slice(1)),
@@ -101,7 +103,7 @@ const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ contr
           callbacks: {
             label: function(context: any) {
               const baseline = baselines[context.dataIndex];
-              const [passingCount, totalCount] = getBaselineStats(baseline, controls);
+              const [passingCount, totalCount] = getBaselineStats(baseline, controls, showIsApplicable);
               const percentage = context.raw as number;
               
               return `Passing: ${percentage.toFixed(1)}% (${passingCount}/${totalCount})`;
@@ -132,7 +134,7 @@ const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ contr
         chartInstanceRef.current.destroy();
       }
     };
-  }, [controls]); // Re-run the effect if the controls data changes
+  }, [controls, showIsApplicable]); // Re-run the effect if the controls data or expansion state changes
 
   return (
     <Box p={4}>

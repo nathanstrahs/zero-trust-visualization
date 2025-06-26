@@ -9,8 +9,8 @@ export const getControlsByBaseline = (baseline: BaselineLevel, currentControls: 
   return currentControls.filter(control => control.baseline === baseline);
 };
 
-export const getPassingPercentageByPillar = (pillar: ZeroTrustPillar, currentControls: Control[]): number => {
-  const applicableControls = currentControls.filter(control => control.status !== 'not-applicable');
+export const getPassingPercentageByPillar = (pillar: ZeroTrustPillar, currentControls: Control[], applicable: boolean): number => {
+  const applicableControls = !applicable?currentControls.filter(control => control.status !== 'not-applicable'):currentControls;
   const pillarControls = getControlsByPillar(pillar, applicableControls);
   if (pillarControls.length === 0) return 0;
   
@@ -18,10 +18,10 @@ export const getPassingPercentageByPillar = (pillar: ZeroTrustPillar, currentCon
   return (passingControls.length / pillarControls.length) * 100;
 };
 
-export const getListofTiedPillars = (val: number, currentControls: Control[]): ZeroTrustPillar[] =>{
+export const getListofTiedPillars = (val: number, currentControls: Control[], applicable: boolean): ZeroTrustPillar[] =>{
   var listofPillars:ZeroTrustPillar[] = [];
   const pillars = getPillars();
-  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, currentControls));
+  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, currentControls, applicable));
   
   let indOfPillar:number = 0;
   for(const pillar of pillars){
@@ -33,8 +33,8 @@ export const getListofTiedPillars = (val: number, currentControls: Control[]): Z
   return listofPillars;
 }
 
-export const getPassingPercentageByBaseline = (baseline: BaselineLevel, currentControls: Control[]): number => {
-  const applicableControls = currentControls.filter(control => control.status !== 'not-applicable');
+export const getPassingPercentageByBaseline = (baseline: BaselineLevel, currentControls: Control[], applicable: boolean): number => {
+  const applicableControls = !applicable?currentControls.filter(control => control.status !== 'not-applicable'):currentControls;
   const baselineControls = getControlsByBaseline(baseline, applicableControls);
   if (baselineControls.length === 0) return 0;
   
@@ -42,20 +42,21 @@ export const getPassingPercentageByBaseline = (baseline: BaselineLevel, currentC
   return (passingControls.length / baselineControls.length) * 100;
 };
 
-export const getPassingPercentageOverall = (currentControls: Control[]): number => {
-  const applicableControls = currentControls.filter(control => control.status !== 'not-applicable');
+export const getPassingPercentageOverall = (currentControls: Control[], applicable: boolean): number => {
+  const applicableControls = !applicable?currentControls.filter(control => control.status !== 'not-applicable'):currentControls;
   if (applicableControls.length === 0) return 0;
   
   const passingControls = applicableControls.filter(control => control.status === 'passing');
   return (passingControls.length / applicableControls.length) * 100;
 };
 
-export const getControlCountByBaseline = (currentControls: Control[]): Record<BaselineLevel, number> => {
+export const getControlCountByBaseline = (currentControls: Control[], applicable: boolean): Record<BaselineLevel, number> => {
+  const applicableControls = !applicable?currentControls.filter(control => control.status != 'not-applicable'):currentControls;
   return {
-    high: currentControls.filter(control => control.baseline === 'high').length,
-    moderate: currentControls.filter(control => control.baseline === 'moderate').length,
-    low: currentControls.filter(control => control.baseline === 'low').length,
-    none: currentControls.filter(control => control.baseline === 'none').length,
+    high: applicableControls.filter(control => control.baseline === 'high').length,
+    moderate: applicableControls.filter(control => control.baseline === 'moderate').length,
+    low: applicableControls.filter(control => control.baseline === 'low').length,
+    none: applicableControls.filter(control => control.baseline === 'none').length,
   };
 };
 
@@ -85,9 +86,9 @@ export const baselineLevels_collection = createListCollection({
   ]
 })
 
-export const getMaxPercentagePillar = (currentControls: Control[]): number => {
+export const getMaxPercentagePillar = (currentControls: Control[], applicable: boolean): number => {
   const pillars = getPillars();
-  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, currentControls));
+  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, currentControls, applicable));
 
   if (!currentControls || currentControls.length === 0) {
     return 0;
@@ -103,9 +104,9 @@ export const getMaxPercentagePillar = (currentControls: Control[]): number => {
   return maxInd;
 };
 
-export const getMinPercentagePillar = (currentControls: Control[]): number => {
+export const getMinPercentagePillar = (currentControls: Control[], applicable: boolean): number => {
   const pillars = getPillars();
-  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, currentControls));
+  const percentages = pillars.map(pillar => getPassingPercentageByPillar(pillar, currentControls, applicable));
 
   if (!currentControls || currentControls.length === 0) {
     return 0;

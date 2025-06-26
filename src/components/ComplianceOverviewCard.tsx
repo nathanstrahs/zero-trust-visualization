@@ -2,22 +2,24 @@ import React from 'react';
 import { Box, Flex, Progress, Stat } from '@chakra-ui/react';
 import { getPassingPercentageOverall, getMaxPercentagePillar, getMinPercentagePillar, getPillars, getPassingPercentageByPillar, getListofTiedPillars } from '@/utils/helpers';
 import { Control } from '@/types';
+import { useApplicable } from '@/contexts/ExpansionContext';
 
 interface ComplianceOverviewCardProps {
   controls: Control[];
 }
 
 const ComplianceOverviewCard: React.FC<ComplianceOverviewCardProps> = ({ controls }) => {
-  const overallPercentage = getPassingPercentageOverall(controls);
+  const { showIsApplicable } = useApplicable();
+  const overallPercentage = getPassingPercentageOverall(controls, showIsApplicable);
   const pillars = getPillars();
-  const maxPercentagePillar = getMaxPercentagePillar(controls);
+  const maxPercentagePillar = getMaxPercentagePillar(controls, showIsApplicable);
   const maxPillar = pillars[maxPercentagePillar];
-  const maxPercentagePillarVal = getPassingPercentageByPillar(maxPillar, controls);
-  const tiedMaxPillars = getListofTiedPillars(maxPercentagePillarVal, controls);
-  const minPercentagePillar = getMinPercentagePillar(controls);
+  const maxPercentagePillarVal = getPassingPercentageByPillar(maxPillar, controls, showIsApplicable);
+  const tiedMaxPillars = getListofTiedPillars(maxPercentagePillarVal, controls, showIsApplicable);
+  const minPercentagePillar = getMinPercentagePillar(controls, showIsApplicable);
   const minPillar = pillars[minPercentagePillar];
-  const minPercentagePillarVal = getPassingPercentageByPillar(minPillar, controls);
-  const tiedMinPillars = getListofTiedPillars(minPercentagePillarVal, controls);
+  const minPercentagePillarVal = getPassingPercentageByPillar(minPillar, controls, showIsApplicable);
+  const tiedMinPillars = getListofTiedPillars(minPercentagePillarVal, controls, showIsApplicable);
   
   
   const getColorScheme = (val: number) => {

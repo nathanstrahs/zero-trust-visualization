@@ -3,6 +3,7 @@ import { Box, Heading } from '@chakra-ui/react';
 import { Chart, ArcElement, Tooltip, Legend, PieController } from 'chart.js';
 import { getControlCountByBaseline } from '@/utils/helpers';
 import { Control } from '@/types';
+import { useApplicable } from '@/contexts/ExpansionContext';
 
 // Register the necessary components for a Pie chart with Chart.js
 Chart.register(ArcElement, Tooltip, Legend, PieController);
@@ -14,11 +15,12 @@ interface BaselineDistributionChartProps {
 const BaselineDistributionChart: React.FC<BaselineDistributionChartProps> = ({ controls }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null); // Ref to hold the chart instance
+  const { showIsApplicable } = useApplicable();
 
   useEffect(() => {
     if (!chartRef.current) return;
 
-    const baselineCounts = getControlCountByBaseline(controls);
+    const baselineCounts = getControlCountByBaseline(controls, showIsApplicable);
   
     const data = {
       labels: ['High', 'Moderate', 'Low', 'None'],
@@ -88,7 +90,7 @@ const BaselineDistributionChart: React.FC<BaselineDistributionChartProps> = ({ c
         chartInstanceRef.current.destroy();
       }
     };
-  }, [controls]); // Re-run effect when controls data changes
+  }, [controls, showIsApplicable]); // Re-run effect when controls data changes
 
   return (
     <Box p={4}>

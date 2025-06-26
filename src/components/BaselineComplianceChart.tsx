@@ -8,8 +8,7 @@ import {
   BarController,
   Title,
   Tooltip,
-  Legend,
-  Ticks,
+  Legend
 } from 'chart.js';
 import { getBaselineLevels, getPassingPercentageByBaseline, getControlsByBaseline } from '@/utils/helpers';
 import { Control, BaselineLevel } from '@/types';

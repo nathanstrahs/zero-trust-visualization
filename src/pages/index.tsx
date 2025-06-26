@@ -8,9 +8,7 @@ import {
   Text,
   Tabs,
   NativeSelect,
-  Icon,
-  InputGroup,
-  Input
+  Input,
 } from '@chakra-ui/react';
 import PillarCard from '@/components/PillarCard';
 import ControlsTable from '@/components/ControlsTable';
@@ -113,7 +111,7 @@ export default function Home() {
           <Box mb={8}>
             <OscalFileUpload onControlsProcessed ={handleControlsProcessed} />
           </Box>
-
+          
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={2} mb={6}>
             <ComplianceOverviewCard controls={processedControls} />
             <BaselineDistributionChart controls={processedControls} />

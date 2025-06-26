@@ -40,7 +40,7 @@ const getPillarStats = (pillar: ZeroTrustPillar, controls: Control[], applicable
 };
 
 const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls }) => {
-  const { showIsApplicable, toggleApplicable } = useApplicable();
+  const { showIsApplicable } = useApplicable();
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null); // Ref to hold the chart instance
 

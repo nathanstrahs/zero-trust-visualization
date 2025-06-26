@@ -11,7 +11,7 @@ interface PillarCardProps {
 }
 
 const PillarCard: React.FC<PillarCardProps> = ({ pillar, onClick, controls }) => {
-  const { showIsApplicable, toggleApplicable } = useApplicable();
+  const { showIsApplicable } = useApplicable();
   const pillarSpecificControls = getControlsByPillar(pillar, controls);
   const passingPercentage = getPassingPercentageByPillar(pillar, controls, showIsApplicable);
   

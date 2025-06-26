@@ -7,8 +7,7 @@ import {
   Table,
   Flex,
   Button,
-  Checkbox,
-  Center
+  Checkbox
 } from '@chakra-ui/react';
 import { Control, BaselineLevel } from '@/types';
 import { useApplicable } from '@/contexts/ExpansionContext';

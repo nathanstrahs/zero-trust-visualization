@@ -292,7 +292,7 @@ function extractNistControlStatuses(oscalDoc) {
                                             currentEntry.passingObs++;
                                         }
                                         // if observation is pass, fail, or notaddressed, update the total observation count
-                                        if (prop.name === "result" && (prop.value.toLowerCase() === "pass" || prop.value.toLowerCase() === "fail")){
+                                        if (prop.name === "result" && (prop.value.toLowerCase() === "pass" || prop.value.toLowerCase() === "fail" || prop.value.toLowerCase() === "notchecked")){
                                             currentEntry.totalObs++;
                                         }
                                     });

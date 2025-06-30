@@ -10,8 +10,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { getPillars, getPassingPercentageByPillar, getControlsByPillar } from '@/utils/helpers';
-import { Control, ZeroTrustPillar } from '@/types';
+import { getPillars, getPassingPercentageByPillar, getPillarStats } from '@/utils/helpers';
+import { Control } from '@/types';
 import { useApplicable } from '@/contexts/ExpansionContext';
 
 // Register the necessary components for a Bar chart with Chart.js
@@ -28,16 +28,6 @@ Chart.register(
 interface PillarComplianceChartProps {
   controls: Control[];
 }
-
-const getPillarStats = (pillar: ZeroTrustPillar, controls: Control[], applicable: boolean) => {
-  const relevantControls = !applicable?controls.filter( control => control.status !== 'not-applicable'):controls;
-  const pillarControls = getControlsByPillar(pillar, relevantControls);
-  if (pillarControls.length === 0){
-    return [0, 0];
-  }
-  const passingControls = pillarControls.filter( control => control.status === 'passing');
-  return [passingControls.length, pillarControls.length]
-};
 
 const PillarComplianceChart: React.FC<PillarComplianceChartProps> = ({ controls }) => {
   const { showIsApplicable } = useApplicable();

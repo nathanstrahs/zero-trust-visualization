@@ -10,8 +10,8 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import { getBaselineLevels, getPassingPercentageByBaseline, getControlsByBaseline } from '@/utils/helpers';
-import { Control, BaselineLevel } from '@/types';
+import { getBaselineLevels, getPassingPercentageByBaseline, getBaselineStats } from '@/utils/helpers';
+import { Control } from '@/types';
 import { useApplicable } from '@/contexts/ExpansionContext';
 
 // Register the necessary components for a Bar chart with Chart.js
@@ -28,17 +28,6 @@ Chart.register(
 interface BaselineComplianceChartProps {
   controls: Control[];
 }
-
-// returns [#passing controls per baseline, #applicable controls baseline]
-const getBaselineStats = (baseline: BaselineLevel, controls: Control[], applicable: boolean) => {
-  const relevantControls = !applicable?controls.filter( control => control.status !== 'not-applicable'):controls;
-  const baselineControls = getControlsByBaseline(baseline, relevantControls);
-  if (baselineControls.length === 0){
-    return [0, 0];
-  }
-  const passingControls = baselineControls.filter( control => control.status === 'passing');
-  return [passingControls.length, baselineControls.length]
-};
 
 
 const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ controls }) => {

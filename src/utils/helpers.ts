@@ -121,3 +121,25 @@ export const getMinPercentagePillar = (currentControls: Control[], applicable: b
   }
   return minInd;
 };
+
+export const getPillarStats = (pillar: ZeroTrustPillar, controls: Control[], applicable: boolean) => {
+  const relevantControls = !applicable?controls.filter( control => control.status !== 'not-applicable'):controls;
+  const pillarControls = getControlsByPillar(pillar, relevantControls);
+  if (pillarControls.length === 0){
+    return [0, 0];
+  }
+  const passingControls = pillarControls.filter( control => control.status === 'passing');
+  return [passingControls.length, pillarControls.length]
+};
+
+
+// returns [#passing controls per baseline, #applicable controls baseline]
+export const getBaselineStats = (baseline: BaselineLevel, controls: Control[], applicable: boolean) => {
+  const relevantControls = !applicable?controls.filter( control => control.status !== 'not-applicable'):controls;
+  const baselineControls = getControlsByBaseline(baseline, relevantControls);
+  if (baselineControls.length === 0){
+    return [0, 0];
+  }
+  const passingControls = baselineControls.filter( control => control.status === 'passing');
+  return [passingControls.length, baselineControls.length]
+};

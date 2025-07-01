@@ -11,7 +11,6 @@ import {
 } from 'chart.js';
 import { Box, Text } from '@chakra-ui/react';
 import { Control, ZeroTrustPillar } from '@/types';
-import { getPillarStats } from '@/utils/helpers';
 
 // Register Chart.js components
 ChartJS.register(
@@ -99,18 +98,6 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
       {
         label: baselineFileName,
         data: allPillars.map(pillar => baselineCompliance.get(pillar)?.compliance || 0),
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 2,
-        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-        pointBorderColor: '#fff',
-        pointHoverRadius: 8,
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
-      },
-      {
-        label: comparisonFileName,
-        data: allPillars.map(pillar => comparisonCompliance.get(pillar)?.compliance || 0),
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 2,
@@ -119,6 +106,18 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
         pointHoverRadius: 8,
         pointHoverBackgroundColor: '#fff',
         pointHoverBorderColor: 'rgba(255, 99, 132, 1)',
+      },
+      {
+        label: comparisonFileName,
+        data: allPillars.map(pillar => comparisonCompliance.get(pillar)?.compliance || 0),
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2,
+        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+        pointBorderColor: '#fff',
+        pointHoverRadius: 8,
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
       }
     ]
   };
@@ -155,7 +154,7 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
             const passing = complianceData?.passing || 0;
             const total = complianceData?.total || 0;
             const percentage = Number(context.formattedValue);
-            const label = isBaseline? "Baseline File":"Comparison File";
+            const label = context.dataset.label;
 
             return `${label}: ${passing}/${total} (${percentage.toFixed(1)}%)`;
           },

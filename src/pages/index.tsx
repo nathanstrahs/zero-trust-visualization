@@ -7,8 +7,10 @@ import {
   Flex,
   Text,
   Tabs,
-  NativeSelect,
   Input,
+  Checkbox,
+  VStack,
+  Button,
 } from '@chakra-ui/react';
 import PillarCard from '@/components/PillarCard';
 import ControlsTable from '@/components/ControlsTable';
@@ -18,48 +20,65 @@ import ComplianceOverviewCard from '@/components/ComplianceOverviewCard';
 import OscalFileUpload from '@/components/OscalFileUpload';
 import OscalDiffUploader from '@/components/OscalDiffUpload';
 import BaselineComplianceChart from '@/components/BaselineComplianceChart';
-import { getPillars, getBaselineLevels, getControlsByPillar, getControlsByBaseline } from '@/utils/helpers';
+import { getPillars, getBaselineLevels } from '@/utils/helpers';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 
 export default function Home() {
-  const [selectedPillar, setSelectedPillar] = useState<ZeroTrustPillar | null>(null);
-  const [selectedBaseline, setSelectedBaseline] = useState<BaselineLevel | null>(null);
+  const [selectedPillars, setSelectedPillars] = useState<ZeroTrustPillar[]>([]);
+  const [selectedBaselines, setSelectedBaselines] = useState<BaselineLevel[]>([]);
   const [selectedControlId, setSelectedControlId] = useState<string>('');
   const [processedControls, setProcessedControls] = useState<Control[]>([]);
 
   const pillars = getPillars();
   const baselineLevels = getBaselineLevels();
   
-  const handlePillarClick = (pillar: ZeroTrustPillar) => {
-    setSelectedPillar(pillar);
+  const handlePillarToggle = (pillar: ZeroTrustPillar) => {
+    setSelectedPillars(prev => 
+      prev.includes(pillar) 
+        ? prev.filter(p => p !== pillar)
+        : [...prev, pillar]
+    );
   };
   
-  const handleBaselineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value as BaselineLevel;
-    setSelectedBaseline(value);
+  const handleBaselineToggle = (baseline: BaselineLevel) => {
+    setSelectedBaselines(prev => 
+      prev.includes(baseline) 
+        ? prev.filter(b => b !== baseline)
+        : [...prev, baseline]
+    );
   };
 
   const handleControlsProcessed = (newControls: Control[]) => {
     setProcessedControls(newControls);
     // Optionally, reset filters or perform other actions when new controls are loaded
-    setSelectedPillar(null);
-    setSelectedBaseline(null);
+    setSelectedPillars([]);
+    setSelectedBaselines([]);
     setSelectedControlId('');
   };
   
   const getDisplayedControls = () => {
     // If no filters are selected return nothing
-    if (!selectedPillar && !selectedBaseline && !selectedControlId) {
+    if (selectedPillars.length === 0 && selectedBaselines.length === 0 && !selectedControlId) {
       return [];
     }
     // Start with the full list of controls
     let filteredControls = processedControls;
-    if (selectedPillar) {
-      filteredControls = getControlsByPillar(selectedPillar, filteredControls);
+    
+    // Filter by selected pillars (AND logic - control must have all selected pillars)
+    if (selectedPillars.length > 0) {
+      filteredControls = filteredControls.filter(control => 
+        selectedPillars.every(pillar => control.pillars.includes(pillar))
+      );
     }
-    if (selectedBaseline) {
-      filteredControls = getControlsByBaseline(selectedBaseline, filteredControls);
+    
+    // Filter by selected baselines (OR logic - control must match at least one selected baseline)
+    if (selectedBaselines.length > 0) {
+      filteredControls = filteredControls.filter(control => 
+        selectedBaselines.includes(control.baseline)
+      );
     }
+    
+    // Filter by control ID (if specified)
     if (selectedControlId) {
       filteredControls = filteredControls.filter(control => 
         control.id.toLowerCase().includes(selectedControlId.toLowerCase())
@@ -69,28 +88,33 @@ export default function Home() {
   };
   
   const getTableTitle = () => {
-    if (selectedPillar && !selectedBaseline && !selectedControlId) {
-      return `${selectedPillar} Pillar Controls`;
+    const titleParts: string[] = [];
+    
+    if (selectedPillars.length > 0) {
+      if (selectedPillars.length === 1) {
+        titleParts.push(`${selectedPillars[0]} Pillar`);
+      } else {
+        titleParts.push(`${selectedPillars.length} Pillars`);
+      }
     }
-    if (!selectedPillar && selectedBaseline && !selectedControlId) {
-      return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline Controls`;
+    
+    if (selectedBaselines.length > 0) {
+      if (selectedBaselines.length === 1) {
+        titleParts.push(`${selectedBaselines[0].charAt(0).toUpperCase() + selectedBaselines[0].slice(1)} Baseline`);
+      } else {
+        titleParts.push(`${selectedBaselines.length} Baselines`);
+      }
     }
-    if (!selectedPillar && !selectedBaseline && selectedControlId) {
-      return `Controls matching "${selectedControlId}"`;
+    
+    if (selectedControlId) {
+      titleParts.push(`matching "${selectedControlId}"`);
     }
-    if (selectedPillar && selectedBaseline && !selectedControlId) {
-      return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline and ${selectedPillar} Pillar Controls`;
+    
+    if (titleParts.length === 0) {
+      return 'Please Select Baseline/Pillar or Search Control ID';
     }
-    if (selectedPillar && !selectedBaseline && selectedControlId) {
-      return `${selectedPillar} Pillar Controls matching "${selectedControlId}"`;
-    }
-    if (!selectedPillar && selectedBaseline && selectedControlId) {
-      return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline Controls matching "${selectedControlId}"`;
-    }
-    if (selectedPillar && selectedBaseline && selectedControlId) {
-      return `${selectedBaseline.charAt(0).toUpperCase() + selectedBaseline.slice(1)} Baseline and ${selectedPillar} Pillar Controls matching "${selectedControlId}"`;
-    }
-    return 'Please Select Baseline/Pillar or Search Control ID';
+    
+    return titleParts.join(' and ') + ' Controls';
   };
 
   return (
@@ -134,7 +158,7 @@ export default function Home() {
               <PillarCard 
                 key={pillar} 
                 pillar={pillar} 
-                onClick={() => handlePillarClick(pillar)}
+                onClick={() => handlePillarToggle(pillar)}
                 controls={processedControls} 
               />
             ))}
@@ -142,48 +166,49 @@ export default function Home() {
         </Tabs.Content>
           
         <Tabs.Content value="Controls">
-          <Flex direction={{ base: 'column', md: 'row' }} mb={4} gap={3}>
+          <Flex direction={{ base: 'column', lg: 'row' }} mb={4} gap={6}>
             <Box flex="1">
-              
               <Text mb={3} mt={3} fontWeight="medium">Filter by Baseline:</Text>
-              <NativeSelect.Root size="lg" >
-                <NativeSelect.Field 
-                  textAlign='center'
-                  placeholder='Select Baseline'
-                  value={selectedBaseline || ''}
-                  onChange={ handleBaselineChange }
-                >
+                              <VStack align="start" gap={2}>
                   {baselineLevels.map((level) => (
-                  <option key={level} value={level}>
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </option>
-                  ))}
-                </NativeSelect.Field>
-                <NativeSelect.Indicator/>
-              </NativeSelect.Root>
+                  <Checkbox.Root
+                    key={level}
+                    checked={selectedBaselines.includes(level)}
+                    onCheckedChange={() => handleBaselineToggle(level)}
+                    colorPalette="blue"
+                  >
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control>
+                      <Checkbox.Indicator />
+                    </Checkbox.Control>
+                    <Checkbox.Label>
+                      {level.charAt(0).toUpperCase() + level.slice(1)}
+                    </Checkbox.Label>
+                  </Checkbox.Root>
+                ))}
+              </VStack>
             </Box>
             
             <Box flex="1">
               <Text mb={3} mt={3} fontWeight="medium">Filter by Pillar:</Text>
-              <NativeSelect.Root size="lg">
-                <NativeSelect.Field 
-                  textAlign='center'
-                  placeholder='Select Pillar'
-                  value={selectedPillar || ''}
-                  onChange={(e) => {
-                    const value = e.target.value as ZeroTrustPillar;
-                    handlePillarClick(value);
-                  }}
-                >
+                              <VStack align="start" gap={2}>
                   {pillars.map((pillar) => (
-                  <option key={pillar} value={pillar}>
-                    {pillar}
-                  </option>
-                  ))}
-                </NativeSelect.Field>
-                <NativeSelect.Indicator/>
-              </NativeSelect.Root>
+                  <Checkbox.Root
+                    key={pillar}
+                    checked={selectedPillars.includes(pillar)}
+                    onCheckedChange={() => handlePillarToggle(pillar)}
+                    colorPalette="blue"
+                  >
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control>
+                      <Checkbox.Indicator />
+                    </Checkbox.Control>
+                    <Checkbox.Label>{pillar}</Checkbox.Label>
+                  </Checkbox.Root>
+                ))}
+              </VStack>
             </Box>
+            
             <Box flex="1">
               <Text mb={3} mt={3} fontWeight="medium">Search by Control ID:</Text>
               <Input
@@ -195,6 +220,23 @@ export default function Home() {
               />
             </Box>
           </Flex>
+          
+          {(selectedPillars.length > 0 || selectedBaselines.length > 0 || selectedControlId) && (
+            <Flex justify="center" mb={4}>
+              <Button
+                variant="outline"
+                colorPalette="gray"
+                onClick={() => {
+                  setSelectedPillars([]);
+                  setSelectedBaselines([]);
+                  setSelectedControlId('');
+                }}
+              >
+                Clear All Filters
+              </Button>
+            </Flex>
+          )}
+          
           <Box>
             <ControlsTable 
             controls={getDisplayedControls()} 

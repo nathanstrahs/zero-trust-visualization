@@ -5,6 +5,7 @@ import { extractNistControlStatuses } from '@/utils/oscalParser';
 import { Control, ZeroTrustPillar } from '@/types';
 import { MAX_FILE_SIZE_MB } from './OscalFileUpload';
 import { toaster } from './ui/toaster';
+import PillarDiffChart from './PillarDiffChart';
 import {
   Box,
   Button,
@@ -331,7 +332,17 @@ const OscalDiffUploader = () => {
         </Flex>
 
         {controlsLeft.length > 0 && controlsRight.length > 0 && (
-          <DiffTable diffs={diffResults} />
+          <>
+            <Box mt={8}>
+              <PillarDiffChart 
+                baselineControls={controlsLeft}
+                comparisonControls={controlsRight}
+                baselineFileName={fileNameLeft}
+                comparisonFileName={fileNameRight}
+              />
+            </Box>
+            <DiffTable diffs={diffResults} />
+          </>
         )}
       </Box>
     </Box>

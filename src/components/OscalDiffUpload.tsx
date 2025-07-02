@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { getPillarsForKey } from '@/utils/map_pillars';
 import { getBaselineForKey } from '@/utils/BaselineLookup';
 import { extractNistControlStatuses } from '@/utils/oscalParser';
@@ -6,6 +6,7 @@ import { Control, ZeroTrustPillar } from '@/types';
 import { MAX_FILE_SIZE_MB } from './OscalFileUpload';
 import { toaster } from './ui/toaster';
 import PillarDiffChart from './PillarDiffChart';
+import { getPillars } from '@/utils/helpers';
 import {
   Box,
   Button,
@@ -16,7 +17,12 @@ import {
   Alert,
   Flex,
   Table,
-  Badge
+  Badge,
+  Input,
+  Checkbox,
+  SimpleGrid,
+  HStack,
+  Separator
 } from "@chakra-ui/react";
 
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB*1024*1024;
@@ -189,6 +195,11 @@ const OscalDiffUploader = () => {
     const [diffResults, setDiffResults] = useState<DiffResult[]>([]);
     const [error, setError] = useState<string>('');
     
+    // Filter states
+    const [selectedPillars, setSelectedPillars] = useState<ZeroTrustPillar[]>(getPillars());
+    const [controlSearchTerm, setControlSearchTerm] = useState<string>('');
+    const [excludedControls, setExcludedControls] = useState<Set<string>>(new Set());
+    
     const processFile = (file: File, setControls: (controls: Control[]) => void, setFileName: (name: string) => void) => {
         if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
             setError(`File is too large. Max size is ${MAX_FILE_SIZE_MB}MB.`);
@@ -270,13 +281,84 @@ const OscalDiffUploader = () => {
         
         reader.readAsText(file);
     };
+
+    // Memoized filtered controls - only recalculate when dependencies actually change
+    const filteredControlsLeft = useMemo(() => {
+        return controlsLeft.filter(control => {
+            // Check if control belongs to any selected pillar
+            const pillarMatch = control.pillars.some(pillar => selectedPillars.includes(pillar));
+            // Check if control is not excluded
+            const notExcluded = !excludedControls.has(control.id);
+            return pillarMatch && notExcluded;
+        });
+    }, [controlsLeft, selectedPillars, excludedControls]);
+
+    const filteredControlsRight = useMemo(() => {
+        return controlsRight.filter(control => {
+            // Check if control belongs to any selected pillar
+            const pillarMatch = control.pillars.some(pillar => selectedPillars.includes(pillar));
+            // Check if control is not excluded
+            const notExcluded = !excludedControls.has(control.id);
+            return pillarMatch && notExcluded;
+        });
+    }, [controlsRight, selectedPillars, excludedControls]);
+
+    // Get all unique controls for search (combining both datasets)
+    const allControls = useMemo(() => {
+        const combined = [...controlsLeft, ...controlsRight];
+        const uniqueMap = new Map<string, Control>();
+        combined.forEach(control => {
+            if (!uniqueMap.has(control.id)) {
+                uniqueMap.set(control.id, control);
+            }
+        });
+        return Array.from(uniqueMap.values()).sort((a, b) => a.id.localeCompare(b.id));
+    }, [controlsLeft, controlsRight]);
+
+    // Filter controls for search results
+    const searchResults = useMemo(() => {
+        if (!controlSearchTerm.trim()) return [];
+        return allControls.filter(control => 
+            control.id.toLowerCase().includes(controlSearchTerm.toLowerCase()) ||
+            control.name.toLowerCase().includes(controlSearchTerm.toLowerCase())
+        ).slice(0, 10); // Limit to 10 results for performance
+    }, [allControls, controlSearchTerm]);
+
+    // Handle pillar toggle
+    const handlePillarToggle = (pillar: ZeroTrustPillar) => {
+        setSelectedPillars(prev => 
+            prev.includes(pillar) 
+                ? prev.filter(p => p !== pillar)
+                : [...prev, pillar]
+        );
+    };
+
+    // Handle control search
+    const handleControlSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setControlSearchTerm(event.target.value);
+    };
+
+    // Handle control exclusion toggle
+    const handleControlExclusionToggle = (controlId: string) => {
+        setExcludedControls(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(controlId)) {
+                newSet.delete(controlId);
+            } else {
+                newSet.add(controlId);
+            }
+            return newSet;
+        });
+        // Clear search after selecting/deselecting
+        setControlSearchTerm('');
+    };
     
     useEffect(() => {
-        if (controlsLeft.length > 0 && controlsRight.length > 0) {
-            const controlsLeftMap = new Map<string, Control>(controlsLeft.map(c => [c.id, c]));
+        if (filteredControlsLeft.length > 0 && filteredControlsRight.length > 0) {
+            const controlsLeftMap = new Map<string, Control>(filteredControlsLeft.map(c => [c.id, c]));
             const newDiffs: DiffResult[] = [];
 
-            controlsRight.forEach(controlRight => {
+            filteredControlsRight.forEach(controlRight => {
                 const controlLeft = controlsLeftMap.get(controlRight.id);
                 if (controlLeft && controlLeft.status !== controlRight.status) {
                     newDiffs.push({
@@ -294,7 +376,7 @@ const OscalDiffUploader = () => {
         } else {
             setDiffResults([]);
         }
-    }, [controlsLeft, controlsRight]);
+    }, [filteredControlsLeft, filteredControlsRight]);
 
     return (
     <Box p={6} minH="100vh">
@@ -334,15 +416,179 @@ const OscalDiffUploader = () => {
 
         {controlsLeft.length > 0 && controlsRight.length > 0 && (
           <>
-            <Box mt={8}>
-              <PillarDiffChart 
-                baselineControls={controlsLeft}
-                comparisonControls={controlsRight}
-                baselineFileName={fileNameLeft}
-                comparisonFileName={fileNameRight}
-              />
+            {/* Filter Controls */}
+            <Box mt={8} p={6} bg="gray.50" borderRadius="lg" _dark={{ bg: "gray.800" }}>
+              <Heading as="h3" size="md" mb={4} color="gray.800" _dark={{ color: "white" }}>
+                Filter Controls
+              </Heading>
+              <Separator mb={4} />
+              
+              {/* Pillar Checkboxes */}
+              <Box mb={6}>
+                <HStack justify="space-between" mb={3}>
+                  <Text fontWeight="semibold" color="gray.700" _dark={{ color: "gray.300" }}>
+                    Select Zero Trust Pillars:
+                  </Text>
+                  <HStack gap={2}>
+
+                    <Button
+                      size="xs"
+                      variant="subtle"
+                      onClick={() => setSelectedPillars(getPillars())}
+                    >
+                      Select All
+                    </Button>
+                    <Button
+                      size="xs"
+                      variant="subtle"
+                      onClick={() => setSelectedPillars([])}
+                      colorPalette="gray"
+                    >
+                      Clear All
+                    </Button>
+                  </HStack>
+                </HStack>
+                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={3}>
+                  {getPillars().map(pillar => (
+                    <Checkbox.Root
+                      key={pillar}
+                      checked={selectedPillars.includes(pillar)}
+                      onCheckedChange={() => handlePillarToggle(pillar)}
+                      colorPalette="blue"
+                    >
+                      <Checkbox.HiddenInput />
+                      <Checkbox.Control>
+                        <Checkbox.Indicator />
+                      </Checkbox.Control>
+                      <Checkbox.Label fontSize="sm">{pillar}</Checkbox.Label>
+                    </Checkbox.Root>
+                  ))}
+                </SimpleGrid>
+              </Box>
+
+              {/* Control Search and Exclusion */}
+              <Box>
+                <HStack justify="space-between" mb={3}>
+                  <Text fontWeight="semibold" color="gray.700" _dark={{ color: "gray.300" }}>
+                    Exclude Specific Controls:
+                  </Text>
+                  {excludedControls.size > 0 && (
+                    <Button
+                      size="xs"
+                      variant="outline"
+                      onClick={() => setExcludedControls(new Set())}
+                      colorPalette="red"
+                    >
+                      Clear All Excluded ({excludedControls.size})
+                    </Button>
+                  )}
+                </HStack>
+                
+                <VStack align="stretch" gap={3}>
+                  <Input
+                    placeholder="Search for controls to exclude (e.g., AC-1, AC-2)..."
+                    value={controlSearchTerm}
+                    onChange={handleControlSearchChange}
+                    size="md"
+                    bg="white"
+                    _dark={{ bg: "gray.700" }}
+                  />
+                  
+                  {searchResults.length > 0 && (
+                    <Box 
+                      maxH="200px" 
+                      overflowY="auto" 
+                      border="1px solid" 
+                      borderColor="gray.200" 
+                      borderRadius="md" 
+                      bg="white"
+                      _dark={{ bg: "gray.700", borderColor: "gray.600" }}
+                    >
+                      {searchResults.map((control) => (
+                        <Flex
+                          key={control.id}
+                          p={2}
+                          cursor="pointer"
+                          _hover={{ bg: "gray.50", _dark: { bg: "gray.600" } }}
+                          onClick={() => handleControlExclusionToggle(control.id)}
+                          justify="space-between"
+                          align="center"
+                        >
+                          <VStack align="start" gap={0} flex={1}>
+                            <Text fontSize="sm" fontWeight="medium">
+                              {control.id}
+                            </Text>
+                            <Text fontSize="xs" color="gray.600" _dark={{ color: "gray.400" }} truncate>
+                              {control.name}
+                            </Text>
+                          </VStack>
+                          <Badge
+                            colorPalette={excludedControls.has(control.id) ? "red" : "gray"}
+                            variant="outline"
+                            size="sm"
+                          >
+                            {excludedControls.has(control.id) ? "Excluded" : "Exclude"}
+                          </Badge>
+                        </Flex>
+                      ))}
+                    </Box>
+                  )}
+                  
+                  {excludedControls.size > 0 && (
+                    <Box>
+                      <Text fontSize="sm" fontWeight="medium" mb={2} color="red.600" _dark={{ color: "red.400" }}>
+                        Excluded Controls ({excludedControls.size}):
+                      </Text>
+                      <Flex wrap="wrap" gap={1}>
+                        {Array.from(excludedControls).map((controlId) => (
+                          <Badge
+                            key={controlId}
+                            colorPalette="red"
+                            variant="subtle"
+                            cursor="pointer"
+                            onClick={() => handleControlExclusionToggle(controlId)}
+                            _hover={{ opacity: 0.8 }}
+                          >
+                            {controlId} ✕
+                          </Badge>
+                        ))}
+                      </Flex>
+                    </Box>
+                  )}
+                </VStack>
+                
+                <Text fontSize="xs" color="gray.500" mt={2} _dark={{ color: "gray.400" }}>
+                  Showing {filteredControlsLeft.length} baseline controls and {filteredControlsRight.length} comparison controls
+                  {excludedControls.size > 0 && ` (${excludedControls.size} excluded)`}
+                </Text>
+              </Box>
             </Box>
-            <DiffTable diffs={diffResults} />
+
+            {/* Chart and Table with filtered data */}
+            {filteredControlsLeft.length > 0 && filteredControlsRight.length > 0 ? (
+              <>
+                <Box mt={8}>
+                  <PillarDiffChart 
+                    baselineControls={filteredControlsLeft}
+                    comparisonControls={filteredControlsRight}
+                    baselineFileName={fileNameLeft}
+                    comparisonFileName={fileNameRight}
+                    selectedPillars={selectedPillars}
+                  />
+                </Box>
+                <DiffTable diffs={diffResults} />
+              </>
+            ) : (
+              <Box mt={8} p={6} textAlign="center" bg="yellow.50" borderRadius="lg" _dark={{ bg: "yellow.900" }}>
+                <Heading as="h3" size="md" mb={2} color="yellow.800" _dark={{ color: "yellow.200" }}>
+                  No Controls Match Current Filters
+                </Heading>
+                <Text color="yellow.700" _dark={{ color: "yellow.300" }}>
+                  Try adjusting your pillar selection or search term to see more results.
+                  {selectedPillars.length === 0 && " You must select at least one pillar."}
+                </Text>
+              </Box>
+            )}
           </>
         )}
       </Box>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -28,6 +28,7 @@ interface PillarDiffChartProps {
   comparisonControls: Control[];
   baselineFileName?: string;
   comparisonFileName?: string;
+  selectedPillars?: ZeroTrustPillar[];
 }
 
 const calculatePillarCompliance = (controls: Control[]): Map<ZeroTrustPillar, { compliance: number; total: number, passing: number }> => {
@@ -71,7 +72,8 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
   baselineControls,
   comparisonControls,
   baselineFileName = 'Baseline',
-  comparisonFileName = 'Comparison'
+  comparisonFileName = 'Comparison',
+  selectedPillars
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const chartRef = useRef<ChartJS | null>(null);
@@ -85,14 +87,18 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
   const baselineCompliance = calculatePillarCompliance(baselineControls);
   const comparisonCompliance = calculatePillarCompliance(comparisonControls);
   
-  // Get all unique pillars from both datasets
-  const allPillars = Array.from(new Set([
-    ...baselineCompliance.keys(),
-    ...comparisonCompliance.keys()
-  ])).sort();
+  // Get pillars to display - either selectedPillars or all unique pillars from datasets
+  const allPillars = selectedPillars && selectedPillars.length > 0 
+    ? selectedPillars.filter(pillar => 
+        baselineCompliance.has(pillar) || comparisonCompliance.has(pillar)
+      ).sort()
+    : Array.from(new Set([
+        ...baselineCompliance.keys(),
+        ...comparisonCompliance.keys()
+      ])).sort();
 
-  // Prepare chart data
-  const chartData = {
+  // Memoize chart data to prevent unnecessary re-renders
+  const chartData = useMemo(() => ({
     labels: allPillars,
     datasets: [
       {
@@ -120,9 +126,9 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
         pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
       }
     ]
-  };
+  }), [allPillars, baselineCompliance, comparisonCompliance, baselineFileName, comparisonFileName]);
 
-  const options = {
+  const options = useMemo(() => ({
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -189,7 +195,7 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
         },
       },
     },
-  };
+  }), [allPillars, baselineCompliance, comparisonCompliance]);
 
   useEffect(() => {
     if (isClient && canvasRef.current && allPillars.length > 0) {
@@ -212,7 +218,7 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
         chartRef.current.destroy();
       }
     };
-  }, [isClient, baselineControls, comparisonControls, allPillars.length]);
+  }, [isClient, chartData, options]);
 
   if (baselineControls.length === 0 || comparisonControls.length === 0) {
     return (

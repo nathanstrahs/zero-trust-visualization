@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { Control, BaselineLevel } from '@/types';
 import { useApplicable } from '@/contexts/ExpansionContext';
+import ControlDetailModal from './ControlDetailModal';
 
 interface ControlsTableProps {
   controls: Control[];
@@ -22,6 +23,8 @@ interface ControlsTableProps {
 const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpandable=false, initialRowCount=5 }) => {
   const { showIsApplicable, toggleApplicable } = useApplicable();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedControlId, setSelectedControlId] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   console.log(`ControlsTable: isExpanded=${isExpanded}, title=${title}`);
   const getStatusColor = (status: Control['status']) => {
@@ -57,6 +60,16 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
   const showExpansionButton = isExpandable && filteredControls.length > initialRowCount;
   const displayedControls = showExpansionButton && !isExpanded ? filteredControls.slice(0, initialRowCount) : filteredControls;
 
+  const handleControlClick = (controlId: string) => {
+    setSelectedControlId(controlId);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedControlId('');
+  };
+
   return (
    <Box overflowX="auto">
     <Flex justify="space-between" align="center" mb={4}>
@@ -90,7 +103,12 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
           </Table.Header>
           <Table.Body>
             {displayedControls.map((control) => (
-              <Table.Row key={control.id}>
+              <Table.Row 
+                key={control.id}
+                cursor="pointer"
+                _hover={{ bg: "gray.50", _dark: { bg: "gray.700" } }}
+                onClick={() => handleControlClick(control.id)}
+              >
                 <Table.Cell>{control.id}</Table.Cell>
                 <Table.Cell>
                   <Text fontWeight="medium">{control.name}</Text>
@@ -119,6 +137,13 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
           </Button>
         </Flex>
       )}
+      
+      <ControlDetailModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        controlId={selectedControlId}
+        controls={controls}
+      />
     </Box>
   );
 };

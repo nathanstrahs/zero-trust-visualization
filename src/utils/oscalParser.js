@@ -251,7 +251,8 @@ function extractNistControlStatuses(oscalDoc) {
             details: [],
             passingObs: 0,
             totalObs: 0,
-            proccessedObsUuids: new Set() 
+            proccessedObsUuids: new Set(),
+            allObservations: [],
         });
     });
     // Process findings to update statuses
@@ -295,19 +296,35 @@ function extractNistControlStatuses(oscalDoc) {
                             // retrieve the observation from the map created earlier
                             const observation = observationsMap.get(obsUuid);
                             if (observation) {
+                                const obsTitle = observation.title;
+                                const obsDescription = observation.description;
+                                let obsResult = 'unknown';
 
                                 observation.subjects?.forEach(subject => {
                                     subject.props?.forEach(prop => {
-                                        // if the observation passes, update the pass count
-                                        if (prop.name === "result" && prop.value.toLowerCase() === "pass"){
-                                            currentEntry.passingObs++;
-                                        }
-                                        // if observation is pass, fail, or notaddressed, update the total observation count
-                                        if (prop.name === "result" && (prop.value.toLowerCase() === "pass" || prop.value.toLowerCase() === "fail" || prop.value.toLowerCase() === "notchecked")){
-                                            currentEntry.totalObs++;
+                                        if (prop.name === "result"){
+                                            const resultVal = prop.value.toLowerCase();
+                                            obsResult = resultVal;
+                                            // if the observation passes, update the pass count
+                                            if (resultVal === "pass"){
+                                                currentEntry.passingObs++;
+                                            }
+                                            // if observation is pass, fail, or notaddressed, update the total observation count
+                                            if (resultVal === "pass" || resultVal === "fail" || resultVal === "notchecked"){
+                                                currentEntry.totalObs++;
+                                            }
                                         }
                                     });
                                 });
+
+                                const extractedObservation = {
+                                    uuid: obsUuid,
+                                    title: obsTitle,
+                                    description: obsDescription,
+                                    result: obsResult,
+                                };
+
+                                currentEntry.allObservations.push(extractedObservation);
                             }
                         }
                     });
@@ -323,7 +340,8 @@ function extractNistControlStatuses(oscalDoc) {
             status: value.status,
             details: value.details,
             passingObs: value.passingObs,
-            totalObs: value.totalObs
+            totalObs: value.totalObs,
+            allObservations: value.allObservations
         });
     });
     return finalResults;

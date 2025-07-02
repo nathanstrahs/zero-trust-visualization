@@ -26,7 +26,6 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
   const [selectedControlId, setSelectedControlId] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  console.log(`ControlsTable: isExpanded=${isExpanded}, title=${title}`);
   const getStatusColor = (status: Control['status']) => {
     switch (status) {
       case 'passing':
@@ -70,6 +69,21 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
     setSelectedControlId('');
   };
 
+  const expansionButton = showExpansionButton && (
+    <Flex justify="center" mt={4}>
+          <Button 
+            variant="ghost" 
+            colorScheme="blue"
+            onClick={() => {
+              console.log('ControlsTable button clicked! Current isExpanded:', isExpanded);
+              setIsExpanded(!isExpanded);
+            }}
+          >
+            {isExpanded ? 'Show Less' : `Show More (${filteredControls.length - initialRowCount} more)`}
+          </Button>
+        </Flex>
+  );
+
   return (
    <Box overflowX="auto">
     <Flex justify="space-between" align="center" mb={4}>
@@ -87,6 +101,19 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
           <Checkbox.Label>Show Non-Applicable</Checkbox.Label> 
         </Checkbox.Root>
       </Flex>
+      
+      {showExpansionButton && isExpanded && (
+        <Flex justify="center" mb={4}>
+          <Button 
+            variant="ghost" 
+            colorScheme="blue"
+            onClick={() => setIsExpanded(false)}
+          >
+            Show Less
+          </Button>
+        </Flex>
+      )}
+
       {filteredControls.length === 0 ? (
         <Text>No controls found.</Text>
       ) : (
@@ -123,21 +150,10 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
           </Table.Body>
         </Table.Root>
       )}
-      {showExpansionButton && (
-        <Flex justify="center" mt={4}>
-          <Button 
-            variant="ghost" 
-            colorScheme="blue"
-            onClick={() => {
-              console.log('ControlsTable button clicked! Current isExpanded:', isExpanded);
-              setIsExpanded(!isExpanded);
-            }}
-          >
-            {isExpanded ? 'Show Less' : `Show More (${filteredControls.length - initialRowCount} more)`}
-          </Button>
-        </Flex>
-      )}
       
+      {/*expansion button at the bottom*/}
+      {expansionButton}
+
       <ControlDetailModal
         isOpen={isModalOpen}
         onClose={handleModalClose}

@@ -35,6 +35,17 @@ function checkProperty(obj, propName, expectedType, pathString) {
 }
 
 /**
+ * Validates a controlID to ensure it follows correct convention
+ * 
+ * @param {string} controlID
+ * @returns {boolean} true if valid otherwise false
+ */
+const isValidControlID = (controlId) => {
+    const validRegex = /^[A-Z]{2}-.+/;
+    return validRegex.test(controlId);
+}
+
+/**
  * Validates the structure of an OSCAL assessment-results document
  * to ensure it contains all fields accessed by the oscalParser.js's
  * extractNistControlStatuses function. This helps prevent runtime errors
@@ -217,7 +228,7 @@ function extractNistControlStatuses(oscalDoc) {
             // Regex to extract control ID part (e.g., "ac-6.1" from "ac-6.1_obj")
             // Adjust regex if control ID patterns are different. This handles common NIST patterns
             var controlIdMatch = targetId.match(/^([a-zA-Z0-9().-]+)/);
-            if (controlIdMatch && controlIdMatch[1]) {
+            if (controlIdMatch && controlIdMatch[1] && isValidControlID(controlIdMatch[1])) {
                 allRelevantControlIds.add(controlIdMatch[1]);
             }
             else {

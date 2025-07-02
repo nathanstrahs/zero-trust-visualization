@@ -19,4 +19,12 @@ export interface Control {
   status: 'passing' | 'failing' | 'not-applicable';
   passingObs: number;
   totalObs: number;
+  allObservations: Observation[];
+}
+
+export interface Observation {
+  title: string;
+  description: string;
+  result: string;
+  uuid: string;
 }

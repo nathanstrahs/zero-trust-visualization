@@ -237,7 +237,8 @@ const OscalDiffUploader = () => {
                         baseline: mapControlToBaseline(result.controlId),
                         status: mapStatusToControlStatus(result.status),
                         totalObs: result.totalObs,
-                        passingObs: result.passingObs
+                        passingObs: result.passingObs,
+                        allObservations: result.allObservations
                     };
                 });
                 setControls(mappedControls);

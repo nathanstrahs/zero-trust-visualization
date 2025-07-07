@@ -66,7 +66,7 @@ const FileUploader = ({
                     textAlign="center"
                     w="full"
                     >
-                        <Text fontSize="lg" fontWeight="semibold" color="gray.700" mb={2}>
+                        <Text fontSize="lg" fontWeight="semibold" color="gray.700" mb={2} _dark={{ color: "white" }}>
                             {title}
                         </Text>
                         <FileUpload.Trigger asChild>
@@ -76,7 +76,7 @@ const FileUploader = ({
                         </FileUpload.Trigger>
                         {
                             fileName && (
-                                <Text mt={3} fontSize="sm" color="gray.500" truncate>
+                                <Text mt={3} fontSize="sm" color="gray.500" truncate _dark={{ color: "white" }}>
                                     File: {fileName}
                                 </Text>
                             )
@@ -121,7 +121,7 @@ const DiffTable = ({ diffs }: { diffs: DiffResult[] }) => {
 
     return (
     <Box mt={8}>
-      <Heading as="h2" size="lg" textAlign="center" mb={4} color="gray.800">
+      <Heading as="h2" size="lg" textAlign="center" mb={4} color="gray.800" _dark={{ color: "white" }}>
         Control Status Changes
       </Heading>
       <Box
@@ -382,10 +382,10 @@ const OscalDiffUploader = () => {
     <Box p={6} minH="100vh">
       <Box maxW="7xl" mx="auto">
         <Box textAlign="center" mb={8}>
-          <Heading as="h1" size="xl" fontWeight="bold" color="gray.800">
+          <Heading as="h1" size="xl" fontWeight="bold" color="gray.800" _dark={{ color: "white" }}>
             OSCAL Assessment Diff Tool
           </Heading>
-          <Text color="gray.600" mt={2}>
+          <Text color="gray.600" mt={2} _dark={{ color: "white" }}>
             Upload two OSCAL assessment-results files to see the differences in
             control statuses.
           </Text>

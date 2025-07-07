@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 import { Box, Text } from '@chakra-ui/react';
 import { Control, ZeroTrustPillar } from '@/types';
+import { useColorMode } from './ui/color-mode';
 
 // Register Chart.js components
 ChartJS.register(
@@ -78,6 +79,7 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const chartRef = useRef<ChartJS | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const { colorMode } = useColorMode(); // Get the current color mode
 
   useEffect(() => {
     setIsClient(true);
@@ -128,74 +130,84 @@ const PillarDiffChart: React.FC<PillarDiffChartProps> = ({
     ]
   }), [allPillars, baselineCompliance, comparisonCompliance, baselineFileName, comparisonFileName]);
 
-  const options = useMemo(() => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-        labels: {
-          font: {
-            size: 14,
-          },
-        },
-      },
-      title: {
-        display: true,
-        text: 'Compliance Comparison by Zero Trust Pillar',
-        font: {
-          size: 18,
-          weight: 'bold' as const,
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: function (context: any) {
-            const pillar = allPillars[context.dataIndex];
-            const isBaseline = context.datasetIndex === 0;
-            const complianceData = isBaseline 
-              ? baselineCompliance.get(pillar)
-              : comparisonCompliance.get(pillar);
-            
-            const passing = complianceData?.passing || 0;
-            const total = complianceData?.total || 0;
-            const percentage = Number(context.formattedValue);
-            const label = context.dataset.label;
+  const options = useMemo(() => {
+    // set grid line color based on theme
+    const gridColor = colorMode === 'dark' ? 'gray' : 'rgba(0, 0, 0, 0.1)';
+    const pointLabelColor = colorMode === 'dark' ? 'white' : 'black';
+    const tickColor = colorMode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.5)';
 
-            return `${label}: ${passing}/${total} (${percentage.toFixed(1)}%)`;
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top' as const,
+          labels: {
+            font: {
+              size: 14,
+            },
+            color: pointLabelColor,
           },
         },
-      },
-    },
-    scales: {
-      r: {
-        min: 0,
-        max: 100,
-        angleLines: {
+        title: {
           display: true,
-          color: 'rgba(0, 0, 0, 0.1)',
-        },
-        grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
-        },
-        pointLabels: {
+          text: 'Compliance Comparison by Zero Trust Pillar',
           font: {
-            size: 12,
-            weight: 500,
+            size: 18,
+            weight: 'bold' as const,
+          },
+          color: pointLabelColor,
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context: any) {
+              const pillar = allPillars[context.dataIndex];
+              const isBaseline = context.datasetIndex === 0;
+              const complianceData = isBaseline
+                ? baselineCompliance.get(pillar)
+                : comparisonCompliance.get(pillar);
+
+              const passing = complianceData?.passing || 0;
+              const total = complianceData?.total || 0;
+              const percentage = Number(context.formattedValue);
+              const label = context.dataset.label;
+
+              return `${label}: ${passing}/${total} (${percentage.toFixed(1)}%)`;
+            },
           },
         },
-        ticks: {
-          display: true,
-          stepSize: 20,
-          backdropColor: 'transparent',
-          color: 'rgba(0, 0, 0, 0.5)',
-          callback: function(value: any) {
-            return value + '%';
-          }
+      },
+      scales: {
+        r: {
+          min: 0,
+          max: 100,
+          angleLines: {
+            display: true,
+            color: gridColor,
+          },
+          grid: {
+            color: gridColor,
+          },
+          pointLabels: {
+            font: {
+              size: 12,
+              weight: 500,
+            },
+            color: pointLabelColor, 
+          },
+          ticks: {
+            display: true,
+            stepSize: 20,
+            backdropColor: 'transparent',
+            color: tickColor, 
+            callback: function (value: any) {
+              return value + '%';
+            }
+          },
         },
       },
-    },
-  }), [allPillars, baselineCompliance, comparisonCompliance]);
+    };
+  }, [allPillars, baselineCompliance, comparisonCompliance, colorMode]);
 
   useEffect(() => {
     if (isClient && canvasRef.current && allPillars.length > 0) {

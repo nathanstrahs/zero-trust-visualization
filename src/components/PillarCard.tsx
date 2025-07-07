@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Heading, Text, Progress, Badge, Flex, Spacer } from '@chakra-ui/react';
 import { ZeroTrustPillar, Control } from '@/types';
-import { getControlsByPillar, getPassingPercentageByPillar } from '@/utils/helpers';
+import { getPassingPercentageByPillar, getPillarStats } from '@/utils/helpers';
 import { useApplicable } from '@/contexts/ExpansionContext';
 
 interface PillarCardProps {
@@ -12,8 +12,8 @@ interface PillarCardProps {
 
 const PillarCard: React.FC<PillarCardProps> = ({ pillar, onClick, controls }) => {
   const { showIsApplicable } = useApplicable();
-  const pillarSpecificControls = getControlsByPillar(pillar, controls);
   const passingPercentage = getPassingPercentageByPillar(pillar, controls, showIsApplicable);
+  const [_, total] = getPillarStats(pillar, controls, showIsApplicable);
   
   const getColorScheme = () => {
     if (passingPercentage >= 80) return 'green';
@@ -34,7 +34,7 @@ const PillarCard: React.FC<PillarCardProps> = ({ pillar, onClick, controls }) =>
     >
       <Heading fontSize="xl" mb={2}>{pillar}</Heading>
       <Flex align="center" mb={2}>
-        <Text>{pillarSpecificControls.length} Controls</Text>
+        <Text>{total} Controls</Text>
         <Spacer />
         <Badge colorScheme={getColorScheme()}>
           {passingPercentage.toFixed(0)}% Passing

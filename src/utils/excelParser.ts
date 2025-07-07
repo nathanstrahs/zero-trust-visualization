@@ -1,4 +1,4 @@
-import * as XLSX from 'xlsx';
+import * as ExcelJS from 'exceljs';
 
 export interface ControlDetail {
   identifier: string;
@@ -21,35 +21,36 @@ export const loadControlsFromExcel = async (): Promise<Map<string, ControlDetail
     if (!response.ok) {
       throw new Error('Failed to fetch Excel file');
     }
-    
+
     const arrayBuffer = await response.arrayBuffer();
-    const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-    
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(arrayBuffer);
+
     // Get the first sheet
-    const firstSheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[firstSheetName];
-    
-    // Convert to JSON
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-    
-    // Skip header row and create map
+    const worksheet = workbook.worksheets[0];
+
+    // Create map
     const controlsMap = new Map<string, ControlDetail>();
-    
-    for (let i = 1; i < jsonData.length; i++) {
-      const row = jsonData[i] as any[];
-      if (row.length >= 5 && row[0]) {
+
+    // Iterate over all rows that have values in the worksheet
+    worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+      // Skip header row
+      if (rowNumber === 1) return;
+
+      const values = row.values as string[];
+      if (values.length >= 5 && values[1]) {
         const controlDetail: ControlDetail = {
-          identifier: row[0]?.toString() || '',
-          name: row[1]?.toString() || '',
-          controlText: row[2]?.toString() || '',
-          discussion: row[3]?.toString() || '',
-          relatedControls: row[4]?.toString() || ''
+          identifier: values[1] || '',
+          name: values[2] || '',
+          controlText: values[3] || '',
+          discussion: values[4] || '',
+          relatedControls: values[5] || ''
         };
-        
+
         controlsMap.set(controlDetail.identifier, controlDetail);
       }
-    }
-    
+    });
+
     controlsCache = controlsMap;
     return controlsMap;
   } catch (error) {
@@ -61,4 +62,4 @@ export const loadControlsFromExcel = async (): Promise<Map<string, ControlDetail
 export const getControlDetail = async (controlId: string): Promise<ControlDetail | null> => {
   const controlsMap = await loadControlsFromExcel();
   return controlsMap.get(controlId) || null;
-}; 
+};

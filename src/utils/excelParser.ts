@@ -61,5 +61,8 @@ export const loadControlsFromExcel = async (): Promise<Map<string, ControlDetail
 
 export const getControlDetail = async (controlId: string): Promise<ControlDetail | null> => {
   const controlsMap = await loadControlsFromExcel();
-  return controlsMap.get(controlId) || null;
+
+  const suffixToRemove = /\([a-zA-Z]\)$/;
+  const lookupID = controlId.replace(suffixToRemove, '');
+  return controlsMap.get(lookupID) || null;
 };

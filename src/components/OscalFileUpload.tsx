@@ -4,7 +4,8 @@ import {
   Button, 
   Text, 
   VStack, 
-  Heading
+  Heading,
+  FileUpload
 } from '@chakra-ui/react';
 import { extractNistControlStatuses } from '../utils/oscalParser';
 import { getPillarsForKey } from '../utils/map_pillars';
@@ -14,6 +15,7 @@ import { toaster } from '@/components/ui/toaster';
 import { getBaselineForKey } from '@/utils/BaselineLookup';
 
 export const MAX_FILE_SIZE_MB = 100;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 interface OscalFileUploadProps {
   onControlsProcessed: (controls: Control[]) => void; // This will receive processedControls from the parent
@@ -23,9 +25,8 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
   const [controls, setControls] = useState<Control[]>([]);
   const [fileName, setFileName] = useState<string>('');
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || (file.size > MAX_FILE_SIZE_MB*1024*1024)) {
+  const handleFileUpload = (file: File) => {
+    if (!file || (file.size > MAX_FILE_SIZE_BYTES)) {
       console.error('Error with file upload');
         toaster.create({
           title: 'Error uploading file',
@@ -137,31 +138,43 @@ const OscalFileUpload: React.FC<OscalFileUploadProps> = ({ onControlsProcessed }
       <VStack gap={4} align="stretch">
         <Heading size="md">OSCAL Assessment Results Upload</Heading>
         
-        <Box>
-          <input
-            type="file"
-            accept=".json"
-            id="oscal-file-upload"
-            style={{ display: 'none' }}
-            onChange={handleFileUpload}
-          />
-          <label htmlFor="oscal-file-upload">
-            <Button 
-              as="span" 
-              colorPalette="blue"
-              width="full"
-              cursor="pointer"
-            >
-            Select OSCAL JSON File
-          </Button>
-          </label>
-          
-          {fileName && (
-            <Text mt={2} fontSize="sm">
-              Selected file: {fileName}
-            </Text>
-          )}
-        </Box>
+        <FileUpload.Root
+          maxFiles={1}
+          maxFileSize={MAX_FILE_SIZE_BYTES}
+          onFileAccept={(details) => {
+            if (details.files.length > 0) {
+              handleFileUpload(details.files[0]);
+            }
+          }}
+        >
+          <Box w="full" p={4}>
+            <FileUpload.Dropzone>
+              <VStack
+                border="2px"
+                borderColor="gray.300"
+                borderRadius="lg"
+                p={6}
+                textAlign="center"
+                w="full"
+              >
+                <Text fontSize="lg" fontWeight="semibold" color="gray.700" mb={2} _dark={{ color: "white" }}>
+                  Select OSCAL JSON File
+                </Text>
+                <FileUpload.Trigger asChild>
+                  <Button colorPalette="blue" fontWeight="bold">
+                    Select File
+                  </Button>
+                </FileUpload.Trigger>
+                {fileName && (
+                  <Text mt={3} fontSize="sm" color="gray.500" truncate _dark={{ color: "white" }}>
+                    File: {fileName}
+                  </Text>
+                )}
+              </VStack>
+            </FileUpload.Dropzone>
+            <FileUpload.HiddenInput accept='.json' />
+          </Box>
+        </FileUpload.Root>
         
         {controls.length > 0 && (
           <Box mt={4}>

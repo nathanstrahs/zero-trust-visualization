@@ -11,7 +11,7 @@ import {
   Spinner,
   Alert
 } from '@chakra-ui/react';
-import { getControlDetail, ControlDetail } from '@/utils/excelParser';
+import { getControlDetail, ControlDetail, getControlDetailr4 } from '@/utils/excelParser';
 import { Control } from '@/types';
 
 interface ControlDetailModalProps {
@@ -19,13 +19,15 @@ interface ControlDetailModalProps {
   onClose: () => void;
   controlId: string;
   controls: Control[];
+  useRev4?: boolean;
 }
 
 const ControlDetailModal: React.FC<ControlDetailModalProps> = ({
   isOpen,
   onClose,
   controlId,
-  controls
+  controls,
+  useRev4 = false
 }) => {
   const [controlDetail, setControlDetail] = useState<ControlDetail | null>(null);
   const [loading, setLoading] = useState(false);
@@ -39,11 +41,14 @@ const ControlDetailModal: React.FC<ControlDetailModalProps> = ({
       setError(null);
       setControlDetail(null);
 
-      getControlDetail(controlId)
+      const getControlDetailFunction = useRev4 ? getControlDetailr4 : getControlDetail;
+      const version = useRev4 ? "Rev 4" : "Rev 5";
+
+      getControlDetailFunction(controlId)
         .then(detail => {
           setControlDetail(detail);
           if (!detail) {
-            setError(`Control ${controlId} was not found in the official NIST Control Catalog.`);
+            setError(`Control ${controlId} was not found in the official NIST ${version} Control Catalog.`);
           }
         })
         .catch(err => {
@@ -53,7 +58,7 @@ const ControlDetailModal: React.FC<ControlDetailModalProps> = ({
           setLoading(false);
         });
     }
-  }, [isOpen, controlId]);
+  }, [isOpen, controlId, useRev4]);
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={({ open }) => !open && onClose()} placement="center">
@@ -62,7 +67,7 @@ const ControlDetailModal: React.FC<ControlDetailModalProps> = ({
         <Dialog.Content maxW="4xl" maxH="80vh" overflowY="auto" p={6}>
           <Dialog.Header>
             <Dialog.Title>
-              Control Details: {controlId}
+              Control Details: {controlId} ({useRev4 ? "Rev 4" : "Rev 5"})
             </Dialog.Title>
           </Dialog.Header>
 

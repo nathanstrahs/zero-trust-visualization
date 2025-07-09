@@ -7,7 +7,8 @@ import {
   Table,
   Flex,
   Button,
-  Checkbox
+  Checkbox,
+  HStack
 } from '@chakra-ui/react';
 import { Control, BaselineLevel } from '@/types';
 import { useApplicable } from '@/contexts/ExpansionContext';
@@ -25,6 +26,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedControlId, setSelectedControlId] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [useRev4, setUseRev4] = useState(false);
   
   const getStatusColor = (status: Control['status']) => {
     switch (status) {
@@ -88,18 +90,41 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
    <Box overflowX="auto">
     <Flex justify="space-between" align="center" mb={4}>
         {title && <Heading size="md">{title}</Heading>}
-        <Checkbox.Root
-          checked={showIsApplicable}
-          onCheckedChange={toggleApplicable}
-          colorPalette="blue"
-          size='sm'
-        >
-          <Checkbox.HiddenInput />
-          <Checkbox.Control>
-            <Checkbox.Indicator />
-          </Checkbox.Control>
-          <Checkbox.Label>Show Non-Applicable</Checkbox.Label> 
-        </Checkbox.Root>
+        <HStack gap={4}>
+          <HStack gap={2}>
+            <Text fontSize="sm" color="gray.600" _dark={{ color: "gray.300" }}>
+              Control Version:
+            </Text>
+            <Button
+              size="sm"
+              variant={useRev4 ? "solid" : "outline"}
+              colorPalette="blue"
+              onClick={() => setUseRev4(false)}
+            >
+              Rev 5
+            </Button>
+            <Button
+              size="sm"
+              variant={useRev4 ? "outline" : "solid"}
+              colorPalette="blue"
+              onClick={() => setUseRev4(true)}
+            >
+              Rev 4
+            </Button>
+          </HStack>
+          <Checkbox.Root
+            checked={showIsApplicable}
+            onCheckedChange={toggleApplicable}
+            colorPalette="blue"
+            size='sm'
+          >
+            <Checkbox.HiddenInput />
+            <Checkbox.Control>
+              <Checkbox.Indicator />
+            </Checkbox.Control>
+            <Checkbox.Label>Show Non-Applicable</Checkbox.Label> 
+          </Checkbox.Root>
+        </HStack>
       </Flex>
       
       {showExpansionButton && isExpanded && (
@@ -159,6 +184,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
         onClose={handleModalClose}
         controlId={selectedControlId}
         controls={controls}
+        useRev4={useRev4}
       />
     </Box>
   );

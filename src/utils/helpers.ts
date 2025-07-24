@@ -1,5 +1,6 @@
-import { Control, BaselineLevel, ZeroTrustPillar } from '@/types';
+import { Control, BaselineLevel, ZeroTrustPillar, Observation } from '@/types';
 import { createListCollection } from '@chakra-ui/react';
+import { each } from 'chart.js/helpers';
 
 export const getControlsByPillar = (pillar: ZeroTrustPillar, currentControls: Control[]): Control[] => {
   return currentControls.filter(control => control.pillars.includes(pillar));
@@ -142,4 +143,53 @@ export const getBaselineStats = (baseline: BaselineLevel, controls: Control[], a
   }
   const passingControls = baselineControls.filter( control => control.status === 'passing');
   return [passingControls.length, baselineControls.length]
+};
+
+// get all observations in one place and count how many times they were referenced
+// returns observation[] of all of them, and a map of their 
+export const getAllObservations = (controls: Control[]) => {
+  const uniqueObservations: Observation[] = [];
+  const observationCounts = new Map<string, number>();
+  const seenUuids = new Set<string>(); 
+
+  for (const control of controls) {
+    for (const obs of control.allObservations) {
+      
+      if (!seenUuids.has(obs.uuid)) {
+        uniqueObservations.push(obs);
+        seenUuids.add(obs.uuid);
+      }
+
+      const currentCount = observationCounts.get(obs.uuid) || 0;
+      observationCounts.set(obs.uuid, currentCount + 1);
+    }
+  }
+  return { uniqueObservations, observationCounts };
+};
+
+
+export const getTopFailingObservations = (controls: Control[], topCount: number = 3) => {
+  const { uniqueObservations, observationCounts } = getAllObservations(controls);
+
+  // Filter to only failing observations and create array with counts
+  const failingObservations: Array<{ observation: Observation; failCount: number }> = [];
+
+  for (const obs of uniqueObservations) {
+    const result = obs.result.toLowerCase();
+
+    if (result === "fail" || result === "notchecked") {
+      const currentFails = observationCounts.get(obs.uuid) ?? 0;
+      failingObservations.push({
+        observation: obs,
+        failCount: currentFails
+      });
+    }
+  }
+
+  // Sort by fail count in descending order and take top N
+  const topFailingObservations = failingObservations
+    .sort((a, b) => b.failCount - a.failCount)
+    .slice(0, topCount);
+
+  return topFailingObservations;
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Box,
+  Badge,
   Container,
   Heading,
   SimpleGrid,
@@ -11,6 +12,7 @@ import {
   Checkbox,
   VStack,
   Button,
+  Alert
 } from '@chakra-ui/react';
 import PillarCard from '@/components/PillarCard';
 import ControlsTable from '@/components/ControlsTable';
@@ -20,7 +22,7 @@ import ComplianceOverviewCard from '@/components/ComplianceOverviewCard';
 import OscalFileUpload from '@/components/OscalFileUpload';
 import OscalDiffUploader from '@/components/OscalDiffUpload';
 import BaselineComplianceChart from '@/components/BaselineComplianceChart';
-import { getPillars, getBaselineLevels } from '@/utils/helpers';
+import { getPillars, getBaselineLevels, getTopFailingObservations } from '@/utils/helpers';
 import { Control, ZeroTrustPillar, BaselineLevel } from '@/types';
 
 export default function Home() {
@@ -117,6 +119,8 @@ export default function Home() {
     return titleParts.join(' and ') + ' Controls';
   };
 
+  const topFailingObservations = getTopFailingObservations(processedControls, 3);
+
   return (
     <Container maxW="full" py={8} px={{ base: 4, md: 6 }}>
       <Heading as="h1" size="xl" mb={8} textAlign="center">
@@ -163,6 +167,60 @@ export default function Home() {
               />
             ))}
           </SimpleGrid>
+                     <Box mb={4} mt={10}>
+             {topFailingObservations.length > 0 ? (
+               <Box>
+                 <Heading size="md" color="black" mb={3} _dark={{ color: "white" }}>
+                   Top {topFailingObservations.length} Most Failing Observations
+                 </Heading>
+                 <VStack gap={4} align="stretch">
+                   {topFailingObservations.map((item, index) => (
+                     <Box key={item.observation.uuid}>
+                       <Text fontSize="sm" fontWeight="bold" mb={2} color="gray.600" _dark={{ color: "gray.400" }}>
+                         #{index + 1} - Failed across {item.failCount} controls
+                       </Text>
+                       <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.50" _dark={{ bg: "gray.700" }}>
+                         <Text fontSize="md" mb={1}>
+                           <Text as="span" fontWeight="bold">Title:</Text> {item.observation.title}
+                         </Text>
+                         <Text mb={1}>
+                           <Text as="span" fontWeight="bold">Result:</Text> {item.observation.result}
+                         </Text>
+                         <Text mb={1} fontSize="sm" color="gray.600" _dark={{ color: "gray.400" }}>
+                           <Text as="span" fontWeight="bold">UUID:</Text> {item.observation.uuid}
+                         </Text>
+                         <Text fontSize="sm">
+                           <Text as="span" fontWeight="bold">Description:</Text> {item.observation.description}
+                         </Text>
+                       </Box>
+                     </Box>
+                   ))}
+                 </VStack>
+               </Box>
+             ) : (
+              <Box
+                p={6}
+                borderWidth="1px"
+                borderColor="gray.200"
+                borderRadius="lg"
+                bg="white"
+                boxShadow="md"
+                textAlign="center"
+                _dark={{ 
+                  bg: "gray.800", 
+                  borderColor: "gray.600" 
+                }}
+              >
+                <Heading size="lg" color="gray.800" mb={4} _dark={{ color: "white" }}>
+                  Excellent Compliance
+                </Heading>
+                <Text fontSize="lg" color="gray.600" _dark={{ color: "gray.300" }}>
+                  No failing observations were found. Keep up the great work.
+                </Text>
+              </Box>
+            )}
+          </Box>
+
         </Tabs.Content>
           
         <Tabs.Content value="Controls">

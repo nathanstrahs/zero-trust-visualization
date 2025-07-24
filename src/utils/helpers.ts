@@ -1,6 +1,5 @@
 import { Control, BaselineLevel, ZeroTrustPillar, Observation } from '@/types';
 import { createListCollection } from '@chakra-ui/react';
-import { each } from 'chart.js/helpers';
 
 export const getControlsByPillar = (pillar: ZeroTrustPillar, currentControls: Control[]): Control[] => {
   return currentControls.filter(control => control.pillars.includes(pillar));
@@ -167,7 +166,6 @@ export const getAllObservations = (controls: Control[]) => {
   return { uniqueObservations, observationCounts };
 };
 
-
 export const getTopFailingObservations = (controls: Control[], topCount: number = 3) => {
   const { uniqueObservations, observationCounts } = getAllObservations(controls);
 
@@ -192,4 +190,76 @@ export const getTopFailingObservations = (controls: Control[], topCount: number 
     .slice(0, topCount);
 
   return topFailingObservations;
+};
+
+// Calculate potential compliance improvement for a pillar if top failing observations were fixed
+export const getPotentialPassingPercentageByPillar = (pillar: ZeroTrustPillar, currentControls: Control[], applicable: boolean, topFailingObservations: Array<{ observation: Observation; failCount: number }>) => {
+  const applicableControls = !applicable ? currentControls.filter(control => control.status !== 'not-applicable') : currentControls;
+  const pillarControls = getControlsByPillar(pillar, applicableControls);
+  
+  if (pillarControls.length === 0) return 0;
+  
+  // Count current passing controls
+  let potentialPassingControls = pillarControls.filter(control => control.status === 'passing').length;
+  
+  // Check failing controls to see if they could become passing
+  const failingControls = pillarControls.filter(control => control.status === 'failing');
+  const topFailingUuids = new Set(topFailingObservations.map(item => item.observation.uuid));
+  
+  failingControls.forEach(control => {
+    // Check if this control has any of the top failing observations
+    const hasTopFailingObs = control.allObservations.some(obs => 
+      topFailingUuids.has(obs.uuid) && (obs.result.toLowerCase() === 'fail' || obs.result.toLowerCase() === 'notchecked')
+    );
+    
+    if (hasTopFailingObs) {
+      // Check if fixing the top failing observations would make this control pass
+      const remainingFailingObs = control.allObservations.filter(obs => 
+        !topFailingUuids.has(obs.uuid) && (obs.result.toLowerCase() === 'fail' || obs.result.toLowerCase() === 'notchecked')
+      );
+      
+      // If no other failing observations remain, this control could become passing
+      if (remainingFailingObs.length === 0) {
+        potentialPassingControls++;
+      }
+    }
+  });
+  
+  return (potentialPassingControls / pillarControls.length) * 100;
+};
+
+// Calculate potential compliance improvement for a baseline if top failing observations were fixed
+export const getPotentialPassingPercentageByBaseline = (baseline: BaselineLevel, currentControls: Control[], applicable: boolean, topFailingObservations: Array<{ observation: Observation; failCount: number }>) => {
+  const applicableControls = !applicable ? currentControls.filter(control => control.status !== 'not-applicable') : currentControls;
+  const baselineControls = getControlsByBaseline(baseline, applicableControls);
+  
+  if (baselineControls.length === 0) return 0;
+  
+  // Count current passing controls
+  let potentialPassingControls = baselineControls.filter(control => control.status === 'passing').length;
+  
+  // Check failing controls to see if they could become passing
+  const failingControls = baselineControls.filter(control => control.status === 'failing');
+  const topFailingUuids = new Set(topFailingObservations.map(item => item.observation.uuid));
+  
+  failingControls.forEach(control => {
+    // Check if this control has any of the top failing observations
+    const hasTopFailingObs = control.allObservations.some(obs => 
+      topFailingUuids.has(obs.uuid) && (obs.result.toLowerCase() === 'fail' || obs.result.toLowerCase() === 'notchecked')
+    );
+    
+    if (hasTopFailingObs) {
+      // Check if fixing the top failing observations would make this control pass
+      const remainingFailingObs = control.allObservations.filter(obs => 
+        !topFailingUuids.has(obs.uuid) && (obs.result.toLowerCase() === 'fail' || obs.result.toLowerCase() === 'notchecked')
+      );
+      
+      // If no other failing observations remain, this control could become passing
+      if (remainingFailingObs.length === 0) {
+        potentialPassingControls++;
+      }
+    }
+  });
+  
+  return (potentialPassingControls / baselineControls.length) * 100;
 };

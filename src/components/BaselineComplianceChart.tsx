@@ -10,8 +10,8 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import { getBaselineLevels, getPassingPercentageByBaseline, getBaselineStats } from '@/utils/helpers';
-import { Control } from '@/types';
+import { getBaselineLevels, getPassingPercentageByBaseline, getBaselineStats, getPotentialPassingPercentageByBaseline } from '@/utils/helpers';
+import { Control, Observation } from '@/types';
 import { useApplicable } from '@/contexts/ExpansionContext';
 
 // Register the necessary components for a Bar chart with Chart.js
@@ -27,10 +27,11 @@ Chart.register(
 
 interface BaselineComplianceChartProps {
   controls: Control[];
+  topFailingObservations?: Array<{ observation: Observation; failCount: number }>;
 }
 
 
-const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ controls }) => {
+const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ controls, topFailingObservations = [] }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null); // Ref to hold the chart instance
   const { showIsApplicable } = useApplicable();
@@ -40,26 +41,44 @@ const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ contr
 
     const baselines = getBaselineLevels();
     const percentages = baselines.map(baseline => getPassingPercentageByBaseline(baseline, controls, showIsApplicable));
+    const potentialPercentages = topFailingObservations.length > 0 
+      ? baselines.map(baseline => getPotentialPassingPercentageByBaseline(baseline, controls, showIsApplicable, topFailingObservations))
+      : percentages;
     
+    const datasets: any[] = [
+      {
+        label: 'Current Compliance',
+        data: percentages,
+        backgroundColor: percentages.map(percentage => {
+          if (percentage >= 80) return 'rgba(180, 242, 121, 0.8)';
+          if (percentage >= 50) return 'rgba(255, 205, 86, 0.8)';
+          return 'rgba(255, 99, 132, 0.8)';
+        }),
+        borderColor: percentages.map(percentage => {
+          if (percentage >= 80) return 'rgb(180, 242, 121)';
+          if (percentage >= 50) return 'rgb(255, 205, 86)';
+          return 'rgb(255, 99, 132)';
+        }),
+        borderWidth: 1,
+        order: 2,
+      }
+    ];
+
+    // Add potential compliance dataset only if we have top failing observations
+    if (topFailingObservations.length > 0) {
+      datasets.push({
+        label: `Potential Compliance if Top ${topFailingObservations.length} Observations Pass`,
+        data: potentialPercentages,
+        backgroundColor: potentialPercentages.map(() => 'rgba(169, 169, 169, 0.4)'),
+        borderColor: potentialPercentages.map(() => 'rgba(169, 169, 169, 0.8)'),
+        borderWidth: 1,
+        order: 1,
+      });
+    }
+
     const data = {
       labels: baselines.map(baseline => baseline.charAt(0).toUpperCase() + baseline.slice(1)),
-      datasets: [
-        {
-          label: 'Compliance Percentage',
-          data: percentages,
-          backgroundColor: percentages.map(percentage => {
-            if (percentage >= 80) return 'rgba(180, 242, 121, 0.6)';
-            if (percentage >= 50) return 'rgba(255, 205, 86, 0.6)';
-            return 'rgba(255, 99, 132, 0.6)';
-          }),
-          borderColor: percentages.map(percentage => {
-            if (percentage >= 80) return 'rgb(180, 242, 121)';
-            if (percentage >= 50) return 'rgb(255, 205, 86)';
-            return 'rgb(255, 99, 132)';
-          }),
-          borderWidth: 1,
-        },
-      ],
+      datasets: datasets,
     };
 
     const options = {
@@ -85,7 +104,8 @@ const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ contr
       },
       plugins: {
         legend: {
-          display: false,
+          display: topFailingObservations.length > 0,
+          position: 'top' as const,
         },
         tooltip: {
           callbacks: {
@@ -94,7 +114,12 @@ const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ contr
               const [passingCount, totalCount] = getBaselineStats(baseline, controls, showIsApplicable);
               const percentage = context.raw as number;
               
-              return `Passing: ${percentage.toFixed(1)}% (${passingCount}/${totalCount})`;
+              if (context.datasetIndex === 0) {
+                return `Current: ${percentage.toFixed(1)}% (${passingCount}/${totalCount})`;
+              } else {
+                const improvement = percentage - percentages[context.dataIndex];
+                return `Potential: ${percentage.toFixed(1)}% (+${improvement.toFixed(1)}%)`;
+              }
             }
           }
         }
@@ -122,7 +147,7 @@ const BaselineComplianceChart: React.FC<BaselineComplianceChartProps> = ({ contr
         chartInstanceRef.current.destroy();
       }
     };
-  }, [controls, showIsApplicable]); // Re-run the effect if the controls data or expansion state changes
+  }, [controls, showIsApplicable, topFailingObservations]); // Re-run the effect if the controls data, expansion state, or top failing observations change
 
   return (
     <Box p={4}>

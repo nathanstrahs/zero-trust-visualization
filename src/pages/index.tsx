@@ -12,7 +12,8 @@ import {
   Checkbox,
   VStack,
   Button,
-  Alert
+  Alert,
+  HStack
 } from '@chakra-ui/react';
 import PillarCard from '@/components/PillarCard';
 import ControlsTable from '@/components/ControlsTable';
@@ -30,6 +31,7 @@ export default function Home() {
   const [selectedBaselines, setSelectedBaselines] = useState<BaselineLevel[]>([]);
   const [selectedControlId, setSelectedControlId] = useState<string>('');
   const [processedControls, setProcessedControls] = useState<Control[]>([]);
+  const [selectedObservationCount, setSelectedObservationCount] = useState<number>(3);
 
   const pillars = getPillars();
   const baselineLevels = getBaselineLevels();
@@ -119,7 +121,7 @@ export default function Home() {
     return titleParts.join(' and ') + ' Controls';
   };
 
-  const topFailingObservations = getTopFailingObservations(processedControls, 3);
+  const topFailingObservations = getTopFailingObservations(processedControls, selectedObservationCount);
 
   return (
     <Container maxW="full" py={8} px={{ base: 4, md: 6 }}>
@@ -147,11 +149,11 @@ export default function Home() {
           
           
           <Box mb={4}>
-            <PillarComplianceChart controls={processedControls}/>
+            <PillarComplianceChart controls={processedControls} topFailingObservations={topFailingObservations}/>
           </Box>
 
           <Box mb={4}>
-            <BaselineComplianceChart controls={processedControls}/>
+            <BaselineComplianceChart controls={processedControls} topFailingObservations={topFailingObservations}/>
           </Box>
           
           <Heading size="md" mb={4}>
@@ -170,9 +172,36 @@ export default function Home() {
                      <Box mb={4} mt={10}>
              {topFailingObservations.length > 0 ? (
                <Box>
-                 <Heading size="md" color="black" mb={3} _dark={{ color: "white" }}>
-                   Top {topFailingObservations.length} Most Failing Observations
-                 </Heading>
+                 <HStack justify="space-between" align="center" mb={4}>
+                   <Heading size="md" color="black" _dark={{ color: "white" }}>
+                     Top {topFailingObservations.length} Most Failing Observations
+                   </Heading>
+                   <HStack gap={2}>
+                     <Text fontSize="sm" color="gray.600" _dark={{ color: "gray.300" }}>
+                       Show top:
+                     </Text>
+                     <select
+                       value={selectedObservationCount}
+                       onChange={(e) => setSelectedObservationCount(Number(e.target.value))}
+                       style={{
+                         fontSize: '14px',
+                         width: '80px',
+                         height: '32px',
+                         backgroundColor: 'white',
+                         border: '1px solid #E2E8F0',
+                         borderRadius: '6px',
+                         padding: '0 8px'
+                       }}
+                     >
+                       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                         <option key={num} value={num}>{num}</option>
+                       ))}
+                     </select>
+                     <Text fontSize="sm" color="gray.600" _dark={{ color: "gray.300" }}>
+                       observations
+                     </Text>
+                   </HStack>
+                 </HStack>
                  <VStack gap={4} align="stretch">
                    {topFailingObservations.map((item, index) => (
                      <Box key={item.observation.uuid}>

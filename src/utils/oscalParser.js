@@ -1,7 +1,8 @@
 "use strict";
+import { convertToDataKeyFormat } from "./map_pillars";
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.extractNistControlStatuses = extractNistControlStatuses;
-import { convertToDataKeyFormat } from "./map_pillars";
 
 /**
  * Helper function to check for property existence and type

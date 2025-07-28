@@ -13,4 +13,4 @@ $ cd go_extractor
 $ go run arf2assessment-results.go /path/to/arf.xml assessment-results.json
 ```
 
-The assessment 
+The assessment-results.json will be written to your current directory.

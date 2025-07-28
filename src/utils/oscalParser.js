@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.extractNistControlStatuses = extractNistControlStatuses;
+import { convertToDataKeyFormat } from "./map_pillars";
 
 /**
  * Helper function to check for property existence and type
@@ -151,31 +152,40 @@ function validateOscalDocumentStructure(oscalDoc) {
             observations.forEach((observation, observationIndex) => {
                 const observationPath = `${resultPath}.observations[${observationIndex}]`;
                 if (typeof observation !== 'object' || observation === null) {
-                    throw new Error(`Item at ${observationPath} is not an object.`);
+                    // Skip if the item in the array is not a valid object
+                    return; 
                 }
 
-                //checks to confirm observation can be searched by uuid later
-                checkProperty(observation, "uuid", "string", observationPath);
+                if (observation.hasOwnProperty("uuid")) {
+                    checkProperty(observation, "uuid", "string", observationPath);
+                }
 
-                const subjects = checkProperty(observation, "subjects", "array", `${observationPath}`);
-
-                subjects.forEach((subject, subjectIndex) => {
-                    const subjectPath = `${observationPath}.subjects[${subjectIndex}]`
-                    const props = checkProperty(subject, "props", "object", `${subjectPath}`);
-
-                    props.forEach((prop, propIndex) => {
-                        const propPath = `${observationPath}.subjects[0].props[${propIndex}]`;
-                        if(typeof prop !== "object"){
-                            throw new Error(`Item at ${propPath} is not an object.`)
+                if (observation.hasOwnProperty("subjects")) {
+                    const subjects = checkProperty(observation, "subjects", "array", observationPath);
+                    subjects.forEach((subject, subjectIndex) => {
+                        const subjectPath = `${observationPath}.subjects[${subjectIndex}]`;
+                        if (typeof subject !== 'object' || subject === null) {
+                            return; 
                         }
-                        //checks whether the observation has an object that could contain pass/fail result of observation
-                        checkProperty(prop, "name", "string", propPath);
-                        checkProperty(prop, "value", "string", propPath);
 
+                        if (subject.hasOwnProperty("props")) {
+                            
+                            const props = checkProperty(subject, "props", "array", subjectPath);
+                            props.forEach((prop, propIndex) => {
+                                const propPath = `${subjectPath}.props[${propIndex}]`;
+                                if (typeof prop !== 'object' || prop === null) {
+                                    return; // Skip invalid props
+                                }
+                                if (prop.hasOwnProperty("name")) {
+                                    checkProperty(prop, "name", "string", propPath);
+                                }
+                                if (prop.hasOwnProperty("value")) {
+                                    checkProperty(prop, "value", "string", propPath);
+                                }
+                            });
+                        }
                     });
-                });
-
-                
+                }
             });
         }
     });
@@ -336,7 +346,7 @@ function extractNistControlStatuses(oscalDoc) {
     var finalResults = [];
     controlStatusMap.forEach(function (value, key) {
         finalResults.push({
-            controlId: key,
+            controlId: convertToDataKeyFormat(key),
             status: value.status,
             details: value.details,
             passingObs: value.passingObs,

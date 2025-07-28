@@ -1,9 +1,6 @@
 "use strict";
 import { convertToDataKeyFormat } from "./map_pillars";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.extractNistControlStatuses = extractNistControlStatuses;
-
 /**
  * Helper function to check for property existence and type
  * Throws an error if the check fails
@@ -200,7 +197,7 @@ function validateOscalDocumentStructure(oscalDoc) {
  * @param oscalDoc The OSCAL assessment-results JSON document.
  * @returns An array of ControlTestResult objects.
  */
-function extractNistControlStatuses(oscalDoc) {
+export function extractNistControlStatuses(oscalDoc) {
     try {
         validateOscalDocumentStructure(oscalDoc);
     } catch (error) {

@@ -66,7 +66,4 @@ Apache 2.0
 
 ## Contact
 
-Your contact information or project maintainer(s).
-
-* [Nathan Strahs] - [nstrahs@redhat.com]
-* Project Link: [HOME](https://github.com/nathanstrahs/zero-trust-visualization)
+* [Nathan Strahs] - nathanstrahs at gmail dot com

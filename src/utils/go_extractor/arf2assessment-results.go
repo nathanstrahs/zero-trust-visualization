@@ -40,13 +40,13 @@ const (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Printf("Usage: %s <path/to/your/arf.xml>\n", os.Args[0])
+	if len(os.Args) < 3 {
+		fmt.Printf("Usage: %s <path/to/your/arf.xml> <output.json>\n", os.Args[0])
 		os.Exit(1)
 	}
 
 	arfFilePath := os.Args[1]
-	outputFileName := "assessment-results-changed.json"
+	outputFileName := os.Args[2]
 
 	file, err := os.Open(filepath.Clean(arfFilePath))
 	if err != nil {

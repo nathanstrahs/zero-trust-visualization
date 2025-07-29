@@ -2,13 +2,9 @@
 
 ## Overview
 
-This is a web application tool used to visualize the state and baseline of security of a model or cluster. It includes easy-to-understand visualization graphs and charts to assess the current passing/failing components from the NIST SP 800-53 Rev. 5 zero-trust framework. The application extracts information from a assessment-results.json file written in OSCAL. Examples of such a file can be found [here](https://github.com/usnistgov/oscal-content/tree/main/examples/ar/json).
+This is a web application tool used to visualize the state and baseline of security of a model or cluster. It includes easy-to-understand visualization graphs and charts to assess the current passing/failing components from the NIST SP 800-53 Rev. 4/5 zero-trust framework. The application extracts information from a assessment-results.json file written in OSCAL. Examples of such a file can be found [here](https://github.com/usnistgov/oscal-content/tree/main/examples/ar/json).
 
 More about OSCAL can be found [here](https://github.com/usnistgov/oscal-content/tree/main). More about NIST can be found [here](https://pages.nist.gov/OSCAL/learn/).
-
-## TO BE IMPLEMENTED: 
-
-This tool will be used in conjunction with [Complytime](https://github.com/complytime/complytime/) to automate the assessment process. This is not yet implemented, so manually uploading a assessment-results.json file is required.
 
 ---
 
@@ -18,12 +14,14 @@ This tool will be used in conjunction with [Complytime](https://github.com/compl
 * Clearly indicates passing and failing OSCAL components.
 * Provides extensive details for each component.
 * User-friendly interface for navigating complex OSCAL data.
+* ARF XML to OSCAL [converter](https://github.com/nathanstrahs/zero-trust-visualization/tree/main/src/utils/go_extractor)
 
 ---
 
 ## Prerequisites (for both Mac and Linux)
 
 * npm
+* Go - only required if using converter
 
 ---
 
@@ -66,4 +64,4 @@ Apache 2.0
 
 ## Contact
 
-* [Nathan Strahs] - nathanstrahs at gmail dot com
+* Nathan Strahs - nathanstrahs[at]gmail[dot]com

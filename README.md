@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a web application tool used to visualize the state and baseline of security of a model or cluster. It includes easy-to-understand visualization graphs and charts to assess the current passing/failing components from the NIST SP 800-53 Rev. 4/5 zero-trust framework. The application extracts information from a assessment-results.json file written in OSCAL. Examples of such a file can be found [here](https://github.com/usnistgov/oscal-content/tree/main/examples/ar/json).
+This is a web application tool used to visualize the state and baseline of security of a model or cluster. It includes easy-to-understand visualization graphs and charts to assess the current passing/failing components from the NIST SP 800-53 Rev. 4/5 zero-trust framework. The application extracts information from a ``assessment-results.json`` file written in OSCAL. Examples of such a file can be found [here](https://github.com/usnistgov/oscal-content/tree/main/examples/ar/json).
 
 More about OSCAL can be found [here](https://github.com/usnistgov/oscal-content/tree/main). More about NIST can be found [here](https://pages.nist.gov/OSCAL/learn/).
 
@@ -46,14 +46,14 @@ Access the application at `http://localhost:[your-port]`.
 
 ## Usage
 
-Simply upload your assessment-results.json, and view the visualization tools.
+Simply upload your ``assessment-results.json``, and view the visualization tools.
 
 ---
 
 ## More Information
 * For the application to successfully display controls, the uploaded JSON file must conform to the outline listed [here.](/docs/UPLOAD_INSTRUCTIONS.md)
 * For more information about the NIST controls, refer to [this](/docs/NIST_INFO.md) document. 
-* To see examples of uploaded assessment-results.json files, see this [examples directory](/docs/exampleUploads/).
+* To see examples of uploaded ``assessment-results.json`` files, see this [examples directory](/docs/exampleUploads/).
 ---
 
 ## License

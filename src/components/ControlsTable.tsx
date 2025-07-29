@@ -97,7 +97,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
             </Text>
             <Button
               size="sm"
-              variant={useRev4 ? "solid" : "outline"}
+              variant={useRev4 ? "outline" : "solid"}
               colorPalette="blue"
               onClick={() => setUseRev4(false)}
             >
@@ -105,7 +105,7 @@ const ControlsTable: React.FC<ControlsTableProps> = ({ controls, title, isExpand
             </Button>
             <Button
               size="sm"
-              variant={useRev4 ? "outline" : "solid"}
+              variant={useRev4 ? "solid" : "outline"}
               colorPalette="blue"
               onClick={() => setUseRev4(true)}
             >

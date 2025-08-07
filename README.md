@@ -4,6 +4,8 @@
 
 This is a web application tool used to visualize the state and baseline of security of a model or cluster. It includes easy-to-understand visualization graphs and charts to assess the current passing/failing components from the NIST SP 800-53 Rev. 4/5 zero-trust framework. The application extracts information from a ``assessment-results.json`` file written in OSCAL. Examples of such a file can be found [here](https://github.com/usnistgov/oscal-content/tree/main/examples/ar/json).
 
+More background information is listed in [this](https://docs.google.com/document/d/1WJwO6fptAbwCuWECQaQbYz9SbE0MZr26WAI2OIlzwCc/edit?usp=sharing) document.
+
 More about OSCAL can be found [here](https://github.com/usnistgov/oscal-content/tree/main). More about NIST can be found [here](https://pages.nist.gov/OSCAL/learn/).
 
 ---
